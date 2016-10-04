@@ -4,8 +4,8 @@
   <arg name="base"      value="$(optenv TURTLEBOT_BASE kobuki)"/> <!-- create, roomba -->
   <arg name="battery"   value="$(optenv TURTLEBOT_BATTERY /proc/acpi/battery/BAT0)"/>  <!-- /proc/acpi/battery/BAT0 -->
   <arg name="gui" default="true"/>
-  <arg name="stacks"    value="$(optenv TURTLEBOT_STACKS hexagons)"/>  <!-- circles, hexagons -->
-  <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>  <!-- kinect, asus_xtion_pro -->
+  <arg name="stacks"    value="$(optenv TURTLEBOT_STACKS ninja-hexagons)"/>  <!-- circles, hexagons -->
+  <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR ninja-kinect)"/>  <!-- kinect, asus_xtion_pro -->
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="use_sim_time" value="true"/>
@@ -26,7 +26,7 @@
   </group>
 
   <group ns="donatello">
-    <param name="tf_prefix" value="leonardo_tf"/>
+    <param name="tf_prefix" value="donatello_tf"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
@@ -37,7 +37,7 @@
   </group>
 
   <group ns="raphael">
-    <param name="tf_prefix" value="leonardo_tf"/>
+    <param name="tf_prefix" value="raphael_tf"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
@@ -48,7 +48,7 @@
   </group>
 
   <group ns="michelangelo">
-    <param name="tf_prefix" value="leonardo_tf"/>
+    <param name="tf_prefix" value="michelangelo_tf"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
