@@ -1,7 +1,6 @@
-<!--
-  Used for visualising the turtlebot while building a map or navigating with the ros navistack.
- -->
 <launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_bringup)/rviz/multi-robot-simulation.rviz"/>
+ 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find turtlebot_bringup)/rviz/multi-robot-simulation.rviz"/>
+
 </launch>
 

@@ -1,0 +1,43 @@
+<library path="lib/libturtlebot_rviz_plugin">
+  <class name="turtlebot_rviz_plugin/LeonardoPoseEst"
+         type="turtlebot_rviz_plugin::LeonardoPoseEst"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool to tell leonardo where he is
+    </description>
+  </class>
+
+  <class name="turtlebot_rviz_plugin/RafaelPoseEst"
+         type="turtlebot_rviz_plugin::RafaelPoseEst"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool to tell raphael where he is
+    </description>
+  </class>
+
+  <class name="turtlebot_rviz_plugin/LeonardoNavGoal"
+         type="turtlebot_rviz_plugin::LeonardoNavGoal"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool to tell leonardo where to go
+    </description>
+  </class>
+
+  <class name="turtlebot_rviz_plugin/RafaelNavGoal"
+         type="turtlebot_rviz_plugin::RafaelNavGoal"
+         base_class_type="rviz::Tool">
+    <description>
+      Tool to tell raphael where to go
+    </description>
+  </class>
+
+  <class name="turtlebot_rviz_plugin/TurtlePanel"
+         type="turtlebot_rviz_plugin::TurtlePanel"
+         base_class_type="rviz::Panel">
+    <description>
+      A panel to read status from turtlebots and do related actions
+    </description>
+  </class>
+
+
+</library>
