@@ -1,11 +1,4 @@
 <launch>
-  <!-- Map server -->
-  <arg name="map_file" default="$(optenv TURTLEBOT_GAZEBO_MAP_FILE /opt/ros/kinetic/share/turtlebot_gazebo/worlds/playground.world)"/>
-<group ns="leonardo">
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
-    <param name="frame_id" value="/map" />
-  </node>
-</group>
 
   <group ns="leonardo">
     <param name="tf_prefix" value="leonardo_tf" />

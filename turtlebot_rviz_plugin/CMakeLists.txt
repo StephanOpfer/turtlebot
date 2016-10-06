@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS rviz)
 
 catkin_package()
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
 ## Use c++ 11x std
@@ -38,7 +38,7 @@ add_library(${PROJECT_NAME}
   src/RafaelNavGoal.cpp
   src/TurtlePanel.cpp
   src/RobotBox.cpp
-  include/RobotBox.h
+  src/RobotBox.h
 )
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${catkin_LIBRARIES})

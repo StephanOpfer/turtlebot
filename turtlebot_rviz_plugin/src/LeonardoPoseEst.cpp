@@ -7,7 +7,7 @@
 
 #include "LeonardoPoseEst.h"
 
-#define ROBOT "donatello"
+#define ROBOT "leonardo"
 #define TOPIC "initialpose"
 #define DESC "Pose Estimate"
 

@@ -1,5 +1,6 @@
 <launch>
-  <arg name="use_map_topic"   default="false"/>
+  <arg name="use_map_topic"   default="true"/>
+  <arg name="first_map_only"   default="true"/>
   <arg name="scan_topic"      default="scan"/> 
   <arg name="initial_pose_x"  default="0.0"/>
   <arg name="initial_pose_y"  default="0.0"/>
@@ -10,6 +11,7 @@
 
   <node pkg="amcl" type="amcl" name="amcl" output="screen">
     <param name="use_map_topic"             value="$(arg use_map_topic)"/>
+    <param name="first_map_only"	    value="$(arg first_map_only)"/>
     <!-- Publish scans from best pose at a max of 10 Hz -->
     <param name="odom_model_type"           value="diff"/>
     <param name="odom_alpha5"               value="0.1"/>
@@ -48,5 +50,6 @@
     <param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
     <param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
     <remap from="scan"                      to="$(arg scan_topic)"/>
+    <remap from="map" to="/map"/>
   </node>
 </launch>
