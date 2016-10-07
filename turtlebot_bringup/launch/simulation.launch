@@ -30,7 +30,7 @@
       <arg name="ROBOT" value="leonardo"/>
     </include>
   </group>
-
+<!--
   <group ns="donatello">
     <param name="tf_prefix" value="donatello_tf"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
@@ -63,5 +63,5 @@
       <arg name="ROBOT" value="michelangelo"/>
     </include>
   </group>
-
+-->
 </launch>
