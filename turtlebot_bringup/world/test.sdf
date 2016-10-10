@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+    <sdf version="1.4">
+      <model name="awesome_wall">
+        <static>true</static>
+        <link name="link">
+          <pose>0 0 0 0 0 0</pose>
+          <must_be_base_link>1</must_be_base_link>
+          <collision name="collision">
+             <geometry>
+             <image>
+              <height>1.0</height>
+              <uri>model://wall/textures/square.jpg</uri>
+             </image>
+             </geometry>
+           </collision>
+           <visual name="visual">
+             <cast_shadows>false</cast_shadows>
+               <geometry>
+             <image>
+              <height>1.0</height>
+              <uri>model://wall/textures/square.jpg</uri>
+             </image>
+               </geometry>
+              <material>
+                <script>
+                    <uri>model://wall/scripts</uri>
+                    <uri>model://wall/textures</uri>
+                    <name>wall/wall</name>
+                </script>
+              </material>
+             </visual>
+            </link>
+          </model>
+        </sdf>
