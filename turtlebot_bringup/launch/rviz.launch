@@ -1,12 +1,4 @@
 <launch>
- 
-  <param name="/leonardo/robot_description"
-    command="$(find xacro)/xacro.py $(find turtlebot_description)/robots/kobuki_ninja-hexagons_ninja-kinect.urdf.xacro" />
-
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find turtlebot_bringup)/rviz/multi-robot-simulation.rviz"/>
-
-  <arg name="map_file" value="$(env TURTLEBOT_MAP_FILE)" />
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
- 
 </launch>
 
