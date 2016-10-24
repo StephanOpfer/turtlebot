@@ -34,6 +34,8 @@ add_definitions(-DQT_NO_KEYWORDS)
 add_library(${PROJECT_NAME}
   src/LeonardoPoseEst.cpp
   src/LeonardoNavGoal.cpp
+  src/DonatelloPoseEst.cpp
+  src/DonatelloNavGoal.cpp
   src/RafaelPoseEst.cpp
   src/RafaelNavGoal.cpp
   src/TurtlePanel.cpp
