@@ -28,7 +28,7 @@ namespace gazebo
 	private:
 		virtual void OnUpdate();
 
-		/// \brief Pointer to the contact sensor
+		/// \brief Pointer to the logical camera sensor
 	private:
 		sensors::LogicalCameraSensorPtr parentSensor;
 

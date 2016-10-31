@@ -5,12 +5,15 @@
 #include "gazebo_plugins/gazebo_ros_camera.h"
 
 #include <string>
+#include <vector>
 
 #include <gazebo/sensors/Sensor.hh>
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
 #include <sensor_msgs/Illuminance.h>
+
+using std::vector;
 
 namespace gazebo
 {
@@ -64,14 +67,36 @@ namespace gazebo
 
 	void GazeboRosDistance::OnUpdate()
 	{
-		// Get all the contacts.
-		auto models = this->parentSensor->Image();
-		for (unsigned int i = 0; i < models.model_size(); ++i)
-		{
-			std::cout << "Model at[ x:" << models.model(i).pose().position().x() << " y:"
-					<< models.model(i).pose().position().y() << " z:" << models.model(i).pose().position().z() << "]"
-					<< std::endl;
+		vector<msgs::LogicalCameraImage_Model> victimModels;
 
+		// Get all the models in range.
+		auto models = this->parentSensor->Image();
+		for (int i = 0; i < models.model_size(); i++)
+		{
+			auto m = models.model(i);
+			auto n  = m.name();
+
+			auto x = m.pose().position().x();
+			auto y = m.pose().position().y();
+			auto z = m.pose().position().z();
+			auto dist = sqrt(x*x + y*y * z*z);
+
+			// Debugging output
+			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
+
+			if (n.find("victim") != std::string::npos && dist <= 4) {
+				victimModels.push_back(m);
+			}
+
+		}
+
+		for (auto m : victimModels) {
+			auto n  = m.name();
+			auto x = m.pose().position().x();
+			auto y = m.pose().position().y();
+			auto z = m.pose().position().z();
+
+			printf("Victim found with Name %s at (%f, %f, %f)\n", n.c_str(), x, y, z);
 		}
 
 	}
