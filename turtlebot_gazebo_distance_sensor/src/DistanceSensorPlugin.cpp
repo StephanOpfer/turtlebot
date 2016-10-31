@@ -40,7 +40,10 @@ namespace gazebo
 			return;
 		}
 
-		SensorPlugin::Load(_sensor, _sdf);
+		ROS_FATAL_STREAM(
+									"A ROS node for Gazebo has not been initialized, unable to load plugin. " << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
+
+//		SensorPlugin::Load(_sensor, _sdf);
 		// Get the parent sensor.
 		this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
 
@@ -56,6 +59,7 @@ namespace gazebo
 
 		// Make sure the parent sensor is active.
 		this->parentSensor->SetActive(true);
+
 	}
 
 	void GazeboRosDistance::OnUpdate()

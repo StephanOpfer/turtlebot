@@ -74,4 +74,26 @@
       </sensor>
     </gazebo>
   </xacro:macro>  
+
+  <!-- Logical Distance Sensor -->
+  <xacro:macro name="turtlebot_logical">
+    <gazebo reference="distance_link">  
+      <sensor type="logical_camera" name="distance_sensor">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <camera>
+          <horizontal_fov>${2*M_PI}</horizontal_fov>
+          <clip>
+            <near>0.05</near>
+            <far>8.0</far>
+          </clip>
+        </camera>
+        <plugin name="turtlebot_gazebo_distance_sensor" filename="libturtlebot_gazebo_distance_sensor.so">
+          <cameraName>camera</cameraName>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
 </robot>
