@@ -14,5 +14,5 @@
   <sensor_ninja-kinect  parent="base_link"/>
   <sensor_hokuyo parent="base_link"/>
   <turtlebot_logical_dist parent="base_link"/>
-  
+  <turtlebot_logical_dist2 parent="base_link"/>
 </robot>

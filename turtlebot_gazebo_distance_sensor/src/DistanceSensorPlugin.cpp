@@ -79,7 +79,7 @@ namespace gazebo
 
 			// Debugging output
 //			std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
-			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
+			printf("Senosr No. %x, Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", this, i, n.c_str(), x, y, z, dist);
 
 			if (n.find("victim") != std::string::npos && dist <= 4) {
 				victimModels.push_back(m);

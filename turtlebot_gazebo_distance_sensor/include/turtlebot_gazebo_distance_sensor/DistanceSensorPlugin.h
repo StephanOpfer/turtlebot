@@ -35,6 +35,7 @@ namespace gazebo
 		/// \brief Connection that maintains a link between the contact sensor's
 		/// updated signal and the OnUpdate callback.
 		event::ConnectionPtr updateConnection;
+
 	};
 }
 #endif
