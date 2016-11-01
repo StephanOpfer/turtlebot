@@ -43,10 +43,6 @@ namespace gazebo
 			return;
 		}
 
-		ROS_FATAL_STREAM(
-									"A ROS node for Gazebo has not been initialized, unable to load plugin. " << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
-
-//		SensorPlugin::Load(_sensor, _sdf);
 		// Get the parent sensor.
 		this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
 
@@ -79,9 +75,10 @@ namespace gazebo
 			auto x = m.pose().position().x();
 			auto y = m.pose().position().y();
 			auto z = m.pose().position().z();
-			auto dist = sqrt(x*x + y*y * z*z);
+			auto dist = sqrt(x*x + y*y + z*z);
 
 			// Debugging output
+//			std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
 			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
 
 			if (n.find("victim") != std::string::npos && dist <= 4) {
