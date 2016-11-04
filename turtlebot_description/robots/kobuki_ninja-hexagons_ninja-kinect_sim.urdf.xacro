@@ -7,12 +7,12 @@
 <robot name="turtlebot" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_library.urdf.xacro" />
-  <!--<xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_dist.urdf.xacro"/> -->
+  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_dist.urdf.xacro"/>
 
   <kobuki/>
   <stack_ninja-hexagons parent="base_link"/>
   <sensor_ninja-kinect  parent="base_link"/>
   <sensor_hokuyo parent="base_link"/>
-  <!--<turtlebot_logical_dist parent="base_link"/>
-  <turtlebot_logical_dist2 parent="base_link"/>-->
+  <turtlebot_logical_dist parent="base_link"/>
+  <turtlebot_logical_dist2 parent="base_link"/>
 </robot>
