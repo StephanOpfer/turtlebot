@@ -35,6 +35,10 @@ namespace gazebo
 		/// \brief Connection that maintains a link between the contact sensor's
 		/// updated signal and the OnUpdate callback.
 		event::ConnectionPtr updateConnection;
+		ros::NodeHandle nh;
+		ros::Publisher modelPub;
+
+		double QuadToTheata(double x, double y, double z, double w);
 
 	};
 }

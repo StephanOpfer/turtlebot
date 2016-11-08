@@ -6,12 +6,15 @@
 
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 #include <gazebo/sensors/Sensor.hh>
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
-#include <sensor_msgs/Illuminance.h>
+#include <ttb_msgs/LogicalCamera.h>
+
+
 
 using std::vector;
 
@@ -24,6 +27,13 @@ namespace gazebo
 	// Constructor
 	GazeboRosDistance::GazeboRosDistance()
 	{
+		auto robot = getenv("ROBOT");
+		const char *topicName = "logical_camera";
+		char topic[100];
+
+		snprintf(topic, 100, "/%s/%s", robot, topicName);
+
+		modelPub = nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +71,8 @@ namespace gazebo
 
 	}
 
+
+
 	void GazeboRosDistance::OnUpdate()
 	{
 		vector<msgs::LogicalCameraImage_Model> victimModels;
@@ -70,31 +82,66 @@ namespace gazebo
 		for (int i = 0; i < models.model_size(); i++)
 		{
 			auto m = models.model(i);
-			auto n  = m.name();
+			auto n = m.name();
 
 			auto x = m.pose().position().x();
 			auto y = m.pose().position().y();
 			auto z = m.pose().position().z();
-			auto dist = sqrt(x*x + y*y + z*z);
+			auto dist = sqrt(x * x + y * y + z * z);
 
 			// Debugging output
 //			std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
-			printf("Senosr No. %x, Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", this, i, n.c_str(), x, y, z, dist);
+			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x,
+					y, z, dist);
 
-			if (n.find("victim") != std::string::npos && dist <= 4) {
+			if (n.find("victim") != std::string::npos && dist <= 4)
+			{
 				victimModels.push_back(m);
 			}
 
 		}
 
-		for (auto m : victimModels) {
-			auto n  = m.name();
+		for (auto m : victimModels)
+		{
+			auto n = m.name();
 			auto x = m.pose().position().x();
 			auto y = m.pose().position().y();
 			auto z = m.pose().position().z();
 
 			printf("Victim found with Name %s at (%f, %f, %f)\n", n.c_str(), x, y, z);
+
+			ttb_msgs::LogicalCamera msg;
+			msg.modelName = m.name();
+			msg.pose.x = m.pose().position().x();
+			msg.pose.y = m.pose().position().y();
+
+			auto q = m.pose().orientation();
+			msg.pose.theta = QuadToTheata(q.x(), q.y(), q.z(), q.w());
+
+			modelPub.publish(msg);
 		}
 
 	}
+
+	// See:
+	// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+	double GazeboRosDistance::QuadToTheata(double x, double y, double z, double w)
+	{
+		double ysqr = y * y;
+		double t0 = -2.0f * (ysqr + z * z) + 1.0f;
+		double t1 = +2.0f * (x * y - w * z);
+		double t2 = -2.0f * (x * z + w * y);
+		double t3 = +2.0f * (y * z - w * x);
+		double t4 = -2.0f * (x * x + ysqr) + 1.0f;
+
+		t2 = t2 > 1.0f ? 1.0f : t2;
+		t2 = t2 < -1.0f ? -1.0f : t2;
+
+		//pitch = std::asin(t2);
+		//roll = std::atan2(t3, t4);
+		double yaw = atan2(t1, t0);
+
+		return yaw;
+	}
+
 }

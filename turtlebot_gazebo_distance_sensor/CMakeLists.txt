@@ -8,13 +8,14 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_plugins
   gazebo_ros
   roscpp
+  ttb_msgs
 )
 
 find_package (gazebo REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp
+  CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp 
 )
 
 ###########
