@@ -34,6 +34,9 @@ namespace gazebo
 		snprintf(topic, 100, "/%s/%s", robot, topicName);
 
 		modelPub = nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
+		this->sensorYaw = 0;
+		this->sc = supplementary::SystemConfig::getInstance();
+		loadModelsFromConfig();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +71,7 @@ namespace gazebo
 
 		// Make sure the parent sensor is active.
 		this->parentSensor->SetActive(true);
+		this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 
 	}
 
@@ -117,10 +121,27 @@ namespace gazebo
 
 			auto q = m.pose().orientation();
 			msg.pose.theta = QuadToTheata(q.x(), q.y(), q.z(), q.w());
-
+			if(abs(this->sensorYaw) == 0)
+			{
+				msg.isFrontSensor = true;
+			}
+			else
+			{
+				msg.isFrontSensor = false;
+			}
 			modelPub.publish(msg);
 		}
 
+	}
+
+	void GazeboRosDistance::loadModelsFromConfig()
+	{
+		Model victim;
+		victim.range = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.range", NULL);
+		victim.startAngle = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.startAngle", NULL);
+		victim.endAngle = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.endAngle", NULL);
+		victim.type = (*this->sc)["LogicalCamera"]->get<std::string>("LogicalCamera.Victim.type", NULL);
+		this->models.push_back(victim);
 	}
 
 	// See:
@@ -130,12 +151,12 @@ namespace gazebo
 		double ysqr = y * y;
 		double t0 = -2.0f * (ysqr + z * z) + 1.0f;
 		double t1 = +2.0f * (x * y - w * z);
-		double t2 = -2.0f * (x * z + w * y);
-		double t3 = +2.0f * (y * z - w * x);
-		double t4 = -2.0f * (x * x + ysqr) + 1.0f;
+//		double t2 = -2.0f * (x * z + w * y);
+//		double t3 = +2.0f * (y * z - w * x);
+//		double t4 = -2.0f * (x * x + ysqr) + 1.0f;
 
-		t2 = t2 > 1.0f ? 1.0f : t2;
-		t2 = t2 < -1.0f ? -1.0f : t2;
+//		t2 = t2 > 1.0f ? 1.0f : t2;
+//		t2 = t2 < -1.0f ? -1.0f : t2;
 
 		//pitch = std::asin(t2);
 		//roll = std::atan2(t3, t4);

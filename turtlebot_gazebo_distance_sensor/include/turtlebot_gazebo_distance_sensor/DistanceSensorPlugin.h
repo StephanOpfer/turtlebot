@@ -7,6 +7,7 @@
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/sensors/LogicalCameraSensor.hh>
+#include <SystemConfig.h>
 
 namespace gazebo
 {
@@ -37,8 +38,19 @@ namespace gazebo
 		event::ConnectionPtr updateConnection;
 		ros::NodeHandle nh;
 		ros::Publisher modelPub;
-
+		double sensorYaw;
+		supplementary::SystemConfig* sc;
+		void loadModelsFromConfig();
 		double QuadToTheata(double x, double y, double z, double w);
+
+		struct Model
+		{
+			double range;
+			double startAngle;
+			double endAngle;
+			std::string type;
+		};
+		vector<Model> models;
 
 	};
 }
