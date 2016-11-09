@@ -136,12 +136,19 @@ namespace gazebo
 
 	void GazeboRosDistance::loadModelsFromConfig()
 	{
-		Model victim;
-		victim.range = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.range", NULL);
-		victim.startAngle = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.startAngle", NULL);
-		victim.endAngle = (*this->sc)["LogicalCamera"]->get<double>("LogicalCamera.Victim.endAngle", NULL);
-		victim.type = (*this->sc)["LogicalCamera"]->get<std::string>("LogicalCamera.Victim.type", NULL);
-		this->models.push_back(victim);
+		auto config = (*this->sc)["LogicalCamera"];
+		auto sections = config->getSections("LogicalCamera", NULL);
+		for(int i = 0; i < sections->size(); i++)
+		{
+			cout << sections->at(i) << endl;
+			Model m;
+			m.range = config->get<double>("LogicalCamera", sections->at(i).c_str(), "range", NULL);
+			m.startAngle = config->get<double>("LogicalCamera", sections->at(i).c_str(), "startAngle", NULL);
+			m.endAngle = config->get<double>("LogicalCamera", sections->at(i).c_str(), "endAngle", NULL);
+			m.type = config->get<std::string>("LogicalCamera", sections->at(i).c_str(), "type", NULL);
+			m.section = sections->at(i);
+			this->models.push_back(m);
+		}
 	}
 
 	// See:

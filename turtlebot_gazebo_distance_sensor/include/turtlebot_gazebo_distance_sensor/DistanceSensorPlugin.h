@@ -49,6 +49,7 @@ namespace gazebo
 			double startAngle;
 			double endAngle;
 			std::string type;
+			std::string section;
 		};
 		vector<Model> models;
 
