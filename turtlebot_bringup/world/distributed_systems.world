@@ -3,7 +3,7 @@
   <world name="default">
     <!-- Initial Camera Position -->
     <gui>
-      <camera name=camera_default>
+      <camera name="camera_default">
         <pose>
           -4.0 2.0 8.0 0.0 0.7 0.0
         </pose>
