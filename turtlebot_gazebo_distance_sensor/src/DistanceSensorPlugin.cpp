@@ -121,14 +121,8 @@ namespace gazebo
 
 			auto q = m.pose().orientation();
 			msg.pose.theta = QuadToTheata(q.x(), q.y(), q.z(), q.w());
-			if(abs(this->sensorYaw) == 0)
-			{
-				msg.isFrontSensor = true;
-			}
-			else
-			{
-				msg.isFrontSensor = false;
-			}
+			msg.timeStamp = ros::Time::now();
+
 			modelPub.publish(msg);
 		}
 
