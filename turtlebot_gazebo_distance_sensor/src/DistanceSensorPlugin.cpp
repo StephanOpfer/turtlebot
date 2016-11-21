@@ -14,8 +14,6 @@
 
 #include <ttb_msgs/LogicalCamera.h>
 
-
-
 using std::vector;
 
 namespace gazebo
@@ -75,8 +73,6 @@ namespace gazebo
 
 	}
 
-
-
 	void GazeboRosDistance::OnUpdate()
 	{
 		vector<msgs::LogicalCameraImage_Model> victimModels;
@@ -95,12 +91,27 @@ namespace gazebo
 
 			// Debugging output
 //			std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
-			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x,
-					y, z, dist);
+//			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
 
-			if (n.find("victim") != std::string::npos && dist <= 4)
+			if (n.find("victim") != std::string::npos && dist <= modelMap.at("Victim").range)
 			{
-				victimModels.push_back(m);
+				double angle = atan2(m.pose().position().y(), m.pose().position().x()) * 180.0 / M_PI;
+				if (this->sensorYaw != 0)
+				{
+					if (angle < 0)
+					{
+						angle += 180.0;
+					}
+					else
+					{
+						angle -= 180.0;
+					}
+				}
+//				cout << "GazeboRosDistance: Victim angle: " << angle << endl;
+				if (angleRangeCheck(angle, "Victim"))
+				{
+					victimModels.push_back(m);
+				}
 			}
 
 		}
@@ -120,7 +131,7 @@ namespace gazebo
 			msg.pose.y = m.pose().position().y();
 
 			auto q = m.pose().orientation();
-			msg.pose.theta = QuadToTheata(q.x(), q.y(), q.z(), q.w());
+			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
 			msg.timeStamp = ros::Time::now();
 
 			modelPub.publish(msg);
@@ -132,22 +143,56 @@ namespace gazebo
 	{
 		auto config = (*this->sc)["LogicalCamera"];
 		auto sections = config->getSections("LogicalCamera", NULL);
-		for(int i = 0; i < sections->size(); i++)
+
+		for (auto section : *sections)
 		{
-			cout << sections->at(i) << endl;
+//			cout << "GazeboRosDistance: section: " << section << endl;
 			Model m;
-			m.range = config->get<double>("LogicalCamera", sections->at(i).c_str(), "range", NULL);
-			m.startAngle = config->get<double>("LogicalCamera", sections->at(i).c_str(), "startAngle", NULL);
-			m.endAngle = config->get<double>("LogicalCamera", sections->at(i).c_str(), "endAngle", NULL);
-			m.type = config->get<std::string>("LogicalCamera", sections->at(i).c_str(), "type", NULL);
-			m.section = sections->at(i);
-			this->models.push_back(m);
+			m.range = config->get<double>("LogicalCamera", section.c_str(), "range", NULL);
+			auto angleSections = config->getSections("LogicalCamera", section.c_str(), "DetectAngles", NULL);
+			for (auto angleSection : *angleSections)
+			{
+//				cout << "GazeboRosDistance: angleSection: " << angleSection << endl;
+				m.detectAngles.push_back(
+						pair<double, double>(
+								config->get<double>("LogicalCamera", section.c_str(), "DetectAngles",
+													angleSection.c_str(), "startAngle", NULL),
+								config->get<double>("LogicalCamera", section.c_str(), "DetectAngles",
+													angleSection.c_str(), "endAngle", NULL)));
+			}
+			m.type = config->get<std::string>("LogicalCamera", section.c_str(), "type", NULL);
+			m.section = section;
+			this->modelMap.emplace(m.section, m);
 		}
+	}
+
+	bool GazeboRosDistance::angleRangeCheck(double angle, string modelType)
+	{
+		for (auto pair : this->modelMap.at(modelType).detectAngles)
+		{
+			if (pair.first <= pair.second)
+			{
+				if (pair.first <= angle && angle <= pair.second)
+				{
+
+					return true;
+				}
+			}
+			// this is only the case when the angle range crosses over 180°
+			else
+			{
+				if (pair.first <= angle || angle <= pair.second)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	// See:
 	// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-	double GazeboRosDistance::QuadToTheata(double x, double y, double z, double w)
+	double GazeboRosDistance::quadToTheata(double x, double y, double z, double w)
 	{
 		double ysqr = y * y;
 		double t0 = -2.0f * (ysqr + z * z) + 1.0f;

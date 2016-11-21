@@ -41,17 +41,21 @@ namespace gazebo
 		double sensorYaw;
 		supplementary::SystemConfig* sc;
 		void loadModelsFromConfig();
-		double QuadToTheata(double x, double y, double z, double w);
+		double quadToTheata(double x, double y, double z, double w);
+		bool angleRangeCheck(double angle, string modelType);
 
 		struct Model
 		{
 			double range;
-			double startAngle;
-			double endAngle;
+			/**
+			 * pair.first = startAngle
+			 * pair.secong = endAngle
+			 */
+			vector<pair<double, double>> detectAngles;
 			std::string type;
 			std::string section;
 		};
-		vector<Model> models;
+		map<string, Model> modelMap;
 
 	};
 }
