@@ -43,6 +43,8 @@ namespace gazebo
 		void loadModelsFromConfig();
 		double quadToTheata(double x, double y, double z, double w);
 		bool angleRangeCheck(double angle, string modelType);
+		void detect(msgs::LogicalCameraImage_Model model, string name);
+		shared_ptr<vector<std::string>> modelNames;
 
 		struct Model
 		{
