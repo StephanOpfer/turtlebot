@@ -34,6 +34,8 @@ namespace gazebo
 		modelPub = nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
 		this->sensorYaw = 0;
 		this->sc = supplementary::SystemConfig::getInstance();
+
+		ROS_INFO("Loading models form SystemConfig...");
 		loadModelsFromConfig();
 		this->modelNames = nullptr;
 	}
@@ -72,26 +74,33 @@ namespace gazebo
 		this->parentSensor->SetActive(true);
 		this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 
+		ROS_INFO("GazeboRosDistance Plugin loaded!");
 	}
 
 	void GazeboRosDistance::OnUpdate()
 	{
+		bool debug = false;
 		vector<msgs::LogicalCameraImage_Model> victimModels;
 
 		// Get all the models in range.
 		auto models = this->parentSensor->Image();
 		for (int i = 0; i < models.model_size(); i++)
 		{
-			auto m = models.model(i);
-			detect(m, "Victim");
+			for (auto& kv : modelMap) {
+			    auto m = models.model(i);
+			    auto cm = kv.second;
+			    if (isDetected(m, cm)) {
+			    	publishModel(m, cm);
+				}
+			}
 		}
 
 	}
 
-	void GazeboRosDistance::detect(msgs::LogicalCameraImage_Model model, string name)
+	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, Model configModel)
 	{
 		auto modelName = model.name();
-		auto gazeboElementName = name;
+		auto gazeboElementName = configModel.type;
 		transform(gazeboElementName.begin(), gazeboElementName.end(), gazeboElementName.begin(), ::tolower);
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -104,12 +113,12 @@ namespace gazebo
 
 		// Model name did not match desired string
 		if (modelName.find(gazeboElementName) == std::string::npos)
-			return;
+			return false;
 
 		// TODO: modelMap.at == Model?
 		// Model is too far aways
-		if (dist > modelMap.at(name).range)
-				return;
+		if (dist > configModel.range)
+			return false;
 
 		// TODO: Explain?
 		double angle = atan2(y, x) * 180.0 / M_PI;
@@ -119,55 +128,79 @@ namespace gazebo
 			angle = (angle < 0) ? angle + 180.0 : angle - 180;
 
 //		cout << "GazeboRosDistance: Victim angle: " << angle << endl;
-		if (angleRangeCheck(angle, name))
-		{
-			printf("Victim found with Name %s at (%f, %f, %f)\n", modelName.c_str(), x, y, z);
 
-			ttb_msgs::LogicalCamera msg;
-			msg.modelName = modelName;
-			msg.pose.x = x;
-			msg.pose.y = y;
+		if (!angleRangeCheck(angle, configModel.detectAngles))
+			return false;
 
-			auto q = model.pose().orientation();
-			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
-			msg.timeStamp = ros::Time::now();
-			msg.type = modelMap.at(name).type;
+		return true;
+	}
 
-			modelPub.publish(msg);
-		}
+	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel)
+	{
+		auto x = model.pose().position().x();
+		auto y = model.pose().position().y();
+		auto z = model.pose().position().z();
+
+		ttb_msgs::LogicalCamera msg;
+		msg.modelName = model.name();
+		msg.pose.x = x;
+		msg.pose.y = y;
+
+		if (true)
+			printf("Victim found with Name %s at (%f, %f, %f)\n", model.name().c_str(), x, y, z);
+
+		auto q = model.pose().orientation();
+		msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
+		msg.timeStamp = ros::Time::now();
+		msg.type = configModel.type;
+
+		// TODO: Handle Publishing Rate
+		modelPub.publish(msg);
 	}
 
 	void GazeboRosDistance::loadModelsFromConfig()
 	{
-		auto config = (*this->sc)["LogicalCamera"];
-		this->modelNames = config->getSections("LogicalCamera", NULL);
+		const char* lc = "LogicalCamera";
+		const char* da = "DetectAngles";
+
+		auto config = (*this->sc)[lc];
+		this->modelNames = config->getSections(lc, NULL);
 
 		for (auto section : *(this->modelNames))
 		{
-//			cout << "GazeboRosDistance: section: " << section << endl;
+			const char* sec = section.c_str();
+			cout << "GazeboRosDistance: section: " << section << endl;
+
 			Model m;
-			m.range = config->get<double>("LogicalCamera", section.c_str(), "range", NULL);
-			auto angleSections = config->getSections("LogicalCamera", section.c_str(), "DetectAngles", NULL);
+			// TODO: NULL needed?
+			m.range = config->get<double>(lc, sec, "range", NULL);
+
+			auto angleSections = config->getSections(lc, sec, da, NULL);
 			for (auto angleSection : *angleSections)
 			{
-//				cout << "GazeboRosDistance: angleSection: " << angleSection << endl;
-				m.detectAngles.push_back(
-						pair<double, double>(
-								config->get<double>("LogicalCamera", section.c_str(), "DetectAngles",
-													angleSection.c_str(), "startAngle", NULL),
-								config->get<double>("LogicalCamera", section.c_str(), "DetectAngles",
-													angleSection.c_str(), "endAngle", NULL)));
+				cout << "GazeboRosDistance: angleSection: " << angleSection << endl;
+				auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
+				auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
+
+				m.detectAngles.push_back(pair<double, double>(start, end));
 			}
-			m.type = config->get<std::string>("LogicalCamera", section.c_str(), "type", NULL);
+
+			m.type = config->get<std::string>("LogicalCamera", sec, "type", NULL);
 			m.section = section;
+			m.name = section;
+
+			for (auto ang : m.detectAngles)
+				printf("%d, %d\n", ang.first, ang.second);
+
 			this->modelMap.emplace(m.section, m);
 		}
 	}
 
-	bool GazeboRosDistance::angleRangeCheck(double angle, string modelType)
+	bool GazeboRosDistance::angleRangeCheck(double angle, vector<pair<double, double>> detectAngles)
 	{
-		for (auto pair : this->modelMap.at(modelType).detectAngles)
+		for (auto pair : detectAngles)
 		{
+			printf("checking pair %f - %f\n", pair.first, pair.second);
 			if (pair.first <= pair.second)
 			{
 				return pair.first <= angle && angle <= pair.second;

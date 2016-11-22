@@ -42,8 +42,7 @@ namespace gazebo
 		supplementary::SystemConfig* sc;
 		void loadModelsFromConfig();
 		double quadToTheata(double x, double y, double z, double w);
-		bool angleRangeCheck(double angle, string modelType);
-		void detect(msgs::LogicalCameraImage_Model model, string name);
+		bool angleRangeCheck(double angle, vector<pair<double, double>> detectAngles);
 		shared_ptr<vector<std::string>> modelNames;
 
 		struct Model
@@ -54,10 +53,13 @@ namespace gazebo
 			 * pair.secong = endAngle
 			 */
 			vector<pair<double, double>> detectAngles;
+			std::string name;
 			std::string type;
-			std::string section;
+			std::string section; // TODO: section == name?
 		};
 		map<string, Model> modelMap;
+		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel);
+		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel);
 
 	};
 }
