@@ -99,40 +99,41 @@ namespace gazebo
 		auto dist = sqrt(x * x + y * y + z * z);
 
 		// Debugging output
-//			std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
-//			printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
+//		std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
+//		printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
 
-		if (modelName.find(gazeboElementName) != std::string::npos && dist <= modelMap.at(name).range)
+		// Model name did not match desired string
+		if (modelName.find(gazeboElementName) == std::string::npos)
+			return;
+
+		// TODO: modelMap.at == Model?
+		// Model is too far aways
+		if (dist > modelMap.at(name).range)
+				return;
+
+		// TODO: Explain?
+		double angle = atan2(y, x) * 180.0 / M_PI;
+
+		// Normalize angles?
+		if (this->sensorYaw != 0)
+			angle = (angle < 0) ? angle + 180.0 : angle - 180;
+
+//		cout << "GazeboRosDistance: Victim angle: " << angle << endl;
+		if (angleRangeCheck(angle, name))
 		{
-			double angle = atan2(y, x) * 180.0 / M_PI;
-			if (this->sensorYaw != 0)
-			{
-				if (angle < 0)
-				{
-					angle += 180.0;
-				}
-				else
-				{
-					angle -= 180.0;
-				}
-			}
-//				cout << "GazeboRosDistance: Victim angle: " << angle << endl;
-			if (angleRangeCheck(angle, name))
-			{
-				printf("Victim found with Name %s at (%f, %f, %f)\n", modelName.c_str(), x, y, z);
+			printf("Victim found with Name %s at (%f, %f, %f)\n", modelName.c_str(), x, y, z);
 
-				ttb_msgs::LogicalCamera msg;
-				msg.modelName = modelName;
-				msg.pose.x = x;
-				msg.pose.y = y;
+			ttb_msgs::LogicalCamera msg;
+			msg.modelName = modelName;
+			msg.pose.x = x;
+			msg.pose.y = y;
 
-				auto q = model.pose().orientation();
-				msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
-				msg.timeStamp = ros::Time::now();
-				msg.type = modelMap.at(name).type;
+			auto q = model.pose().orientation();
+			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
+			msg.timeStamp = ros::Time::now();
+			msg.type = modelMap.at(name).type;
 
-				modelPub.publish(msg);
-			}
+			modelPub.publish(msg);
 		}
 	}
 
@@ -169,19 +170,10 @@ namespace gazebo
 		{
 			if (pair.first <= pair.second)
 			{
-				if (pair.first <= angle && angle <= pair.second)
-				{
-
-					return true;
-				}
-			}
-			// this is only the case when the angle range crosses over 180°
-			else
-			{
-				if (pair.first <= angle || angle <= pair.second)
-				{
-					return true;
-				}
+				return pair.first <= angle && angle <= pair.second;
+			} else {
+				// this is only the case when the angle range crosses over 180°
+				return pair.first <= angle || angle <= pair.second;
 			}
 		}
 		return false;
