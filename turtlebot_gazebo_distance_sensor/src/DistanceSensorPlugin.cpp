@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
-#include <chrono>
 #include <numeric>
 
 #include <gazebo/sensors/Sensor.hh>
@@ -92,17 +91,16 @@ namespace gazebo
 			for (auto& kv : modelMap)
 			{
 				auto model = models.model(i);
-				auto configModel = kv.second;
-				if (isDetected(model, configModel))
+				if (isDetected(model, kv.second))
 				{
-					publishModel(model, configModel);
+					publishModel(model, kv.second);
 				}
 			}
 		}
 
 	}
 
-	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, Model configModel)
+	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel)
 	{
 		auto modelName = model.name();
 		auto gazeboElementName = configModel.type;
@@ -146,7 +144,7 @@ namespace gazebo
 		return true;
 	}
 
-	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel)
+	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel)
 	{
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -157,27 +155,35 @@ namespace gazebo
 		msg.pose.x = x;
 		msg.pose.y = y;
 
-//#ifdef LOGICAL_CAMERA_DEBUG
+#ifdef LOGICAL_CAMERA_DEBUG
 		cout << "Model found with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
 				<< endl;
-//#endif
+#endif
 		auto q = model.pose().orientation();
 		msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
 		msg.timeStamp = ros::Time::now();
 		msg.type = configModel.type;
 
-		// TODO: Handle Publishing Rate
+		chrono::time_point<chrono::high_resolution_clock> t = chrono::high_resolution_clock::now();
 
-		static std::chrono::time_point<std::chrono::high_resolution_clock> t;
-		static std::chrono::time_point<std::chrono::high_resolution_clock> lt;
-
-		lt = t;
-		t = std::chrono::high_resolution_clock::now();
-
-		std::chrono::duration<double, std::milli> diff = t - lt;
-		cout << "OnUpdate Diff: " << diff.count() << " ms" << endl;
-
-		modelPub.publish(msg);
+		if(!configModel.alreadyPublished)
+		{
+			modelPub.publish(msg);
+			configModel.lastPublished = t;
+			configModel.alreadyPublished = true;
+		}
+		else
+		{
+			auto diff = chrono::duration_cast<chrono::milliseconds>(t - configModel.lastPublished);
+#ifdef  LOGICAL_CAMERA_DEBUG
+			cout << "GazeboRosDistance: diff: " << diff.count()<< endl;
+#endif
+			if(diff.count() >= (1000.0 / configModel.publishingRate))
+			{
+				modelPub.publish(msg);
+				configModel.lastPublished = t;
+			}
+		}
 	}
 
 	void GazeboRosDistance::loadModelsFromConfig()

@@ -8,6 +8,7 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/sensors/LogicalCameraSensor.hh>
 #include <SystemConfig.h>
+#include <chrono>
 
 //#define LOGICAL_CAMERA_DEBUG
 
@@ -60,10 +61,12 @@ namespace gazebo
 			string name;
 			string type;
 			double publishingRate;
+			bool alreadyPublished = false;
+			chrono::time_point<chrono::high_resolution_clock> lastPublished;
 		};
 		map<string, Model> modelMap;
-		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel);
-		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel);
+		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel);
+		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel);
 
 	};
 }
