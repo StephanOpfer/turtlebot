@@ -9,6 +9,10 @@
 #include <gazebo/sensors/LogicalCameraSensor.hh>
 #include <SystemConfig.h>
 
+//#define LOGICAL_CAMERA_DEBUG
+
+using namespace std;
+
 namespace gazebo
 {
 	class GazeboRosDistance : public SensorPlugin
@@ -43,7 +47,7 @@ namespace gazebo
 		void loadModelsFromConfig();
 		double quadToTheata(double x, double y, double z, double w);
 		bool angleRangeCheck(double angle, vector<pair<double, double>> detectAngles);
-		shared_ptr<vector<std::string>> modelNames;
+		shared_ptr<vector<string>> modelNames;
 
 		struct Model
 		{
@@ -53,9 +57,9 @@ namespace gazebo
 			 * pair.secong = endAngle
 			 */
 			vector<pair<double, double>> detectAngles;
-			std::string name;
-			std::string type;
-			std::string section; // TODO: section == name?
+			string name;
+			string type;
+			double publishingRate;
 		};
 		map<string, Model> modelMap;
 		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model configModel);

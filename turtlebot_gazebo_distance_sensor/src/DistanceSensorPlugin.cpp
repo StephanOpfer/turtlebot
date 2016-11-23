@@ -53,7 +53,8 @@ namespace gazebo
 		if (!ros::isInitialized())
 		{
 			ROS_FATAL_STREAM(
-					"A ROS node for Gazebo has not been initialized, unable to load plugin. " << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
+					"A ROS node for Gazebo has not been initialized, unable to load plugin. "
+					<< "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
 			return;
 		}
 
@@ -74,23 +75,24 @@ namespace gazebo
 		this->parentSensor->SetActive(true);
 		this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 
-		ROS_INFO("GazeboRosDistance Plugin loaded!");
+		ROS_INFO("GazeboRosDistance PlugIn loaded!");
 	}
 
 	void GazeboRosDistance::OnUpdate()
 	{
-		bool debug = false;
 		vector<msgs::LogicalCameraImage_Model> victimModels;
 
 		// Get all the models in range.
 		auto models = this->parentSensor->Image();
 		for (int i = 0; i < models.model_size(); i++)
 		{
-			for (auto& kv : modelMap) {
-			    auto m = models.model(i);
-			    auto cm = kv.second;
-			    if (isDetected(m, cm)) {
-			    	publishModel(m, cm);
+			for (auto& kv : modelMap)
+			{
+				auto model = models.model(i);
+				auto configModel = kv.second;
+				if (isDetected(model, configModel))
+				{
+					publishModel(model, configModel);
 				}
 			}
 		}
@@ -107,30 +109,36 @@ namespace gazebo
 		auto z = model.pose().position().z();
 		auto dist = sqrt(x * x + y * y + z * z);
 
-		// Debugging output
-//		std::cout << this->parentSensor->Far() << " " << this->parentSensor->Near() << " " << this->parentSensor->HorizontalFOV() << std::endl;
-//		printf("Model No. %d with Name %s at (%.1f, %.1f, %.1f) dist: %.2f\n", i, n.c_str(), x, y, z, dist);
-
 		// Model name did not match desired string
 		if (modelName.find(gazeboElementName) == std::string::npos)
+		{
 			return false;
+		}
 
-		// TODO: modelMap.at == Model?
 		// Model is too far aways
 		if (dist > configModel.range)
+		{
 			return false;
+		}
 
-		// TODO: Explain?
+		/*
+		 * angle to model calculated with egocentric coordinates
+		 */
 		double angle = atan2(y, x) * 180.0 / M_PI;
 
-		// Normalize angles?
+		/*
+		 * change angle of backwards facing sensor get sensor range from 90° to 180°
+		 * and from -90° to -180°
+		 */
 		if (this->sensorYaw != 0)
+		{
 			angle = (angle < 0) ? angle + 180.0 : angle - 180;
-
-//		cout << "GazeboRosDistance: Victim angle: " << angle << endl;
+		}
 
 		if (!angleRangeCheck(angle, configModel.detectAngles))
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -146,9 +154,10 @@ namespace gazebo
 		msg.pose.x = x;
 		msg.pose.y = y;
 
-		if (true)
-			printf("Victim found with Name %s at (%f, %f, %f)\n", model.name().c_str(), x, y, z);
-
+//#ifdef LOGICAL_CAMERA_DEBUG
+		cout << "Model found with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
+				<< endl;
+//#endif
 		auto q = model.pose().orientation();
 		msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
 		msg.timeStamp = ros::Time::now();
@@ -169,44 +178,52 @@ namespace gazebo
 		for (auto section : *(this->modelNames))
 		{
 			const char* sec = section.c_str();
+#ifdef  LOGICAL_CAMERA_DEBUG
 			cout << "GazeboRosDistance: section: " << section << endl;
-
+#endif
 			Model m;
-			// TODO: NULL needed?
 			m.range = config->get<double>(lc, sec, "range", NULL);
 
 			auto angleSections = config->getSections(lc, sec, da, NULL);
 			for (auto angleSection : *angleSections)
 			{
-				cout << "GazeboRosDistance: angleSection: " << angleSection << endl;
 				auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
 				auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
-
+#ifdef  LOGICAL_CAMERA_DEBUG
+				cout << "GazeboRosDistance: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
+#endif
 				m.detectAngles.push_back(pair<double, double>(start, end));
 			}
 
-			m.type = config->get<std::string>("LogicalCamera", sec, "type", NULL);
-			m.section = section;
+			m.type = config->get<string>(lc, sec, "type", NULL);
 			m.name = section;
-
-			for (auto ang : m.detectAngles)
-				printf("%d, %d\n", ang.first, ang.second);
-
-			this->modelMap.emplace(m.section, m);
+			m.publishingRate = config->get<double>(lc, sec, "publishingRateHz", NULL);
+			this->modelMap.emplace(m.name, m);
 		}
 	}
 
 	bool GazeboRosDistance::angleRangeCheck(double angle, vector<pair<double, double>> detectAngles)
 	{
+		// all angles have to be checked so no return after first pair is checked
 		for (auto pair : detectAngles)
 		{
-			printf("checking pair %f - %f\n", pair.first, pair.second);
+#ifdef  LOGICAL_CAMERA_DEBUG
+			cout << "GazeboRosDistance: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
+#endif
 			if (pair.first <= pair.second)
 			{
-				return pair.first <= angle && angle <= pair.second;
-			} else {
+				if (pair.first <= angle && angle <= pair.second)
+				{
+					return true;
+				}
+			}
+			else
+			{
 				// this is only the case when the angle range crosses over 180°
-				return pair.first <= angle || angle <= pair.second;
+				if (pair.first <= angle || angle <= pair.second)
+				{
+					return true;
+				}
 			}
 		}
 		return false;
