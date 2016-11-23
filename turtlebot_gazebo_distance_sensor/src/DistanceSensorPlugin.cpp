@@ -1,4 +1,5 @@
 #include <gazebo/common/Plugin.hh>
+
 #include <ros/ros.h>
 #include "turtlebot_gazebo_distance_sensor/DistanceSensorPlugin.h"
 
@@ -7,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <chrono>
+#include <numeric>
 
 #include <gazebo/sensors/Sensor.hh>
 #include <gazebo/sensors/CameraSensor.hh>
@@ -164,6 +167,16 @@ namespace gazebo
 		msg.type = configModel.type;
 
 		// TODO: Handle Publishing Rate
+
+		static std::chrono::time_point<std::chrono::high_resolution_clock> t;
+		static std::chrono::time_point<std::chrono::high_resolution_clock> lt;
+
+		lt = t;
+		t = std::chrono::high_resolution_clock::now();
+
+		std::chrono::duration<double, std::milli> diff = t - lt;
+		cout << "OnUpdate Diff: " << diff.count() << " ms" << endl;
+
 		modelPub.publish(msg);
 	}
 
