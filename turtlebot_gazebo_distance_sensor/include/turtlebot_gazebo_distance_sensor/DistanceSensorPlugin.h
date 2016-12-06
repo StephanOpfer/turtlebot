@@ -19,38 +19,31 @@ namespace gazebo
 	class GazeboRosDistance : public SensorPlugin
 	{
 	public:
-		/// \brief Constructor
+		/**
+		 * Constructor
+		 */
 		GazeboRosDistance();
 
-		/// \brief Destructor.
+		/**
+		 * Destructor.
+		 */
 		virtual ~GazeboRosDistance();
 
-		/// \brief Load the sensor plugin.
-		/// \param[in] _sensor Pointer to the sensor that loaded this plugin.
-		/// \param[in] _sdf SDF element that describes the plugin.
+		/**
+		 * Load the sensor plugin.
+		 * @param _sensor Pointer to the sensor that loaded this plugin.
+		 * @param _sdf SDF element that describes the plugin.
+		 */
+
 		virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
 
-		/// \brief Callback that receives the contact sensor's update signal.
 	private:
+		/**
+		 * Callback that receives the contact sensor's update signal.
+		 */
 		virtual void OnUpdate();
 
-		/// \brief Pointer to the logical camera sensor
-	private:
-		sensors::LogicalCameraSensorPtr parentSensor;
-
-		/// \brief Connection that maintains a link between the contact sensor's
-		/// updated signal and the OnUpdate callback.
-		event::ConnectionPtr updateConnection;
-		ros::NodeHandle nh;
-		ros::Publisher modelPub;
-		double sensorYaw;
-		supplementary::SystemConfig* sc;
-		void loadModelsFromConfig();
-		double quadToTheata(double x, double y, double z, double w);
-		bool angleRangeCheck(double angle, vector<pair<double, double>> detectAngles);
-		shared_ptr<vector<string>> modelNames;
-
-		struct Model
+		struct ConfigModel
 		{
 			double range;
 			/**
@@ -64,9 +57,51 @@ namespace gazebo
 			bool alreadyPublished = false;
 			chrono::time_point<chrono::high_resolution_clock> lastPublished;
 		};
-		map<string, Model> modelMap;
-		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel);
-		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel);
+
+		/**
+		 * Connection that maintains a link between the contact sensor's
+		 * updated signal and the OnUpdate callback.
+		 */
+
+		event::ConnectionPtr updateConnection;
+		// ros stuff
+		ros::NodeHandle nh;
+		ros::Publisher modelPub;
+		// Sensor orientation
+		double sensorYaw;
+		supplementary::SystemConfig* sc;
+		// Sensor ptr
+		sensors::LogicalCameraSensorPtr parentSensor;
+		// Name of Robot
+		string robotName;
+		// Section in config file
+		shared_ptr<vector<string>> modelSectionNames;
+		// Maps model Name to config model
+		map<string, ConfigModel> modelMap;
+
+		/**
+		 * load model parameters from config file
+		 */
+		void loadModelsFromConfig();
+		/**
+		 * @param model model detected by sensor
+		 * @param configModel config lodaded by systemconf
+		 */
+		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel);
+		/**
+		 * @param angle model detected by sensor
+		 * @param detectAngles config lodaded by systemconf
+		 */
+		bool isInAngleRange(double angle, vector<pair<double, double>> detectAngles);
+		/**
+		 * calculates angle of object from quaternium
+		 */
+		double quadToTheata(double x, double y, double z, double w);
+		/**
+		 * @param model model detected by sensor
+		 * @param configModel config lodaded by systemconf
+		 */
+		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel);
 
 	};
 }

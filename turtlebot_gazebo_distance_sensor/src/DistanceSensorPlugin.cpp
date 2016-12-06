@@ -16,8 +16,6 @@
 
 #include <ttb_msgs/LogicalCamera.h>
 
-using std::vector;
-
 namespace gazebo
 {
 	// Register this plugin with the simulator
@@ -27,19 +25,12 @@ namespace gazebo
 	// Constructor
 	GazeboRosDistance::GazeboRosDistance()
 	{
-		auto robot = getenv("ROBOT");
-		const char *topicName = "logical_camera";
-		char topic[100];
-
-		snprintf(topic, 100, "/%s/%s", robot, topicName);
-
-		modelPub = nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
 		this->sensorYaw = 0;
 		this->sc = supplementary::SystemConfig::getInstance();
 
 		ROS_INFO("Loading models form SystemConfig...");
 		loadModelsFromConfig();
-		this->modelNames = nullptr;
+		this->modelSectionNames = nullptr;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +53,6 @@ namespace gazebo
 
 		// Get the parent sensor.
 		this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
-
 		// Make sure the parent sensor is valid.
 		if (!this->parentSensor)
 		{
@@ -70,11 +60,35 @@ namespace gazebo
 			return;
 		}
 
+		// Extract robot name
+		this->robotName = this->parentSensor->ParentName();
+		size_t pos = robotName.find(':');
+		if (pos == string::npos)
+		{
+			gzerr << "GazeboRosDistance robot/model name(" << robotName << ") is invalid!";
+			return;
+		}
+		this->robotName = this->robotName.substr(0, pos);
+
+#ifdef LOGICAL_CAMERA_DEBUG
+		cout << "GazeboRosDistance: robot: " << this->robotName << endl;
+#endif
+		// Define topic
+		const char *topicName = "logical_camera";
+		char topic[100];
+
+		snprintf(topic, 100, "/%s/%s", this->robotName.c_str(), topicName);
+
+		// Publisher
+		this->modelPub = this->nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
+
 		// Connect to the sensor update event.
 		this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&GazeboRosDistance::OnUpdate, this));
 
 		// Make sure the parent sensor is active.
 		this->parentSensor->SetActive(true);
+
+		// Get the sensor yaw, which is used to distinguish front and back sensor
 		this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 
 		ROS_INFO("GazeboRosDistance PlugIn loaded!");
@@ -88,7 +102,7 @@ namespace gazebo
 		auto models = this->parentSensor->Image();
 		for (int i = 0; i < models.model_size(); i++)
 		{
-			for (auto& kv : modelMap)
+			for (auto& kv : this->modelMap)
 			{
 				auto model = models.model(i);
 				if (isDetected(model, kv.second))
@@ -100,7 +114,7 @@ namespace gazebo
 
 	}
 
-	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel)
+	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel)
 	{
 		auto modelName = model.name();
 		auto gazeboElementName = configModel.type;
@@ -136,7 +150,7 @@ namespace gazebo
 			angle = (angle < 0) ? angle + 180.0 : angle - 180;
 		}
 
-		if (!angleRangeCheck(angle, configModel.detectAngles))
+		if (!isInAngleRange(angle, configModel.detectAngles))
 		{
 			return false;
 		}
@@ -144,7 +158,7 @@ namespace gazebo
 		return true;
 	}
 
-	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::Model& configModel)
+	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel)
 	{
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -156,8 +170,8 @@ namespace gazebo
 		msg.pose.y = y;
 
 #ifdef LOGICAL_CAMERA_DEBUG
-		cout << "Model found with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
-				<< endl;
+		cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
+		<< endl;
 #endif
 		auto q = model.pose().orientation();
 		msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
@@ -166,7 +180,7 @@ namespace gazebo
 
 		chrono::time_point<chrono::high_resolution_clock> t = chrono::high_resolution_clock::now();
 
-		if(!configModel.alreadyPublished)
+		if (!configModel.alreadyPublished)
 		{
 			modelPub.publish(msg);
 			configModel.lastPublished = t;
@@ -174,11 +188,12 @@ namespace gazebo
 		}
 		else
 		{
+			// Publish message if needed/specified hz from config exceeded
 			auto diff = chrono::duration_cast<chrono::milliseconds>(t - configModel.lastPublished);
 #ifdef  LOGICAL_CAMERA_DEBUG
 			cout << "GazeboRosDistance: diff: " << diff.count()<< endl;
 #endif
-			if(diff.count() >= (1000.0 / configModel.publishingRate))
+			if (diff.count() >= (1000.0 / configModel.publishingRate))
 			{
 				modelPub.publish(msg);
 				configModel.lastPublished = t;
@@ -192,17 +207,19 @@ namespace gazebo
 		const char* da = "DetectAngles";
 
 		auto config = (*this->sc)[lc];
-		this->modelNames = config->getSections(lc, NULL);
+		this->modelSectionNames = config->getSections(lc, NULL);
 
-		for (auto section : *(this->modelNames))
+		// Iterate over all model sections in config file
+		for (auto section : *(this->modelSectionNames))
 		{
 			const char* sec = section.c_str();
 #ifdef  LOGICAL_CAMERA_DEBUG
 			cout << "GazeboRosDistance: section: " << section << endl;
 #endif
-			Model m;
+			ConfigModel m;
 			m.range = config->get<double>(lc, sec, "range", NULL);
 
+			// Add all angles specified in model to detectAngles vector
 			auto angleSections = config->getSections(lc, sec, da, NULL);
 			for (auto angleSection : *angleSections)
 			{
@@ -221,7 +238,7 @@ namespace gazebo
 		}
 	}
 
-	bool GazeboRosDistance::angleRangeCheck(double angle, vector<pair<double, double>> detectAngles)
+	bool GazeboRosDistance::isInAngleRange(double angle, vector<pair<double, double>> detectAngles)
 	{
 		// all angles have to be checked so no return after first pair is checked
 		for (auto pair : detectAngles)
@@ -255,18 +272,7 @@ namespace gazebo
 		double ysqr = y * y;
 		double t0 = -2.0f * (ysqr + z * z) + 1.0f;
 		double t1 = +2.0f * (x * y - w * z);
-//		double t2 = -2.0f * (x * z + w * y);
-//		double t3 = +2.0f * (y * z - w * x);
-//		double t4 = -2.0f * (x * x + ysqr) + 1.0f;
-
-//		t2 = t2 > 1.0f ? 1.0f : t2;
-//		t2 = t2 < -1.0f ? -1.0f : t2;
-
-		//pitch = std::asin(t2);
-		//roll = std::atan2(t3, t4);
-		double yaw = atan2(t1, t0);
-
-		return yaw;
+		return atan2(t1, t0); // yaw
 	}
 
 }

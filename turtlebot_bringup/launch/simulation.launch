@@ -28,10 +28,10 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 1 -y 1 -z 3"/>
-      <arg name="ROBOT" value="leonardo"/>
+      <arg name="robot" value="leonardo"/>
     </include>
   </group>
-<!--  
+
   <group ns="donatello">
     <param name="tf_prefix" value="donatello_tf"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
@@ -39,7 +39,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 2 -y 1 -z 0"/>
-      <arg name="ROBOT" value="donatello"/>
+      <arg name="robot" value="donatello"/>
     </include>
   </group>
 
@@ -50,7 +50,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 3 -y 1 -z 0"/>
-      <arg name="ROBOT" value="raphael"/>
+      <arg name="robot" value="raphael"/>
     </include>
   </group>
 
@@ -61,8 +61,8 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 4 -y 1 -z 0"/>
-      <arg name="ROBOT" value="michelangelo"/>
+      <arg name="robot" value="michelangelo"/>
     </include>
   </group>
--->
+
 </launch>

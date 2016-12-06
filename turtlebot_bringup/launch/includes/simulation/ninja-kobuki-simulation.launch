@@ -3,14 +3,14 @@
   <arg name="stacks" default="ninja-hexagons"/>
   <arg name="3d_sensor" default="ninja-kinect"/>
   <arg name="init_pose" default="-x 1 -y 1 -z 0"/>
-  <arg name="ROBOT" default="leonardo"/>
+  <arg name="robot" default="leonardo"/>
 
   <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor)_sim.urdf.xacro'" />
   <param name="robot_description" command="$(arg urdf_file)" />
 
   <!-- Gazebo model spawner -->
   <node name="spawn_turtlebot_model" pkg="gazebo_ros" type="spawn_model"
-        args="$(arg init_pose) -unpause -urdf -param robot_description -model $(arg ROBOT)"/>
+        args="$(arg init_pose) -unpause -urdf -param robot_description -model $(arg robot)"/>
 
   <!-- Velocity muxer -->
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
