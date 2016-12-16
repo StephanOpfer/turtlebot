@@ -46,8 +46,7 @@ namespace gazebo
 		if (!ros::isInitialized())
 		{
 			ROS_FATAL_STREAM(
-					"A ROS node for Gazebo has not been initialized, unable to load plugin. "
-					<< "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
+					"A ROS node for Gazebo has not been initialized, unable to load plugin. " << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
 			return;
 		}
 
@@ -105,6 +104,10 @@ namespace gazebo
 			for (auto& kv : this->modelMap)
 			{
 				auto model = models.model(i);
+				if(!isSensorResponsible(model))
+				{
+					continue;
+				}
 				if (isDetected(model, kv.second))
 				{
 					publishModel(model, kv.second);
@@ -114,7 +117,10 @@ namespace gazebo
 
 	}
 
-	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel)
+
+
+	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model,
+										GazeboRosDistance::ConfigModel& configModel)
 	{
 		auto modelName = model.name();
 		auto gazeboElementName = configModel.type;
@@ -154,11 +160,14 @@ namespace gazebo
 		{
 			return false;
 		}
-
+#ifdef LOGICAL_CAMERA_DEBUG
+		cout << "GazeboRosDistance: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model at: x=" << x << ", y= " << y << ", z= " << z << endl;
+#endif
 		return true;
 	}
 
-	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel)
+	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model,
+											GazeboRosDistance::ConfigModel& configModel)
 	{
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -166,8 +175,18 @@ namespace gazebo
 
 		ttb_msgs::LogicalCamera msg;
 		msg.modelName = model.name();
-		msg.pose.x = x;
-		msg.pose.y = y;
+
+		//change coordinate system for backwards sensor
+		if (this->sensorYaw != 0)
+		{
+			msg.pose.x = -x;
+			msg.pose.y = -y;
+		}
+		else
+		{
+			msg.pose.x = x;
+			msg.pose.y = y;
+		}
 
 #ifdef LOGICAL_CAMERA_DEBUG
 		cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
@@ -273,6 +292,11 @@ namespace gazebo
 		double t0 = -2.0f * (ysqr + z * z) + 1.0f;
 		double t1 = +2.0f * (x * y - w * z);
 		return atan2(t1, t0); // yaw
+	}
+
+	bool GazeboRosDistance::isSensorResponsible(msgs::LogicalCameraImage_Model model)
+	{
+		return model.pose().position().x() > 0;
 	}
 
 }
