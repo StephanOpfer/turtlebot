@@ -1,0 +1,7 @@
+<launch>
+    <!-- load own world, without happyness -->
+    <include file="$(find turtlebot_bringup)/launch/simulation.launch">
+      <arg name="world_file" value="$(find turtlebot_bringup)/world/distributed_systems_disaster.world"/>
+    </include>
+
+</launch>

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+    <model name='fire'>
+    	<static>true</static>
+		<link name='link'>
+			<inertial>
+		  		<mass>1</mass>
+			  	<inertia>
+					<ixx>0.166667</ixx>
+					<ixy>0</ixy>
+					<ixz>0</ixz>
+					<iyy>0.166667</iyy>
+					<iyz>0</iyz>
+					<izz>0.166667</izz>
+		  		</inertia>
+			</inertial>
+			<visual name='visual'>
+				  <geometry>
+						<box>
+						  	<size>2.0 2.0 1</size>
+						</box>
+				  </geometry>
+				  <material>
+						<script>
+							  <name>Gazebo/Red</name>
+							  <uri>file://media/materials/scripts/gazebo.material</uri>
+						</script>
+				  </material>
+			</visual>
+			<self_collide>0</self_collide>
+			<kinematic>0</kinematic>
+			<gravity>1</gravity>
+		</link>
+	</model>
+</sdf>

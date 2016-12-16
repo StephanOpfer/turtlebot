@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <!-- Initial Camera Position -->
+    <gui>
+      <camera name="camera_default">
+        <pose>
+          -4.0 2.0 8.0 0.0 0.7 0.0
+        </pose>
+      </camera>
+    </gui>
+    <!--
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    -->
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- Own physics settings to speed up simulation -->
+    <physics type='ode'>
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>100</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+    <include>
+      <uri>model://distributed_systems_department</uri>
+    </include>
+    <model name='victim_stopfer'>
+        <pose frame=''>2.5 8.5 0.5 0 -0 0</pose>
+        <include>
+           <uri>model://victim</uri>
+        </include>
+    </model>
+    <model name='victim_taker'>
+        <pose frame=''>11.50 7.3 0.5 0 -0 0</pose>
+        <include>
+           <uri>model://victim</uri>
+        </include>
+    </model>
+    <model name='victim_postdoc'>
+        <pose frame=''>2.0 2.3 0.5 0 -0 0</pose>
+        <include>
+           <uri>model://victim</uri>
+        </include>
+    </model>
+    <model name='fire_floor'>
+        <pose frame=''>21.0 1.7 0.5 0 -0 0</pose>
+        <include>
+           <uri>model://fire</uri>
+        </include>
+    </model>
+    <model name='landmark_door_floor'>
+        <pose frame=''>7.8 1.5 0.5 0 -0 0</pose>
+        <include>
+           <uri>model://landmark</uri>
+        </include>
+    </model>
+  </world>
+</sdf>

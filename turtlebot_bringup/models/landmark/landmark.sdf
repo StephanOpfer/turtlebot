@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+    <model name='landmark'>
+		<static>true</static>
+		<link name='link'>
+			<visual name='visual'>
+				  <geometry>
+						<box>
+						  	<size>0.3 0.3 0.3</size>
+						</box>
+				  </geometry>
+				  <material>
+						<script>
+							  <name>Gazebo/Green</name>
+							  <uri>file://media/materials/scripts/gazebo.material</uri>
+						</script>
+				  </material>
+			</visual>
+			<self_collide>0</self_collide>
+			<kinematic>0</kinematic>
+			<gravity>1</gravity>
+		</link>
+	</model>
+</sdf>
