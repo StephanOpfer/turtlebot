@@ -1,0 +1,69 @@
+<launch>
+  <group ns="leonardo">
+    <param name="tf_prefix" value="leonardo_tf" />
+    <!-- Localization -->
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
+      <arg name="initial_pose_x" value="1"/>
+      <arg name="initial_pose_y" value="1"/>
+      <arg name="initial_pose_a" value="0"/>
+      <arg name="scan_topic" value="scan_hokuyo"/>
+      <arg name="odom_frame_id" value="leonardo_tf/odom"/>
+      <arg name="base_frame_id" value="leonardo_tf/base_link"/>
+    </include>
+    <!-- Move base -->
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
+      <arg name="laser_topic" value="scan_hokuyo" />
+    </include>
+    <param name="move_base/global_costmap/global_frame" value="/map" />    
+  </group>
+
+  <group ns="raphael">
+    <param name="tf_prefix" value="raphael_tf" />
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
+      <arg name="initial_pose_x" value="2.7"/>
+      <arg name="initial_pose_y" value="7"/>
+      <arg name="initial_pose_a" value="0"/>
+      <arg name="scan_topic" value="scan_hokuyo"/>
+      <arg name="odom_frame_id" value="raphael_tf/odom"/>
+      <arg name="base_frame_id" value="raphael_tf/base_link"/>
+    </include>
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
+      <arg name="laser_topic" value="scan_hokuyo" />
+    </include>
+    <param name="move_base/global_costmap/global_frame" value="/map" />    
+  </group>
+  
+ <!-- 
+  <group ns="donatello">
+    <param name="tf_prefix" value="donatello_tf" />
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
+      <arg name="initial_pose_x" value="1"/>
+      <arg name="initial_pose_y" value="1"/>
+      <arg name="initial_pose_a" value="0"/>
+      <arg name="scan_topic" value="scan_hokuyo"/>
+      <arg name="odom_frame_id" value="donatello_tf/odom"/>
+      <arg name="base_frame_id" value="donatello_tf/base_link"/>
+    </include>
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
+      <arg name="laser_topic" value="scan_hokuyo" />
+    </include>
+    <param name="move_base/global_costmap/global_frame" value="/map" />    
+  </group>
+  
+  <group ns="michelangelo">
+    <param name="tf_prefix" value="michelangelo_tf" />
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
+      <arg name="initial_pose_x" value="1"/>
+      <arg name="initial_pose_y" value="1"/>
+      <arg name="initial_pose_a" value="0"/>
+      <arg name="scan_topic" value="scan_hokuyo"/>
+      <arg name="odom_frame_id" value="michelangelo_tf/odom"/>
+      <arg name="base_frame_id" value="michelangelo_tf/base_link"/>
+    </include>
+    <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
+      <arg name="laser_topic" value="scan_hokuyo" />
+    </include>
+    <param name="move_base/global_costmap/global_frame" value="/map" />    
+  </group>
+-->
+</launch>
