@@ -26,7 +26,7 @@
 #include <gazebo/physics/Model.hh>
 
 #include <gazebo/sensors/SensorFactory.hh>
-#include <gazebo/sensors/LogicalCameraSensor.hh>
+#include <turtlebot_gazebo_distance_sensor/LogicalCameraSensor.hh>
 
 #include <turtlebot_gazebo_distance_sensor/LogicalCameraSensorPrivate.hh>
 
@@ -192,4 +192,9 @@ msgs::LogicalCameraImage LogicalCameraSensor::Image() const
 {
   std::lock_guard<std::mutex> lock(this->dataPtr->mutex);
   return this->dataPtr->msg;
+}
+
+physics::WorldPtr LogicalCameraSensor::World()
+{
+	return world;
 }

@@ -23,6 +23,7 @@
 
 #include "gazebo/sensors/Sensor.hh"
 #include "gazebo/util/system.hh"
+#include "gazebo/physics/PhysicsTypes.hh"
 
 namespace gazebo
 {
@@ -85,6 +86,9 @@ namespace gazebo
       /// msgs::LogicalCameraImage, which contains a list of detected models.
       /// \return List of detected models.
       public: msgs::LogicalCameraImage Image() const;
+
+      // \brief Returns the world for object measurement
+      public: physics::WorldPtr World();
 
       // Documentation inherited
       protected: virtual bool UpdateImpl(const bool _force);

@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <numeric>
 
-#include <gazebo/sensors/Sensor.hh>
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
@@ -52,6 +51,7 @@ namespace gazebo
 
 		// Get the parent sensor.
 		this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
+		world = parentSensor->World();
 		// Make sure the parent sensor is valid.
 		if (!this->parentSensor)
 		{
@@ -111,6 +111,25 @@ namespace gazebo
 				if (isDetected(model, kv.second))
 				{
 					publishModel(model, kv.second);
+					auto& mn = model.name();
+
+					physics::BasePtr gmodel = world->GetByName(mn);
+					physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
+
+					if (gmodel != NULL) {
+						auto xl = ggmodel->GetBoundingBox().GetXLength();
+						auto yl = ggmodel->GetBoundingBox().GetYLength();
+						auto zl = ggmodel->GetBoundingBox().GetZLength();
+
+						auto cx = ggmodel->GetBoundingBox().GetCenter().x;
+						auto cy = ggmodel->GetBoundingBox().GetCenter().y;
+						auto cz = ggmodel->GetBoundingBox().GetCenter().z;
+
+						cout << "Model Size: " << xl << " " << yl << " " << zl << endl;
+						cout << "Model Center: " << cx << " " << cy << " " << cz << endl;
+					}
+
+
 				}
 			}
 		}

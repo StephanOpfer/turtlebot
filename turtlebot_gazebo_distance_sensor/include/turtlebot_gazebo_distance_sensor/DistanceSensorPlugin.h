@@ -6,9 +6,12 @@
 // library for processing camera data for gazebo / ros conversions
 
 #include <gazebo/gazebo.hh>
-#include <gazebo/sensors/LogicalCameraSensor.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/sensors/Sensor.hh>
 #include <SystemConfig.h>
 #include <chrono>
+
+#include <turtlebot_gazebo_distance_sensor/LogicalCameraSensor.hh>
 
 //#define LOGICAL_CAMERA_DEBUG
 
@@ -78,6 +81,7 @@ namespace gazebo
 		shared_ptr<vector<string>> modelSectionNames;
 		// Maps model Name to config model
 		map<string, ConfigModel> modelMap;
+		physics::WorldPtr world;
 
 		/**
 		 * load model parameters from config file
