@@ -30,7 +30,7 @@ include_directories( ${catkin_INCLUDE_DIRS}
                      ${GAZEBO_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} src/DistanceSensorPlugin.cpp)
+add_library(${PROJECT_NAME} src/DistanceSensorPlugin.cpp src/LogicalCameraSensor.cc)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin )
