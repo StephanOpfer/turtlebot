@@ -110,27 +110,28 @@ namespace gazebo
 				}
 				if (isDetected(model, kv.second))
 				{
-					publishModel(model, kv.second);
 					auto& mn = model.name();
 
 					physics::BasePtr gmodel = world->GetByName(mn);
 					physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
 
-					if (gmodel != NULL) {
-						auto xl = ggmodel->GetBoundingBox().GetXLength();
-						auto yl = ggmodel->GetBoundingBox().GetYLength();
-						auto zl = ggmodel->GetBoundingBox().GetZLength();
-
-						auto cx = ggmodel->GetBoundingBox().GetCenter().x;
-						auto cy = ggmodel->GetBoundingBox().GetCenter().y;
-						auto cz = ggmodel->GetBoundingBox().GetCenter().z;
-
-						cout << "Model Size: " << xl << " " << yl << " " << zl << endl;
-						cout << "Model Center: " << cx << " " << cy << " " << cz << endl;
+					if (gmodel == NULL) {
+						ROS_FATAL_STREAM("Could not retrieve bounding box of model " << mn << "\n");
+						return; // Can't locate model to determine bounding box
 					}
 
+					ModelProperties mp;
+					mp.xlength = ggmodel->GetBoundingBox().GetXLength();
+					mp.ylength = ggmodel->GetBoundingBox().GetYLength();
+					mp.zlength = ggmodel->GetBoundingBox().GetZLength();
 
-				}
+					publishModel(model, kv.second, mp);
+#ifdef LOGICAL_CAMERA_DEBUG
+						cout << "Model Size: " << mp.xlength << " " << mp.ylength << " " << mp.zlength << endl;
+#endif
+
+					}
+
 			}
 		}
 
@@ -186,7 +187,8 @@ namespace gazebo
 	}
 
 	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model,
-											GazeboRosDistance::ConfigModel& configModel)
+											GazeboRosDistance::ConfigModel& configModel,
+											GazeboRosDistance::ModelProperties& props)
 	{
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -206,6 +208,10 @@ namespace gazebo
 			msg.pose.x = x;
 			msg.pose.y = y;
 		}
+
+		msg.size.xlength = props.xlength;
+		msg.size.ylength = props.ylength;
+		msg.size.zlength = props.zlength;
 
 #ifdef LOGICAL_CAMERA_DEBUG
 		cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"

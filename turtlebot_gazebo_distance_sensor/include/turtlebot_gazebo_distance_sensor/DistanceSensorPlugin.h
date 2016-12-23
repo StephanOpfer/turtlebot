@@ -61,6 +61,14 @@ namespace gazebo
 			chrono::time_point<chrono::high_resolution_clock> lastPublished;
 		};
 
+		struct ModelProperties
+		{
+			// These are determined using gazebos bounding box
+			double xlength;
+			double ylength;
+			double zlength;
+		};
+
 		/**
 		 * Connection that maintains a link between the contact sensor's
 		 * updated signal and the OnUpdate callback.
@@ -90,8 +98,11 @@ namespace gazebo
 		/**
 		 * @param model model detected by sensor
 		 * @param configModel config lodaded by systemconf
+		 * @param props Additional properties to be published
 		 */
-		void publishModel(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel);
+		void publishModel(msgs::LogicalCameraImage_Model model,
+				GazeboRosDistance::ConfigModel& configModel,
+				GazeboRosDistance::ModelProperties& props);
 		/**
 		 * @param angle model detected by sensor
 		 * @param detectAngles config lodaded by systemconf
