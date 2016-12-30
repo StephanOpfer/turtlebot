@@ -222,25 +222,24 @@ namespace gazebo
 		msg.timeStamp = ros::Time::now();
 		msg.type = configModel.type;
 
-		chrono::time_point<chrono::high_resolution_clock> t = chrono::high_resolution_clock::now();
+		chrono::time_point<chrono::high_resolution_clock> now = chrono::high_resolution_clock::now();
 
-		if (!configModel.alreadyPublished)
+		if (lastPublishedMap.count(msg.modelName) <= 0)
 		{
 			modelPub.publish(msg);
-			configModel.lastPublished = t;
-			configModel.alreadyPublished = true;
+			lastPublishedMap[msg.modelName] = now;
 		}
 		else
 		{
 			// Publish message if needed/specified hz from config exceeded
-			auto diff = chrono::duration_cast<chrono::milliseconds>(t - configModel.lastPublished);
+			auto diff = chrono::duration_cast<chrono::milliseconds>(now - lastPublishedMap[msg.modelName]);
 #ifdef  LOGICAL_CAMERA_DEBUG
 			cout << "GazeboRosDistance: diff: " << diff.count()<< endl;
 #endif
 			if (diff.count() >= (1000.0 / configModel.publishingRate))
 			{
 				modelPub.publish(msg);
-				configModel.lastPublished = t;
+				lastPublishedMap[msg.modelName] = now;
 			}
 		}
 	}

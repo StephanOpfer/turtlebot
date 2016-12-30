@@ -53,12 +53,10 @@ namespace gazebo
 			 * pair.first = startAngle
 			 * pair.secong = endAngle
 			 */
+			double publishingRate;
 			vector<pair<double, double>> detectAngles;
 			string name;
 			string type;
-			double publishingRate;
-			bool alreadyPublished = false;
-			chrono::time_point<chrono::high_resolution_clock> lastPublished;
 		};
 
 		struct ModelProperties
@@ -90,6 +88,10 @@ namespace gazebo
 		// Maps model Name to config model
 		map<string, ConfigModel> modelMap;
 		physics::WorldPtr world;
+
+		// time points of messages sent, need to determine when to send
+		// next message according specified configuration frequency
+		map<string, chrono::time_point<chrono::high_resolution_clock>> lastPublishedMap;
 
 		/**
 		 * load model parameters from config file
