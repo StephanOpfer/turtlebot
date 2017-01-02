@@ -3,7 +3,7 @@
     <param name="tf_prefix" value="leonardo_tf" />
     <!-- Localization -->
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
-      <arg name="initial_pose_x" value="1"/>
+      <arg name="initial_pose_x" value="9"/>
       <arg name="initial_pose_y" value="1"/>
       <arg name="initial_pose_a" value="0"/>
       <arg name="scan_topic" value="scan_hokuyo"/>

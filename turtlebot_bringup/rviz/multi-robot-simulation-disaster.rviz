@@ -493,13 +493,19 @@ Visualization Manager:
           Unreliable: false
           Value: false
         - Class: rviz/Marker
-          Enabled: false
+          Enabled: true
           Marker Topic: /leonardo/visualization_marker
           Name: Marker
           Namespaces:
-            {}
+            leonardo/Landmark1: true
+            leonardo/Landmark2: true
+            leonardo/contaminated_area_lab: true
+            leonardo/http://vs.uni-kassel.de/TurtleBot#Leonardo: true
+            leonardo/victim1: true
+            leonardo/victim_postdoc: true
+            leonardo/victim_stopfer: true
           Queue Size: 100
-          Value: false
+          Value: true
       Enabled: true
       Name: Leonardo
     - Class: rviz/Group
@@ -780,7 +786,7 @@ Visualization Manager:
           Color: 255; 170; 0
           Color Transformer: FlatColor
           Decay Time: 0
-          Enabled: true
+          Enabled: false
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 999999
@@ -797,7 +803,7 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: true
+          Value: false
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -1001,6 +1007,10 @@ Visualization Manager:
           Marker Topic: /raphael/visualization_marker
           Name: Marker
           Namespaces:
+            raphael/Landmark1: true
+            raphael/Landmark2: true
+            raphael/http://vs.uni-kassel.de/TurtleBot#Raphael: true
+            raphael/victim1: true
             raphael/victim_postdoc: true
             raphael/victim_stopfer: true
           Queue Size: 100
@@ -1278,7 +1288,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 30.9940071
+      Distance: 23.9368286
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -1292,10 +1302,10 @@ Visualization Manager:
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.26479626
+      Pitch: 0.279797077
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 3.74851727
+      Yaw: 3.37850142
     Saved: ~
 Window Geometry:
   Displays:

@@ -41,7 +41,7 @@
         </include>
     </model>
     <model name='victim_postdoc'>
-        <pose frame=''>2.0 2.3 0.5 0 -0 0</pose>
+        <pose frame=''>7.0 2.3 0.5 0 -0 0</pose>
         <include>
            <uri>model://victim</uri>
         </include>
@@ -51,6 +51,29 @@
         <include>
            <uri>model://fire</uri>
         </include>
+    </model>
+    <model name='contaminated_area_lab'>
+        <pose frame=''>4.0 9.3 0.1 0 -0 0</pose>
+    	<static>true</static>
+		<link name='link'>
+			<visual name='visual'>
+				<geometry>
+					<cylinder>
+					  	<radius>3.50</radius>
+					  	<length>0.50</length>
+					</cylinder>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/Red</name>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+					</script>
+				</material>
+			</visual>
+			<self_collide>0</self_collide>
+			<kinematic>0</kinematic>
+			<gravity>1</gravity>
+		</link>
     </model>
     <model name='landmark_door_floor'>
         <pose frame=''>7.8 1.5 0.5 0 -0 0</pose>
