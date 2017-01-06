@@ -104,7 +104,7 @@ namespace gazebo
 			for (auto& kv : this->modelMap)
 			{
 				auto model = models.model(i);
-				if(!isSensorResponsible(model))
+				if (!isSensorResponsible(model))
 				{
 					continue;
 				}
@@ -115,7 +115,8 @@ namespace gazebo
 					physics::BasePtr gmodel = world->GetByName(mn);
 					physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
 
-					if (gmodel == NULL) {
+					if (gmodel == NULL)
+					{
 						ROS_FATAL_STREAM("Could not retrieve bounding box of model " << mn << "\n");
 						return; // Can't locate model to determine bounding box
 					}
@@ -127,17 +128,15 @@ namespace gazebo
 
 					publishModel(model, kv.second, mp);
 #ifdef LOGICAL_CAMERA_DEBUG
-						cout << "Model Size: " << mp.xlength << " " << mp.ylength << " " << mp.zlength << endl;
+					cout << "Model Size: " << mp.xlength << " " << mp.ylength << " " << mp.zlength << endl;
 #endif
 
-					}
+				}
 
 			}
 		}
 
 	}
-
-
 
 	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model,
 										GazeboRosDistance::ConfigModel& configModel)
@@ -165,16 +164,7 @@ namespace gazebo
 		/*
 		 * angle to model calculated with egocentric coordinates
 		 */
-		double angle = atan2(y, x) * 180.0 / M_PI;
-
-		/*
-		 * change angle of backwards facing sensor get sensor range from 90° to 180°
-		 * and from -90° to -180°
-		 */
-		if (this->sensorYaw != 0)
-		{
-			angle = (angle < 0) ? angle + 180.0 : angle - 180;
-		}
+		double angle = calculateAngle(x, y);
 
 		if (!isInAngleRange(angle, configModel.detectAngles))
 		{
@@ -218,7 +208,7 @@ namespace gazebo
 		<< endl;
 #endif
 		auto q = model.pose().orientation();
-		msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
+		msg.pose.theta = calculateAngle(x, y);
 		msg.timeStamp = ros::Time::now();
 		msg.type = configModel.type;
 
@@ -321,6 +311,21 @@ namespace gazebo
 	bool GazeboRosDistance::isSensorResponsible(msgs::LogicalCameraImage_Model model)
 	{
 		return model.pose().position().x() > 0;
+	}
+
+	double GazeboRosDistance::calculateAngle(double x, double y)
+	{
+		double angle = atan2(y, x) * 180.0 / M_PI;
+
+		/*
+		 * change angle of backwards facing sensor get sensor range from 90° to 180°
+		 * and from -90° to -180°
+		 */
+		if (this->sensorYaw != 0)
+		{
+			angle = (angle < 0) ? angle + 180.0 : angle - 180;
+		}
+		return angle;
 	}
 
 }
