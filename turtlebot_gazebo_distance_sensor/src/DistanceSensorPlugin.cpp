@@ -187,16 +187,21 @@ namespace gazebo
 		ttb_msgs::LogicalCamera msg;
 		msg.modelName = model.name();
 
-		//change coordinate system for backwards sensor
+		auto q = model.pose().orientation();
+		//change coordinate system and rotation for backwards sensor
 		if (this->sensorYaw != 0)
 		{
 			msg.pose.x = -x;
 			msg.pose.y = -y;
+//			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
+			auto angle = quadToTheata(q.x(), q.y(), q.z(), q.w());
+			msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
 		}
 		else
 		{
 			msg.pose.x = x;
 			msg.pose.y = y;
+			msg.pose.theta = -quadToTheata(q.x(), q.y(), q.z(), q.w());
 		}
 
 		msg.size.xlength = props.xlength;
@@ -207,8 +212,7 @@ namespace gazebo
 		cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")"
 		<< endl;
 #endif
-		auto q = model.pose().orientation();
-		msg.pose.theta = calculateAngle(x, y);
+
 		msg.timeStamp = ros::Time::now();
 		msg.type = configModel.type;
 
