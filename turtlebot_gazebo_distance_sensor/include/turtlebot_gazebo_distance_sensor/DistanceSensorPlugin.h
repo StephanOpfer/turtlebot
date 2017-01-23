@@ -19,18 +19,18 @@ using namespace std;
 
 namespace gazebo
 {
-	class GazeboRosDistance : public SensorPlugin
+	class DistanceSensorPlugin : public SensorPlugin
 	{
 	public:
 		/**
 		 * Constructor
 		 */
-		GazeboRosDistance();
+		DistanceSensorPlugin();
 
 		/**
 		 * Destructor.
 		 */
-		virtual ~GazeboRosDistance();
+		virtual ~DistanceSensorPlugin();
 
 		/**
 		 * Load the sensor plugin.
@@ -103,8 +103,8 @@ namespace gazebo
 		 * @param props Additional properties to be published
 		 */
 		void publishModel(msgs::LogicalCameraImage_Model model,
-				GazeboRosDistance::ConfigModel& configModel,
-				GazeboRosDistance::ModelProperties& props);
+				DistanceSensorPlugin::ConfigModel& configModel,
+				DistanceSensorPlugin::ModelProperties& props);
 		/**
 		 * @param angle model detected by sensor
 		 * @param detectAngles config lodaded by systemconf
@@ -118,7 +118,7 @@ namespace gazebo
 		 * @param model model detected by sensor
 		 * @param configModel config lodaded by systemconf
 		 */
-		bool isDetected(msgs::LogicalCameraImage_Model model, GazeboRosDistance::ConfigModel& configModel);
+		bool isDetected(msgs::LogicalCameraImage_Model model, DistanceSensorPlugin::ConfigModel& configModel);
 
 		/**
 		 * checks if sensor is responsible for the found model

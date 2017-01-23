@@ -18,11 +18,11 @@
 namespace gazebo
 {
 	// Register this plugin with the simulator
-	GZ_REGISTER_SENSOR_PLUGIN(GazeboRosDistance)
+	GZ_REGISTER_SENSOR_PLUGIN(DistanceSensorPlugin)
 
 	////////////////////////////////////////////////////////////////////////////////
 	// Constructor
-	GazeboRosDistance::GazeboRosDistance()
+	DistanceSensorPlugin::DistanceSensorPlugin()
 	{
 		this->sensorYaw = 0;
 		this->sc = supplementary::SystemConfig::getInstance();
@@ -34,12 +34,12 @@ namespace gazebo
 
 	////////////////////////////////////////////////////////////////////////////////
 	// Destructor
-	GazeboRosDistance::~GazeboRosDistance()
+	DistanceSensorPlugin::~DistanceSensorPlugin()
 	{
 		ROS_DEBUG_STREAM_NAMED("camera", "Unloaded");
 	}
 
-	void GazeboRosDistance::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
+	void DistanceSensorPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 	{
 		// Make sure the ROS node for Gazebo has already been initialized
 		if (!ros::isInitialized())
@@ -55,7 +55,7 @@ namespace gazebo
 		// Make sure the parent sensor is valid.
 		if (!this->parentSensor)
 		{
-			gzerr << "GazeboRosDistance requires a LogicalCamera Sensor.\n";
+			gzerr << "DistanceSensorPlugin requires a LogicalCamera Sensor.\n";
 			return;
 		}
 
@@ -64,25 +64,25 @@ namespace gazebo
 		size_t pos = robotName.find(':');
 		if (pos == string::npos)
 		{
-			gzerr << "GazeboRosDistance robot/model name(" << robotName << ") is invalid!";
+			gzerr << "DistanceSensorPlugin robot/model name(" << robotName << ") is invalid!";
 			return;
 		}
 		this->robotName = this->robotName.substr(0, pos);
 
 #ifdef LOGICAL_CAMERA_DEBUG
-		cout << "GazeboRosDistance: robot: " << this->robotName << endl;
+		cout << "DistanceSensorPlugin: robot: " << this->robotName << endl;
 #endif
-		// Define topic
-		const char *topicName = "logical_camera";
-		char topic[100];
-
-		snprintf(topic, 100, "/%s/%s", this->robotName.c_str(), topicName);
 
 		// Publisher
+		string topicName = (*sc)["LogicalCamera"]->get<string>("LogicalCamera.topic",NULL);//"logical_camera";
+		string topic = "/" + this->robotName + "/" + topicName;
+#ifdef LOGICAL_CAMERA_DEBUG
+		cout << "DistanceSensor: " << topic << endl;
+#endif
 		this->modelPub = this->nh.advertise<ttb_msgs::LogicalCamera>(topic, 1000);
 
 		// Connect to the sensor update event.
-		this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&GazeboRosDistance::OnUpdate, this));
+		this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&DistanceSensorPlugin::OnUpdate, this));
 
 		// Make sure the parent sensor is active.
 		this->parentSensor->SetActive(true);
@@ -90,10 +90,10 @@ namespace gazebo
 		// Get the sensor yaw, which is used to distinguish front and back sensor
 		this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 
-		ROS_INFO("GazeboRosDistance PlugIn loaded!");
+		ROS_INFO("DistanceSensorPlugin PlugIn loaded!");
 	}
 
-	void GazeboRosDistance::OnUpdate()
+	void DistanceSensorPlugin::OnUpdate()
 	{
 		vector<msgs::LogicalCameraImage_Model> victimModels;
 
@@ -138,8 +138,8 @@ namespace gazebo
 
 	}
 
-	bool GazeboRosDistance::isDetected(msgs::LogicalCameraImage_Model model,
-										GazeboRosDistance::ConfigModel& configModel)
+	bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model,
+										DistanceSensorPlugin::ConfigModel& configModel)
 	{
 		auto modelName = model.name();
 		auto gazeboElementName = configModel.type;
@@ -171,14 +171,14 @@ namespace gazebo
 			return false;
 		}
 #ifdef LOGICAL_CAMERA_DEBUG
-		cout << "GazeboRosDistance: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model at: x=" << x << ", y= " << y << ", z= " << z << endl;
+		cout << "DistanceSensorPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model at: x=" << x << ", y= " << y << ", z= " << z << endl;
 #endif
 		return true;
 	}
 
-	void GazeboRosDistance::publishModel(msgs::LogicalCameraImage_Model model,
-											GazeboRosDistance::ConfigModel& configModel,
-											GazeboRosDistance::ModelProperties& props)
+	void DistanceSensorPlugin::publishModel(msgs::LogicalCameraImage_Model model,
+											DistanceSensorPlugin::ConfigModel& configModel,
+											DistanceSensorPlugin::ModelProperties& props)
 	{
 		auto x = model.pose().position().x();
 		auto y = model.pose().position().y();
@@ -228,7 +228,7 @@ namespace gazebo
 			// Publish message if needed/specified hz from config exceeded
 			auto diff = chrono::duration_cast<chrono::milliseconds>(now - lastPublishedMap[msg.modelName]);
 #ifdef  LOGICAL_CAMERA_DEBUG
-			cout << "GazeboRosDistance: diff: " << diff.count()<< endl;
+			cout << "DistanceSensorPlugin: diff: " << diff.count()<< endl;
 #endif
 			if (diff.count() >= (1000.0 / configModel.publishingRate))
 			{
@@ -238,7 +238,7 @@ namespace gazebo
 		}
 	}
 
-	void GazeboRosDistance::loadModelsFromConfig()
+	void DistanceSensorPlugin::loadModelsFromConfig()
 	{
 		const char* lc = "LogicalCamera";
 		const char* da = "DetectAngles";
@@ -251,7 +251,7 @@ namespace gazebo
 		{
 			const char* sec = section.c_str();
 #ifdef  LOGICAL_CAMERA_DEBUG
-			cout << "GazeboRosDistance: section: " << section << endl;
+			cout << "DistanceSensorPlugin: section: " << section << endl;
 #endif
 			ConfigModel m;
 			m.range = config->get<double>(lc, sec, "range", NULL);
@@ -263,7 +263,7 @@ namespace gazebo
 				auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
 				auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
 #ifdef  LOGICAL_CAMERA_DEBUG
-				cout << "GazeboRosDistance: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
+				cout << "DistanceSensorPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
 #endif
 				m.detectAngles.push_back(pair<double, double>(start, end));
 			}
@@ -275,13 +275,13 @@ namespace gazebo
 		}
 	}
 
-	bool GazeboRosDistance::isInAngleRange(double angle, vector<pair<double, double>> detectAngles)
+	bool DistanceSensorPlugin::isInAngleRange(double angle, vector<pair<double, double>> detectAngles)
 	{
 		// all angles have to be checked so no return after first pair is checked
 		for (auto pair : detectAngles)
 		{
 #ifdef  LOGICAL_CAMERA_DEBUG
-			cout << "GazeboRosDistance: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
+			cout << "DistanceSensorPlugin: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
 #endif
 			if (pair.first <= pair.second)
 			{
@@ -304,7 +304,7 @@ namespace gazebo
 
 	// See:
 	// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-	double GazeboRosDistance::quadToTheata(double x, double y, double z, double w)
+	double DistanceSensorPlugin::quadToTheata(double x, double y, double z, double w)
 	{
 		double ysqr = y * y;
 		double t0 = -2.0f * (ysqr + z * z) + 1.0f;
@@ -312,12 +312,12 @@ namespace gazebo
 		return atan2(t1, t0); // yaw
 	}
 
-	bool GazeboRosDistance::isSensorResponsible(msgs::LogicalCameraImage_Model model)
+	bool DistanceSensorPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
 	{
 		return model.pose().position().x() > 0;
 	}
 
-	double GazeboRosDistance::calculateAngle(double x, double y)
+	double DistanceSensorPlugin::calculateAngle(double x, double y)
 	{
 		double angle = atan2(y, x) * 180.0 / M_PI;
 
