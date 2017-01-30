@@ -13,8 +13,8 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.058 0.058 0.087"/> 
-        <!--<mesh filename="$(find turtlebot_description)/meshes/sensors/hokuyo_utm_30lx.dae"/>-->
+        <!--<box size="0.058 0.058 0.087"/> -->
+        <mesh filename="package://turtlebot_description/meshes/sensors/hokuyo_utm_30lx.dae"/>
       </geometry>
     </visual>
     <inertial>

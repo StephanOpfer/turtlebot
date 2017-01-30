@@ -28,28 +28,28 @@
     <include>
       <uri>model://distributed_systems_department</uri>
     </include>
-	<model name="landmark_1">
+	<model name="box_1">
 		<pose frame="">7.8 1.5 0.5 0 -0 0</pose>
 		<include>
-			<uri>model://landmark</uri>	
+			<uri>model://box</uri>	
 		</include>
 	</model>
-	<model name="landmark_2">
+	<model name="box_2">
 		<pose frame="">2.5 8.5 0.5 0 -0 0</pose>
 		<include>
-			<uri>model://landmark</uri>	
+			<uri>model://box</uri>	
 		</include>
 	</model>
-	<model name="landmark_3">
+	<model name="box_3">
 		<pose frame="">11.5 7.3 0.5 0 -0 0</pose>
 		<include>
-			<uri>model://landmark</uri>	
+			<uri>model://box</uri>	
 		</include>
 	</model>
-	<model name="landmark_4">
+	<model name="box_4">
 		<pose frame="">21.0 1.7 0.5 0 -0 0</pose>
 		<include>
-			<uri>model://landmark</uri>	
+			<uri>model://box</uri>	
 		</include>
 	</model>
   </world>

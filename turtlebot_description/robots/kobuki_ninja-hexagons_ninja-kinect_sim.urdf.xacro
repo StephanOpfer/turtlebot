@@ -13,6 +13,6 @@
   <stack_ninja-hexagons parent="base_link"/>
   <sensor_ninja-kinect  parent="base_link"/>
   <sensor_hokuyo parent="base_link"/>
-  <turtlebot_logical_dist parent="base_link"/>
-  <turtlebot_logical_dist2 parent="base_link"/>
+  <turtlebot_logical_dist name="sensor1" parent="base_link" orientation_z="0.0"/>
+  <turtlebot_logical_dist name="sensor2" parent="base_link" orientation_z="3.141"/>
 </robot>

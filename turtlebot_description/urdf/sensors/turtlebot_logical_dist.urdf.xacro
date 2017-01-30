@@ -2,14 +2,14 @@
 <robot name="turtlebot_logical_dist" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
 
-  <xacro:macro name="turtlebot_logical_dist" params="parent">
-  <joint name="logical_camera" type="fixed">
-    <origin xyz="0.00 0.00 0.4535" rpy="0 0 0"/>
+  <xacro:macro name="turtlebot_logical_dist" params="parent orientation_z name">
+  <joint name="${name}" type="fixed">
+    <origin xyz="0.00 0.00 0.4535" rpy="0 0 ${orientation_z}"/>
     <parent link="${parent}" />
-    <child link="distance_link" />
+    <child link="${name}_link" />
   </joint>
 
-  <link name="distance_link">
+  <link name="${name}_link">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -29,37 +29,7 @@
     </collision>
   </link>
 
-  <turtlebot_logical />
-  </xacro:macro>
-
-  <xacro:macro name="turtlebot_logical_dist2" params="parent">
-  <joint name="logical_camera2" type="fixed">
-    <origin xyz="0.00 0.00 0.4535" rpy="0 0 ${M_PI}"/>
-    <parent link="${parent}" />
-    <child link="distance_link2" />
-  </joint>
-
-  <link name="distance_link2">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.058 0.058 0.087"/> 
-      </geometry>
-    </visual>
-    <inertial>
-      <mass value="0.270"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="2.632e-4" ixy="0" ixz="0" iyy="2.632e-4" iyz="0" izz="1.62e-4"/>
-    </inertial>
-    <collision>
-      <origin xyz="0 0 -0.0115" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.058 0.058 0.087"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <turtlebot_logical2 />
+  <turtlebot_logical name="${name}"/>
   </xacro:macro>
 </robot>
 
