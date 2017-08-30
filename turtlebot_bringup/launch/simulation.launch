@@ -22,7 +22,7 @@
   </node>
 
   <group ns="leonardo">
-    <param name="tf_prefix" value="leonardo_tf"/>
+    <param name="tf_prefix" value="leonardo"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
@@ -33,7 +33,7 @@
   </group>
 
 <!--  <group ns="donatello">
-    <param name="tf_prefix" value="donatello_tf"/>
+    <param name="tf_prefix" value="donatello"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
@@ -44,7 +44,7 @@
   </group>
 
   <group ns="raphael">
-    <param name="tf_prefix" value="raphael_tf"/>
+    <param name="tf_prefix" value="raphael"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
@@ -55,7 +55,7 @@
   </group>
 
   <group ns="michelangelo">
-    <param name="tf_prefix" value="michelangelo_tf"/>
+    <param name="tf_prefix" value="michelangelo"/>
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-kobuki-simulation.launch">
       <arg name="base" value="$(arg base)"/>
       <arg name="stacks" value="$(arg stacks)"/>
