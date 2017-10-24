@@ -6,8 +6,9 @@ Panels:
       Expanded:
         - /TF1/Frames1
         - /TF1/Tree1
+        - /Leonardo1
       Splitter Ratio: 0.57002455
-    Tree Height: 391
+    Tree Height: 617
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -24,7 +25,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
   - Class: turtlebot_rviz_plugin/TurtlePanel
     Name: TurtlePanel
     Robots:
@@ -58,6 +59,7 @@ Visualization Manager:
       Name: /Map
       Topic: /map
       Unreliable: false
+      Use Timestamp: false
       Value: true
     - Class: rviz/TF
       Enabled: false
@@ -78,18 +80,189 @@ Visualization Manager:
         - Alpha: 1
           Class: rviz/RobotModel
           Collision Enabled: false
-          Enabled: false
+          Enabled: true
           Links:
             All Links Enabled: true
             Expand Joint Details: false
             Expand Link Details: false
             Expand Tree: false
             Link Tree Style: Links in Alphabetic Order
+            base_footprint:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            base_laser_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            base_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            camera_depth_frame:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            camera_depth_optical_frame:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            camera_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            camera_rgb_frame:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            camera_rgb_optical_frame:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            caster_back_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            caster_front_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            cliff_sensor_front_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            cliff_sensor_left_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            cliff_sensor_right_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            gyro_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+            plate_bottom_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            plate_middle_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            plate_top_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_0_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_1_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_2_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_3_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_4_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_bottom_5_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_center_0_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_middle_0_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_middle_1_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_middle_2_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_middle_3_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_top_0_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_top_1_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_top_2_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            pole_top_3_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            sensor1_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            sensor2_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            wheel_left_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
+            wheel_right_link:
+              Alpha: 1
+              Show Axes: false
+              Show Trail: false
+              Value: true
           Name: Leonardo
           Robot Description: /leonardo/robot_description
           TF Prefix: leonardo
           Update Interval: 0
-          Value: false
+          Value: true
           Visual Enabled: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -103,7 +276,7 @@ Visualization Manager:
           Color: 255; 170; 0
           Color Transformer: FlatColor
           Decay Time: 0
-          Enabled: false
+          Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 999999
@@ -120,7 +293,7 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: false
+          Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -161,12 +334,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /leonardo/move_base/local_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 0; 12; 255
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -174,6 +351,11 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /leonardo/move_base/DWAPlannerROS/local_plan
               Unreliable: false
               Value: true
@@ -249,12 +431,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /leonardo/move_base/global_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 255; 0; 0
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -262,16 +448,29 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /leonardo/move_base/DWAPlannerROS/global_plan
               Unreliable: false
               Value: true
           Enabled: false
           Name: Global Map
-        - Arrow Length: 0.200000003
+        - Alpha: 1
+          Arrow Length: 0.200000003
+          Axes Length: 0.300000012
+          Axes Radius: 0.00999999978
           Class: rviz/PoseArray
           Color: 0; 192; 0
           Enabled: false
+          Head Length: 0.0700000003
+          Head Radius: 0.0299999993
           Name: Amcl Particle Swarm
+          Shaft Length: 0.230000004
+          Shaft Radius: 0.00999999978
+          Shape: Arrow (Flat)
           Topic: /leonardo/particlecloud
           Unreliable: false
           Value: false
@@ -280,6 +479,9 @@ Visualization Manager:
           Class: rviz/Path
           Color: 25; 255; 0
           Enabled: false
+          Head Diameter: 0.300000012
+          Head Length: 0.200000003
+          Length: 0.300000012
           Line Style: Lines
           Line Width: 0.0299999993
           Name: Full Plan
@@ -287,6 +489,11 @@ Visualization Manager:
             X: 0
             Y: 0
             Z: 0
+          Pose Color: 255; 85; 255
+          Pose Style: None
+          Radius: 0.0299999993
+          Shaft Diameter: 0.100000001
+          Shaft Length: 0.100000001
           Topic: /leonardo/move_base/NavfnROS/plan
           Unreliable: false
           Value: false
@@ -380,12 +587,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /donatello/move_base/local_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 0; 12; 255
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -393,6 +604,11 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /donatello/move_base/DWAPlannerROS/local_plan
               Unreliable: false
               Value: true
@@ -468,12 +684,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /donatello/move_base/global_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 255; 0; 0
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -481,16 +701,29 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /donatello/move_base/DWAPlannerROS/global_plan
               Unreliable: false
               Value: true
           Enabled: false
           Name: Global Map
-        - Arrow Length: 0.200000003
+        - Alpha: 1
+          Arrow Length: 0.200000003
+          Axes Length: 0.300000012
+          Axes Radius: 0.00999999978
           Class: rviz/PoseArray
           Color: 0; 192; 0
           Enabled: false
+          Head Length: 0.0700000003
+          Head Radius: 0.0299999993
           Name: Amcl Particle Swarm
+          Shaft Length: 0.230000004
+          Shaft Radius: 0.00999999978
+          Shape: Arrow (Flat)
           Topic: /donatello/particlecloud
           Unreliable: false
           Value: false
@@ -499,6 +732,9 @@ Visualization Manager:
           Class: rviz/Path
           Color: 25; 255; 0
           Enabled: false
+          Head Diameter: 0.300000012
+          Head Length: 0.200000003
+          Length: 0.300000012
           Line Style: Lines
           Line Width: 0.0299999993
           Name: Full Plan
@@ -506,10 +742,15 @@ Visualization Manager:
             X: 0
             Y: 0
             Z: 0
+          Pose Color: 255; 85; 255
+          Pose Style: None
+          Radius: 0.0299999993
+          Shaft Diameter: 0.100000001
+          Shaft Length: 0.100000001
           Topic: /donatello/move_base/NavfnROS/plan
           Unreliable: false
           Value: false
-      Enabled: true
+      Enabled: false
       Name: Donatello
     - Class: rviz/Group
       Displays:
@@ -599,12 +840,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /raphael/move_base/local_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 0; 12; 255
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -612,6 +857,11 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /raphael/move_base/DWAPlannerROS/local_plan
               Unreliable: false
               Value: true
@@ -687,12 +937,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /raphael/move_base/global_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 255; 0; 0
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -700,16 +954,29 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /raphael/move_base/DWAPlannerROS/global_plan
               Unreliable: false
               Value: true
           Enabled: false
           Name: Global Map
-        - Arrow Length: 0.200000003
+        - Alpha: 1
+          Arrow Length: 0.200000003
+          Axes Length: 0.300000012
+          Axes Radius: 0.00999999978
           Class: rviz/PoseArray
           Color: 0; 192; 0
           Enabled: false
+          Head Length: 0.0700000003
+          Head Radius: 0.0299999993
           Name: Amcl Particle Swarm
+          Shaft Length: 0.230000004
+          Shaft Radius: 0.00999999978
+          Shape: Arrow (Flat)
           Topic: /raphael/particlecloud
           Unreliable: false
           Value: false
@@ -718,6 +985,9 @@ Visualization Manager:
           Class: rviz/Path
           Color: 25; 255; 0
           Enabled: false
+          Head Diameter: 0.300000012
+          Head Length: 0.200000003
+          Length: 0.300000012
           Line Style: Lines
           Line Width: 0.0299999993
           Name: Full Plan
@@ -725,6 +995,11 @@ Visualization Manager:
             X: 0
             Y: 0
             Z: 0
+          Pose Color: 255; 85; 255
+          Pose Style: None
+          Radius: 0.0299999993
+          Shaft Diameter: 0.100000001
+          Shaft Length: 0.100000001
           Topic: /raphael/move_base/NavfnROS/plan
           Unreliable: false
           Value: false
@@ -818,12 +1093,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /michelangelo/move_base/local_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 0; 12; 255
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -831,6 +1110,11 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /michelangelo/move_base/DWAPlannerROS/local_plan
               Unreliable: false
               Value: true
@@ -906,12 +1190,16 @@ Visualization Manager:
               Name: Costmap
               Topic: /michelangelo/move_base/global_costmap/costmap
               Unreliable: false
+              Use Timestamp: false
               Value: true
             - Alpha: 1
               Buffer Length: 1
               Class: rviz/Path
               Color: 255; 0; 0
               Enabled: true
+              Head Diameter: 0.300000012
+              Head Length: 0.200000003
+              Length: 0.300000012
               Line Style: Lines
               Line Width: 0.0299999993
               Name: Planner
@@ -919,16 +1207,29 @@ Visualization Manager:
                 X: 0
                 Y: 0
                 Z: 0
+              Pose Color: 255; 85; 255
+              Pose Style: None
+              Radius: 0.0299999993
+              Shaft Diameter: 0.100000001
+              Shaft Length: 0.100000001
               Topic: /michelangelo/move_base/DWAPlannerROS/global_plan
               Unreliable: false
               Value: true
           Enabled: false
           Name: Global Map
-        - Arrow Length: 0.200000003
+        - Alpha: 1
+          Arrow Length: 0.200000003
+          Axes Length: 0.300000012
+          Axes Radius: 0.00999999978
           Class: rviz/PoseArray
           Color: 0; 192; 0
           Enabled: false
+          Head Length: 0.0700000003
+          Head Radius: 0.0299999993
           Name: Amcl Particle Swarm
+          Shaft Length: 0.230000004
+          Shaft Radius: 0.00999999978
+          Shape: Arrow (Flat)
           Topic: /michelangelo/particlecloud
           Unreliable: false
           Value: false
@@ -937,6 +1238,9 @@ Visualization Manager:
           Class: rviz/Path
           Color: 25; 255; 0
           Enabled: false
+          Head Diameter: 0.300000012
+          Head Length: 0.200000003
+          Length: 0.300000012
           Line Style: Lines
           Line Width: 0.0299999993
           Name: Full Plan
@@ -944,6 +1248,11 @@ Visualization Manager:
             X: 0
             Y: 0
             Z: 0
+          Pose Color: 255; 85; 255
+          Pose Style: None
+          Radius: 0.0299999993
+          Shaft Diameter: 0.100000001
+          Shaft Length: 0.100000001
           Topic: /michelangelo/move_base/NavfnROS/plan
           Unreliable: false
           Value: false
@@ -970,7 +1279,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 17.4277382
+      Distance: 11.8765154
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -980,20 +1289,23 @@ Visualization Manager:
         X: -1.85997295
         Y: 6.38904715
         Z: -2.62260437e-06
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
+      Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: -1.21520364
+      Pitch: 1.10479617
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 2.93852901
+      Yaw: 1.97352886
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 848
+  Height: 1176
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd0000000400000000000001990000030afc0200000005fc00000028000000840000000000fffffffaffffffff0100000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000000ffffffff0000009b00fffffffb0000001200530065006c0065006300740069006f006e0000000000000001cc0000007200fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000002800000216000000dd00fffffffb000000160054007500720074006c006500500061006e0065006c0100000244000000ee000000ee00ffffff000000010000010f000003a0fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000028000003a0000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000064f0000003efc0100000002fb0000000800540069006d006500000000000000064f0000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000002010000030a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000019900000452fc0200000005fc00000028000000840000000000fffffffaffffffff0100000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000000ffffffff0000009b00fffffffb0000001200530065006c0065006300740069006f006e0000000000000001cc0000007200fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000028000002f8000000dd00fffffffb000000160054007500720074006c006500500061006e0065006c010000032600000154000000ee00ffffff000000010000010f000003a0fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000028000003a0000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000064f0000003efc0100000002fb0000000800540069006d006500000000000000064f0000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000005a00000045200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -1004,6 +1316,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 928
-  X: 368
+  Width: 1855
+  X: 65
   Y: 24

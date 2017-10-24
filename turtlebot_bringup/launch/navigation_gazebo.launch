@@ -11,11 +11,9 @@
       <arg name="base_frame_id" value="leonardo/base_link"/>
     </include>
     <!-- Move base -->
-    <!--
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
       <arg name="laser_topic" value="scan_hokuyo" />
     </include>
-	-->
     <param name="move_base/global_costmap/global_frame" value="/map" />    
   </group>
  <!-- 
