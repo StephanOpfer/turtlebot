@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <!-- Initial Camera Position -->
+    <gui>
+      <camera name="camera_default">
+        <pose>
+          -4.0 2.0 8.0 0.0 0.7 0.0
+        </pose>
+      </camera>
+    </gui>
+    <!--
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    -->
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- Own physics settings to speed up simulation -->
+    <physics type='ode'>
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>100</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+    <include>
+      <uri>model://distributed_systems_department</uri>
+    </include>
+    <model name='r1411_small_table'>
+	<pose frame=''>0.77 4.46 0 0 0 0</pose>
+	<include>
+		<uri>model://small_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc1'>
+	<pose frame=''>4.57 10.60 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc2'>
+	<pose frame=''>4.57 9.40 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc3'>
+	<pose frame=''>4.57 8.20 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc4'>
+	<pose frame=''>3.77 8.20 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc5'>
+	<pose frame=''>3.77 9.40 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc6'>
+	<pose frame=''>3.77 10.60 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc7'>
+	<pose frame=''>0.77 9.93 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc8'>
+	<pose frame=''>0.77 8.73 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_labpc9'>
+	<pose frame=''>0.77 7.53 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411_large_table_atdoor'>
+	<pose frame=''>4.59 4.93 0 0 0 0</pose>
+	<include>
+		<uri>model://large_table</uri>
+	</include>
+    </model>
+    <model name='r1411_large_table_atkicker'>
+	<pose frame=''>3.69 4.93 0 0 0 0</pose>
+	<include>
+		<uri>model://large_table</uri>
+	</include>
+    </model>
+    <model name='r1411_medium_table_center'>
+	<pose frame=''>4.19 6.13 0 0 0 1.570796327</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+  </world>
+</sdf>

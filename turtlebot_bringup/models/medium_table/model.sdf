@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="medium_table">
+    <static>true</static>
+    <link name="link">
+      <collision name="surface">
+        <pose>0 0 0.7075 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 1.2 0.025</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="visual1">
+        <pose>0 0 0.7075 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 1.2 0.025</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Wood</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="front_left_leg">
+        <pose>0.375 0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="front_left_leg">
+        <pose>0.375 0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="front_right_leg">
+        <pose>0.375 -0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="front_right_leg">
+        <pose>0.375 -0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="back_right_leg">
+        <pose>-0.375 -0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="back_right_leg">
+        <pose>-0.375 -0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="back_left_leg">
+        <pose>-0.375 0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="back_left_leg">
+        <pose>-0.375 0.575 0.3475 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.695</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
