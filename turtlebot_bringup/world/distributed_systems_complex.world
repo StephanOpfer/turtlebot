@@ -106,5 +106,12 @@
 		<uri>model://medium_table</uri>
 	</include>
     </model>
+    <model name='r1411_floor_door'>
+        <pose frame=''>1.0 2.0 0.0 0.0 0.0 0.0</pose>
+	<include>
+		<uri>model://hinged_door</uri>
+	</include>
+	<plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
+    </model>
   </world>
 </sdf>
