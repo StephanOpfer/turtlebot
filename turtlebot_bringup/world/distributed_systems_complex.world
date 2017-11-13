@@ -34,6 +34,12 @@
 		<uri>model://small_table</uri>
 	</include>
     </model>
+    <model name='r1411A_small_table'>
+	<pose frame=''>7.13 6.42 0 0 0 0</pose>
+	<include>
+		<uri>model://small_table</uri>
+	</include>
+    </model>
     <model name='r1411_medium_table_labpc1'>
 	<pose frame=''>4.57 10.60 0 0 0 0</pose>
 	<include>
@@ -106,12 +112,55 @@
 		<uri>model://medium_table</uri>
 	</include>
     </model>
+    <model name='r1411A_medium_table_window_left'>
+	<pose frame=''>7.29 10.81 0 0 0 1.570796327</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411A_medium_table_window_right'>
+	<pose frame=''>8.93 10.81 0 0 0 1.570796327</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411A_medium_table_wall_left'>
+	<pose frame=''>9.11 8.01 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+    <model name='r1411A_medium_table_wall_right'>
+	<pose frame=''>7.1 8.91 0 0 0 0</pose>
+	<include>
+		<uri>model://medium_table</uri>
+	</include>
+    </model>
+
     <model name='r1411_floor_door'>
-        <pose frame=''>1.0 2.0 0.0 0.0 0.0 0.0</pose>
+        <pose frame=''>6.6 4.48 0.0 0.0 0.0 0.0</pose>
 	<include>
 		<uri>model://hinged_door</uri>
 	</include>
-	<plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
     </model>
+    <model name='r1411B_floor_door'>
+        <pose frame=''>9.56 3.58 0.0 0.0 0.0 0.0</pose>
+	<include>
+		<uri>model://hinged_door</uri>
+	</include>
+    </model>
+    <model name='r1411A_floor_door'>
+        <pose frame=''>8.56 5.97 0.0 0.0 0.0 1.570796327</pose>
+	<include>
+		<uri>model://hinged_door</uri>
+	</include>
+    </model> 
+    <model name='floor_hall_door'>
+        <pose frame=''>9.14 2.96 0.0 0.0 0.0 1.570796327</pose>
+	<include>
+		<uri>model://hinged_door</uri>
+	</include>
+    </model>
+    <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
   </world>
 </sdf>

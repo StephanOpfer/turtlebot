@@ -1,9 +1,10 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <model name="hinged_door">
-    <link name="frame">
-      <pose>0.06 -0.0005 0 0 0 0</pose>
+   <link name="frame">
+<!--- 
       <collision name="collision_1">
+      <pose>0.06 -0.0005 0 0 0 0</pose>
         <pose>-0.025145 -0.03429 1.0541 0 0 0</pose>
         <geometry>
           <box>
@@ -27,6 +28,7 @@
           </box>
         </geometry>
       </collision>
+--->
       <visual name="visual">
         <pose>0 -0.06858 0 0 0 0</pose>
         <geometry>

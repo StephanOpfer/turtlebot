@@ -13,16 +13,16 @@
 #include <stdio.h>
 
 namespace gazebo {
-class HingedDoorController: public ModelPlugin {
+class HingedDoorController: public WorldPlugin {
 public:
 	HingedDoorController();
-	void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
+	void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
 	void OnUpdate(const common::UpdateInfo & /*_info*/);
 	void handleDoorCmd (hinged_door_controller::DoorCmdPtr cmd);
 private:
 
 	// Pointer to the model
-	physics::ModelPtr model;
+	physics::WorldPtr model;
 
 	// Pointer to the update event connection
 	event::ConnectionPtr updateConnection;

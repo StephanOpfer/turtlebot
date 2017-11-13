@@ -1,12 +1,17 @@
 #include "gazebo/HingedDoorController.h"
 
+using std::cout;
+using std::endl;
+using std::string;
+
 namespace gazebo {
 
 HingedDoorController::HingedDoorController() :
-		ModelPlugin() {
+		WorldPlugin() {
+	this->spinner = nullptr;
 }
 
-void HingedDoorController::Load(physics::ModelPtr _parent,
+void HingedDoorController::Load(physics::WorldPtr _parent,
 		sdf::ElementPtr _sdf) {
 	// Store the pointer to the model
 	this->model = _parent;
@@ -31,11 +36,19 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/) {
 
 void HingedDoorController::handleDoorCmd(
 		hinged_door_controller::DoorCmdPtr cmd) {
-	this->model->GetJoint("hinge")->SetLowerLimit(2, -M_PI);
-	this->model->GetJoint("hinge")->SetUpperLimit(2, M_PI);
-	this->model->GetJoint("hinge")->SetPosition(0, M_PI/2);
+	string modelName = cmd->name;
+	this->model->GetModel(modelName)->GetJoint("hinged_door::hinge")->SetLowerLimit(2, -M_PI);
+	this->model->GetModel(modelName)->GetJoint("hinged_door::hinge")->SetUpperLimit(2, M_PI);
+	if(cmd->state == hinged_door_controller::DoorCmd::OPEN)
+	{
+		this->model->GetModel(modelName)->GetJoint("hinged_door::hinge")->SetPosition(0, M_PI/2);
+	}
+	else
+	{
+		this->model->GetModel(modelName)->GetJoint("hinged_door::hinge")->SetPosition(0, 0);
+	}
 }
 
 // Register this plugin with the simulator
-GZ_REGISTER_MODEL_PLUGIN(HingedDoorController)
+GZ_REGISTER_WORLD_PLUGIN(HingedDoorController)
 }
