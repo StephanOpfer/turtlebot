@@ -28,6 +28,7 @@
     <include>
       <uri>model://distributed_systems_department</uri>
     </include>
+    <!-- tables -->
     <model name='r1411_small_table'>
 	<pose frame=''>0.77 4.46 0 0 0 0</pose>
 	<include>
@@ -136,7 +137,7 @@
 		<uri>model://medium_table</uri>
 	</include>
     </model>
-
+    <!-- Doors -->
     <model name='r1411_floor_door'>
         <pose frame=''>6.6 4.48 0.0 0.0 0.0 0.0</pose>
 	<include>
@@ -161,6 +162,7 @@
 		<uri>model://hinged_door</uri>
 	</include>
     </model>
+    <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
   </world>
 </sdf>

@@ -6,6 +6,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 find_package(catkin REQUIRED
   gazebo_plugins
   gazebo_ros
+  system_config
 )
 
 add_message_files(
@@ -20,7 +21,7 @@ find_package(gazebo REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES hinged_door_controller
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime
+  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime system_config
 #  DEPENDS system_lib
 )
 

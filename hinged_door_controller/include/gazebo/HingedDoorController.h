@@ -12,6 +12,10 @@
 #include <functional>
 #include <stdio.h>
 
+namespace supplementary {
+	class SystemConfig;
+}
+
 namespace gazebo {
 class HingedDoorController: public WorldPlugin {
 public:
@@ -29,5 +33,7 @@ private:
 
 	ros::Subscriber doorCmdSub;
 	ros::AsyncSpinner* spinner;
+
+	supplementary::SystemConfig* sc;
 };
 }
