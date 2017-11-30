@@ -2,6 +2,8 @@
 
 #include <SystemConfig.h>
 
+#include <ros/ros.h>
+
 #include <math.h>
 #include <algorithm>
 
@@ -42,6 +44,9 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
     // this->model->SetLinearVel(math::Vector3(.03, 0, 0));
 }
 
+/**
+ * Callback for DoorCmd msgs. Directly sets the position of the referenced door.
+ */
 void HingedDoorController::handleDoorCmd(hinged_door_controller::DoorCmdPtr cmd)
 {
     // Get the hinge joint of the correct door, according to the given model name

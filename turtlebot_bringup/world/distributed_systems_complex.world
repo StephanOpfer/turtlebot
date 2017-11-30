@@ -25,142 +25,265 @@
       <real_time_update_rate>100</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
     </physics>
+    <!-- walls & floor -->
     <include>
       <uri>model://distributed_systems_department</uri>
     </include>
     <!-- tables -->
     <model name='r1411_small_table'>
-	<pose frame=''>0.77 4.46 0 0 0 0</pose>
-	<include>
-		<uri>model://small_table</uri>
-	</include>
+		  <pose frame=''>0.77 4.46 0 0 0 0</pose>
+		  <include>
+        <uri>model://small_table</uri>
+		  </include>
     </model>
     <model name='r1411A_small_table'>
-	<pose frame=''>7.13 6.42 0 0 0 0</pose>
-	<include>
-		<uri>model://small_table</uri>
-	</include>
+	    <pose frame=''>7.13 6.42 0 0 0 0</pose>
+	    <include>
+	  	  <uri>model://small_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc1'>
-	<pose frame=''>4.57 10.60 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>4.57 10.60 0 0 0 0</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc2'>
-	<pose frame=''>4.57 9.40 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>4.57 9.40 0 0 0 0</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc3'>
-	<pose frame=''>4.57 8.20 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>4.57 8.20 0 0 0 0</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc4'>
-	<pose frame=''>3.77 8.20 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>3.77 8.20 0 0 0 0</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc5'>
-	<pose frame=''>3.77 9.40 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>3.77 9.40 0 0 0 0</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc6'>
-	<pose frame=''>3.77 10.60 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+      <pose frame=''>3.77 10.60 0 0 0 0</pose>
+      <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc7'>
-	<pose frame=''>0.77 9.93 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>0.77 9.93 0 0 0 0</pose>
+  	  <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc8'>
-	<pose frame=''>0.77 8.73 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>0.77 8.73 0 0 0 0</pose>
+	    <include>
+	  	  <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411_medium_table_labpc9'>
-	<pose frame=''>0.77 7.53 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+  	  <pose frame=''>0.77 7.53 0 0 0 0</pose>
+  	  <include>
+  		  <uri>model://medium_table</uri>
+  	  </include>
     </model>
     <model name='r1411_large_table_atdoor'>
-	<pose frame=''>4.59 4.93 0 0 0 0</pose>
-	<include>
-		<uri>model://large_table</uri>
-	</include>
+  	  <pose frame=''>4.59 4.93 0 0 0 0</pose>
+  	  <include>
+  		  <uri>model://large_table</uri>
+  	  </include>
     </model>
     <model name='r1411_large_table_atkicker'>
-	<pose frame=''>3.69 4.93 0 0 0 0</pose>
-	<include>
-		<uri>model://large_table</uri>
-	</include>
+  	  <pose frame=''>3.69 4.93 0 0 0 0</pose>
+  	  <include>
+  		  <uri>model://large_table</uri>
+  	  </include>
     </model>
     <model name='r1411_medium_table_center'>
-	<pose frame=''>4.19 6.13 0 0 0 1.570796327</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+  	  <pose frame=''>4.19 6.13 0 0 0 1.570796327</pose>
+  	  <include>
+  		  <uri>model://medium_table</uri>
+  	  </include>
     </model>
     <model name='r1411A_medium_table_window_left'>
-	<pose frame=''>7.29 10.81 0 0 0 1.570796327</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+  	  <pose frame=''>7.29 10.81 0 0 0 1.570796327</pose>
+      <include>
+		    <uri>model://medium_table</uri>
+	    </include>
     </model>
     <model name='r1411A_medium_table_window_right'>
-	<pose frame=''>8.93 10.81 0 0 0 1.570796327</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+	    <pose frame=''>8.93 10.81 0 0 0 1.570796327</pose>
+	    <include>
+		    <uri>model://medium_table</uri>
+      </include>
     </model>
     <model name='r1411A_medium_table_wall_left'>
-	<pose frame=''>9.11 8.01 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+      <pose frame=''>9.11 8.01 0 0 0 0</pose>
+      <include>
+        <uri>model://medium_table</uri>
+      </include>
     </model>
     <model name='r1411A_medium_table_wall_right'>
-	<pose frame=''>7.1 8.91 0 0 0 0</pose>
-	<include>
-		<uri>model://medium_table</uri>
-	</include>
+      <pose frame=''>7.1 8.91 0 0 0 0</pose>
+      <include>
+        <uri>model://medium_table</uri>
+      </include>
     </model>
-    <!-- Doors -->
-    <model name='r1411_floor_door'>
-        <pose frame=''>6.6 4.48 0.0 0.0 0.0 0.0</pose>
-	<include>
-		<uri>model://hinged_door</uri>
-	</include>
+    <!-- Doors: Naming Convention - The door is opening into the second room of its name. -->
+    <model name='r1411C_r1411_door'>
+      <pose frame=''>6.6 4.5 0.0 0.0 0.0 0.0</pose>
+      <include>
+        <uri>model://hinged_door</uri>
+	    </include>
     </model>
-    <model name='r1411B_floor_door'>
-        <pose frame=''>9.56 3.58 0.0 0.0 0.0 0.0</pose>
-	<include>
-		<uri>model://hinged_door</uri>
-	</include>
+    <model name='r1411C_r1411B_door'>
+      <pose frame=''>9.58 3.58 0.0 0.0 0.0 0.0</pose>
+      <include>
+        <uri>model://hinged_door</uri>
+      </include>
     </model>
-    <model name='r1411A_floor_door'>
-        <pose frame=''>8.56 5.97 0.0 0.0 0.0 1.570796327</pose>
-	<include>
-		<uri>model://hinged_door</uri>
-	</include>
+    <model name='r1411C_r1411A_door'>
+      <pose frame=''>8.56 5.97 0.0 0.0 0.0 1.570796327</pose>
+      <include>
+        <uri>model://hinged_door</uri>
+	    </include>
     </model> 
-    <model name='floor_hall_door'>
-        <pose frame=''>9.14 2.96 0.0 0.0 0.0 1.570796327</pose>
-	<include>
-		<uri>model://hinged_door</uri>
-	</include>
+    <model name='r1411C_r1401_door'>
+      <pose frame=''>9.14 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1410_r1401_door'>
+      <pose frame=''>13.12 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1410_r1410A_door'>
+      <pose frame=''>12.04 5.14 0.0 0.0 0.0 5.7</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1410_r1410B_door'>
+      <pose frame=''>13.345 5.17 0.0 0.0 0.0 0.575</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1401_1_door'>
+      <pose frame=''>17.78 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1401_2_door'>
+      <pose frame=''>32.6 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1409_door'>
+      <pose frame=''>15.6 3.52 0.0 0.0 0.0 0.0</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1408A_door'>
+      <pose frame=''>17.7 5.97 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1408B_door'>
+      <pose frame=''>20.65 4.95 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1408C_door'>
+      <pose frame=''>23.64 4.95 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1406A_door'>
+      <pose frame=''>26.7 4.95 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1406B_door'>
+      <pose frame=''>29.7 4.95 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1407_r1406C_door'>
+      <pose frame=''>32.68 5.97 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1405A_r1405_door'>
+      <pose frame=''>37.2 5.98 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1405A_r1401_door'>
+      <pose frame=''>37.2 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1403A_r1401_door'>
+      <pose frame=''>41.87 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1403A_r1403C_door'>
+      <pose frame=''>39.88 4.14 0.0 0.0 0.0 0.0</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1403A_r1403_door'>
+      <pose frame=''>42.825 4.14 0.0 0.0 0.0 0.0</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <!-- This door is much smaller than the usual ones. 
+    <model name='r1401_r1402_door'>
+      <pose frame=''>49.87 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    -->
+    <model name='r1401_r1402B_door'>
+      <pose frame=''>52.0 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
+    </model>
+    <model name='r1401_r1402D_door'>
+      <pose frame=''>53.5 2.9 0.0 0.0 0.0 1.570796327</pose>
+	    <include>
+		    <uri>model://hinged_door</uri>
+	    </include>
     </model>
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
