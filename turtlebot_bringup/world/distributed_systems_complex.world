@@ -19,11 +19,25 @@
       <uri>model://sun</uri>
     </include>
     <!-- Own physics settings to speed up simulation -->
-    <physics type='ode'>
-      <max_step_size>0.01</max_step_size>
-      <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>100</real_time_update_rate>
+    <physics type="ode">
+      <max_step_size>0.03333333</max_step_size>
+      <!--<real_time_factor>1</real_time_factor>-->
+      <!--<real_time_update_rate>30</real_time_update_rate>-->
+      <real_time_update_rate>0</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.4</sor>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>1</erp>
+          <contact_max_correcting_vel>0</contact_max_correcting_vel>
+          <contact_surface_layer>0</contact_surface_layer>
+        </constraints>
+      </ode>
     </physics>
     <!-- walls & floor -->
     <include>
@@ -140,13 +154,13 @@
     </model>
     <!-- Doors: Naming Convention - The door is opening into the second room of its name. -->
     <model name='r1411C_r1411_door'>
-      <pose frame=''>6.6 4.5 0.0 0.0 0.0 0.0</pose>
+      <pose frame=''>6.63 4.5 0.0 0.0 0.0 0.0</pose>
       <include>
         <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1411C_r1411B_door'>
-      <pose frame=''>9.58 3.58 0.0 0.0 0.0 0.0</pose>
+      <pose frame=''>9.8 3.58 0.0 0.0 0.0 0.0</pose>
       <include>
         <uri>model://hinged_door</uri>
       </include>
@@ -200,37 +214,37 @@
 	    </include>
     </model>
     <model name='r1407_r1408A_door'>
-      <pose frame=''>17.7 5.97 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>17.7 6.04 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1407_r1408B_door'>
-      <pose frame=''>20.65 4.95 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>20.65 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1407_r1408C_door'>
-      <pose frame=''>23.64 4.95 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>23.64 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1407_r1406A_door'>
-      <pose frame=''>26.7 4.95 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>26.7 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1407_r1406B_door'>
-      <pose frame=''>29.7 4.95 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>29.7 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1407_r1406C_door'>
-      <pose frame=''>32.68 5.97 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>32.68 6.04 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
@@ -242,7 +256,7 @@
 	    </include>
     </model>
     <model name='r1405A_r1401_door'>
-      <pose frame=''>37.2 2.9 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>36.27 2.84 0.0 0.0 0.0 -1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
@@ -274,13 +288,13 @@
     </model>
     -->
     <model name='r1401_r1402B_door'>
-      <pose frame=''>52.0 2.9 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>52.0 3.1 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
     <model name='r1401_r1402D_door'>
-      <pose frame=''>53.5 2.9 0.0 0.0 0.0 1.570796327</pose>
+      <pose frame=''>53.5 3.1 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
 		    <uri>model://hinged_door</uri>
 	    </include>
