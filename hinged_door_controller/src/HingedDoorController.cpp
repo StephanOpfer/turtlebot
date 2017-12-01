@@ -7,6 +7,7 @@
 #include <math.h>
 #include <algorithm>
 
+using std::cerr;
 using std::cout;
 using std::endl;
 using std::string;
@@ -45,13 +46,18 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
 }
 
 /**
- * Callback for DoorCmd msgs. Directly sets the position of the referenced door.
+ * Callback for DoorCmd msgs. Directly sets the position of the referenced door, if it exists.
  */
 void HingedDoorController::handleDoorCmd(hinged_door_controller::DoorCmdPtr cmd)
 {
     // Get the hinge joint of the correct door, according to the given model name
-	std::cout << "HingedDoorController: Received msg for " << cmd->name << " door." << std::endl;
-    auto hingeJoint = this->model->GetModel(cmd->name)->GetJoint("hinged_door::hinge");
+	auto door = this->model->GetModel(cmd->name);
+	if (!door)
+	{
+		std::cerr << "HingedDoorController: Received msg for " << cmd->name << " door, that does NOT EXIST!" << std::endl;
+		return;
+	}
+    auto hingeJoint = door->GetJoint("hinged_door::hinge");
 
     double setAngle = 0.0; /* <-- 0.0 is the angle for closing a door */
 
@@ -61,7 +67,6 @@ void HingedDoorController::handleDoorCmd(hinged_door_controller::DoorCmdPtr cmd)
     	setAngle = (*sc)["Doors"]->get<double>("Doors", cmd->name.c_str(), "openAngle", NULL);
     }
 
-    std::cout << "HingedDoorController: Set Angle is : " << setAngle << std::endl;
     hingeJoint->SetPosition(0, setAngle);
 }
 
