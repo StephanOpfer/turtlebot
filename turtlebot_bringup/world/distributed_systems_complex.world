@@ -476,6 +476,19 @@
 		    <uri>model://hinged_door</uri>
 	    </include>
     </model>
+    <model name='coke_can_1'>
+      <pose frame=''>3.77 10.60 0.825 0 0 0</pose>
+      <include>
+		    <uri>model://coke_can</uri>
+	    </include>
+    </model>
+    <model name='coke_can_2'>
+      <pose frame=''>0.77 7.53 0.825 0 0 0</pose>
+      <include>
+		    <uri>model://coke_can</uri>
+	    </include>
+    </model>
+
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
   </world>
