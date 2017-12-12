@@ -41,3 +41,5 @@ target_link_libraries(${PROJECT_NAME}
   ${GAZEBO_LIBRARIES}
 )
 
+add_dependencies(hinged_door_controller hinged_door_controller_generate_messages_cpp)
+

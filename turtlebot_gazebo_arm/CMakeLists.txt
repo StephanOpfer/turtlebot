@@ -37,6 +37,7 @@ include_directories( ${catkin_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME} src/ArmPlugin.cpp )
+add_dependencies(turtlebot_gazebo_arm turtlebot_gazebo_arm_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} )
+target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
