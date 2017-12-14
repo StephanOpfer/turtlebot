@@ -2,17 +2,17 @@
 <robot name="turtlebot_sim_arm" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
 
-  <xacro:macro name="turtlebot_sim_arm" params="parent name">
-  <joint name="${name}" type="fixed">
+  <xacro:macro name="turtlebot_sim_arm" params="name parent">
+  <joint name="${name}" type="continuous">
     <origin xyz="0.00 0.00 0.5" rpy="0 0 0"/>
     <parent link="${parent}" />
     <child link="${name}_link" />
+    <axis xyz="0 0 1"/>
   </joint>
 
-  <link name="${name}_link">
-  </link>
+  <link name="${name}_link" />
 
-  <turtlebot_arm name="${name}"/>
+  <turtlebot_arm/>
   </xacro:macro>
 </robot>
 

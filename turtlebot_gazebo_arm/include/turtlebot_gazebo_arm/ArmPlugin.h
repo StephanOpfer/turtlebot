@@ -36,7 +36,7 @@ namespace gazebo
 		/**
 		 * Callback that receives the contact sensor's update signal.
 		 */
-		virtual void OnUpdate();
+		void OnUpdate(const common::UpdateInfo& info);
 
 		void onGrabDropObjectCmd(turtlebot_gazebo_arm::GrabDropObjectPtr msg);
 
@@ -45,7 +45,10 @@ namespace gazebo
 
 		// Pointer to the model
 		physics::ModelPtr model;
+		physics::ModelPtr transportedModel;
 		physics::WorldPtr world;
+
+		event::ConnectionPtr updateConnection;
 
 	};
 }

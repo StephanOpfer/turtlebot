@@ -101,10 +101,10 @@
   </xacro:macro>
   <!-- Turtlebot Arm -->
 
-  <xacro:macro name="turtlebot_arm" params="name">
+  <xacro:macro name="turtlebot_arm">
     <gazebo>
-            <plugin name="turtlebot_gazebo_arm" filename="libturtlebot_gazebo_arm.so">
- 	    </plugin>
+      <plugin name="turtlebot_gazebo_arm" filename="libturtlebot_gazebo_arm.so">
+      </plugin>
     </gazebo>
   </xacro:macro>
 </robot>
