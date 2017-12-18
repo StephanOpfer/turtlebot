@@ -8,6 +8,7 @@
 #include <gazebo/common/common.hh>
 #include <chrono>
 #include <ros/ros.h>
+#include <map>
 
 namespace gazebo
 {
@@ -49,6 +50,6 @@ namespace gazebo
 		physics::WorldPtr world;
 
 		event::ConnectionPtr updateConnection;
-
+		double armRange = 1.0;
 	};
 }

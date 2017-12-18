@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>gazebo_object_possession</name>
+  <version>0.0.0</version>
+  <description>The gazebo_object_possession package</description>
+
+  <maintainer email="jakob@vs.uni-kassel.de">Stefan Jakob</maintainer>
+  <license>MIT</license>
+
+  <author email="jakob@vs.uni-kassel.de">Stefan Jakob</author>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>gazebo_plugins</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>system_config</build_depend>
+  <build_depend>turtlebot_gazebo_arm</build_depend>
+
+  <run_depend>turtlebot_gazebo_arm</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo_plugins</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>system_config</run_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+  </export>
+</package>
