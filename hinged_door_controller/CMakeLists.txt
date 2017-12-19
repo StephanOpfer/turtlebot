@@ -7,21 +7,15 @@ find_package(catkin REQUIRED
   gazebo_plugins
   gazebo_ros
   system_config
+  ttb_msgs
 )
-
-add_message_files(
-  FILES
-  DoorCmd.msg
-)
-
-generate_messages(DEPENDENCIES std_msgs)
 
 find_package(gazebo REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES hinged_door_controller
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime system_config
+  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime system_config ttb_msgs
 #  DEPENDS system_lib
 )
 
@@ -40,6 +34,3 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
 )
-
-add_dependencies(hinged_door_controller hinged_door_controller_generate_messages_cpp)
-

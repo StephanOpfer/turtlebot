@@ -48,7 +48,7 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
 /**
  * Callback for DoorCmd msgs. Directly sets the position of the referenced door, if it exists.
  */
-void HingedDoorController::handleDoorCmd(hinged_door_controller::DoorCmdPtr cmd)
+void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
 {
     // Get the hinge joint of the correct door, according to the given model name
 	auto door = this->model->GetModel(cmd->name);
@@ -61,7 +61,7 @@ void HingedDoorController::handleDoorCmd(hinged_door_controller::DoorCmdPtr cmd)
 
     double setAngle = 0.0; /* <-- 0.0 is the angle for closing a door */
 
-    if (cmd->state == hinged_door_controller::DoorCmd::OPEN)
+    if (cmd->state == ttb_msgs::DoorCmd::OPEN)
     {
         // Get limits of that joint
     	setAngle = (*sc)["Doors"]->get<double>("Doors", cmd->name.c_str(), "openAngle", NULL);

@@ -5,7 +5,7 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/common/Plugin.hh>
 #include <ros/ros.h>
-#include "hinged_door_controller/DoorCmd.h"
+#include <ttb_msgs/DoorCmd.h>
 
 #include <cstdlib>
 #include <iostream>
@@ -22,7 +22,7 @@ public:
 	HingedDoorController();
 	void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
 	void OnUpdate(const common::UpdateInfo & /*_info*/);
-	void handleDoorCmd (hinged_door_controller::DoorCmdPtr cmd);
+	void handleDoorCmd (ttb_msgs::DoorCmdPtr cmd);
 private:
 
 	// Pointer to the model

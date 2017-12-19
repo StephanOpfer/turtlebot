@@ -1,7 +1,6 @@
 #include <gazebo/common/Plugin.hh>
 
 #include "turtlebot_gazebo_arm/ArmPlugin.h"
-#include "turtlebot_gazebo_arm/GrabDropObject.h"
 
 #include <cstdlib>
 #include <gazebo/physics/Model.hh>
@@ -61,10 +60,10 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
     }
 }
 
-void ArmPlugin::onGrabDropObjectCmd(turtlebot_gazebo_arm::GrabDropObjectPtr msg)
+void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
     std::cout << "ArmPlugin::OnGrab: Msg Name " << msg->objectName << std::endl;
-    if (msg->action == turtlebot_gazebo_arm::GrabDropObject::GRAB && this->transportedModel == nullptr)
+    if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr)
     {
         auto modelToCarry = this->world->GetModel(msg->objectName);
         if (modelToCarry != nullptr)
@@ -84,7 +83,7 @@ void ArmPlugin::onGrabDropObjectCmd(turtlebot_gazebo_arm::GrabDropObjectPtr msg)
             std::cout << "ArmPlugin::OnGrab: Unknown Object with name: " << msg->objectName << std::endl;
         }
     }
-    else if (msg->action == turtlebot_gazebo_arm::GrabDropObject::DROP && this->transportedModel != nullptr)
+    else if (msg->action == ttb_msgs::GrabDropObject::DROP && this->transportedModel != nullptr)
     {
         if (msg->objectName == this->transportedModel->GetName())
         {

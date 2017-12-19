@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "turtlebot_gazebo_arm/GrabDropObject.h"
+#include <ttb_msgs/GrabDropObject.h>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
@@ -39,7 +39,7 @@ namespace gazebo
 		 */
 		void OnUpdate(const common::UpdateInfo& info);
 
-		void onGrabDropObjectCmd(turtlebot_gazebo_arm::GrabDropObjectPtr msg);
+		void onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg);
 
 		ros::Subscriber doorCmdSub;
 		ros::AsyncSpinner* spinner;
