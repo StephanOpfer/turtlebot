@@ -6,11 +6,8 @@
 
 #include <LogicalOcclusionPlugin.h>
 
-using namespace gazebo;
-
-// Register this plugin with the simulator
-GZ_REGISTER_SENSOR_PLUGIN(LogicalOcclusionPlugin)
-
+namespace gazebo
+{
 //////////////////////////////////////////////////
 LogicalOcclusionPlugin::LogicalOcclusionPlugin()
     : SensorPlugin()
@@ -21,7 +18,7 @@ LogicalOcclusionPlugin::LogicalOcclusionPlugin()
 //////////////////////////////////////////////////
 LogicalOcclusionPlugin::~LogicalOcclusionPlugin()
 {
-    nh.shutdown();
+    this->nh.shutdown();
 }
 
 //////////////////////////////////////////////////
@@ -36,7 +33,7 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
     }
 
     // Get the parent sensor.
-    parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
+    this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
 
     // Make sure the parent sensor is valid.
     if (!this->parentSensor)
@@ -47,30 +44,30 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
 
     // TODO: Change ConnectUpdated for suscription to gazebo image topic!
     // Connect to the sensor update event.
-    updateConnection = parentSensor->ConnectUpdated(std::bind(&LogicalOcclusionPlugin::OnUpdate, this));
+    this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&LogicalOcclusionPlugin::OnUpdate, this));
 
     // Make sure the parent sensor is active.
-    parentSensor->SetActive(true);
+    this->parentSensor->SetActive(true);
 
     // Initializing physics engine for collision checking
-    physicsEngine = physics::get_world(parentSensor->WorldName())->GetPhysicsEngine();
+    this->physicsEngine = physics::get_world(this->parentSensor->WorldName())->GetPhysicsEngine();
 
-    GZ_ASSERT(physicsEngine != nullptr, "Unable to get a pointer to the physics engine");
+    GZ_ASSERT(this->physicsEngine != nullptr, "Unable to get a pointer to the physics engine");
 
-    laserCollision = physicsEngine->CreateCollision("ray", parentSensor->ParentName());
+    this->laserCollision = this->physicsEngine->CreateCollision("ray", this->parentSensor->ParentName());
 
-    GZ_ASSERT(laserCollision != nullptr, "Unable to create a ray collision using the physics engine.");
+    GZ_ASSERT(this->laserCollision != nullptr, "Unable to create a ray collision using the physics engine.");
 
-    laserCollision->SetName("logical_occlusion_collision");
-    laserCollision->SetRelativePose(parentSensor->Pose());
-    laserCollision->SetInitialRelativePose(parentSensor->Pose());
+    this->laserCollision->SetName("logical_occlusion_collision");
+    this->laserCollision->SetRelativePose(this->parentSensor->Pose());
+    this->laserCollision->SetInitialRelativePose(this->parentSensor->Pose());
 
-    rayShape = boost::dynamic_pointer_cast<physics::RayShape>(laserCollision->GetShape());
+    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(this->laserCollision->GetShape());
 
-    GZ_ASSERT(rayShape != nullptr, "Unable to get the ray shape from the ray collision.");
+    GZ_ASSERT(this->rayShape != nullptr, "Unable to get the ray shape from the ray collision.");
 
-    rayShape->Load(_sdf);
-    rayShape->Init();
+    this->rayShape->Load(_sdf);
+    this->rayShape->Init();
 
     // Extracting robot name, erasing link
     std::string robotName = this->parentSensor->ParentName();
@@ -84,31 +81,34 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
 
     std::string topicName = robotName + "/" + parentSensor->Name();
     if (_sdf->HasElement("ros_topic"))
+    {
         topicName = _sdf->Get<std::string>("ros_topic");
-
+    }
     topicName = topicName + "/occluded";
 
-    occludedPub = nh.advertise<ttb_msgs::LogicalCameraImage>(topicName, 50);
+    this->occludedPub = this->nh.advertise<ttb_msgs::LogicalCameraImage>(topicName, 50);
 
-    occludingType = "map_point"; // default occluding type
+    this->occludingType = "map_point"; // default occluding type
     if (_sdf->HasElement("occluding_model"))
-        occludingType = _sdf->Get<std::string>("occluding_model");
+    {
+        this->occludingType = _sdf->Get<std::string>("occluding_model");
+    }
 
-    ROS_DEBUG("LogicalOcclusionPlugin loaded!");
+    ROS_INFO("LogicalOcclusionPlugin loaded!");
 }
 
 void LogicalOcclusionPlugin::Fini()
 {
-    if (laserCollision)
+    if (this->laserCollision)
     {
-        laserCollision->Fini();
-        laserCollision.reset();
+        this->laserCollision->Fini();
+        this->laserCollision.reset();
     }
 
-    if (rayShape)
+    if (this->rayShape)
     {
-        rayShape->Fini();
-        rayShape.reset();
+        this->rayShape->Fini();
+        this->rayShape.reset();
     }
 }
 
@@ -116,11 +116,11 @@ void LogicalOcclusionPlugin::Fini()
 void LogicalOcclusionPlugin::OnUpdate()
 {
     // ROS message to be sent
-	ttb_msgs::LogicalCameraImage occludedImageROSMsg;
+    ttb_msgs::LogicalCameraImage occludedImageROSMsg;
 
     occludedImageROSMsg.header.seq = ++seq_number;
     occludedImageROSMsg.header.stamp = ros::Time::now();
-    //Was getName() before, but is deprecated
+    // Was getName() before, but is deprecated
     occludedImageROSMsg.header.frame_id = this->parentSensor->Name();
 
     // Get all the models in range (as gazebo proto message)
@@ -146,7 +146,7 @@ void LogicalOcclusionPlugin::OnUpdate()
         {
 
             // Translating gazebo Model message to ROS message
-        	ttb_msgs::Model modelROSMsg;
+            ttb_msgs::Model modelROSMsg;
 
             modelROSMsg.name = modelMsg.name();
             modelROSMsg.type = DetermineModelType(modelMsg.name());
@@ -165,7 +165,7 @@ void LogicalOcclusionPlugin::OnUpdate()
         }
     }
 
-    occludedPub.publish(occludedImageROSMsg);
+    this->occludedPub.publish(occludedImageROSMsg);
 }
 
 std::string LogicalOcclusionPlugin::DetermineModelType(const std::string &modelName)
@@ -193,21 +193,24 @@ bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model)
 {
     auto modelType = DetermineModelType(model.name());
 
-    transform(occludingType.begin(), occludingType.end(), occludingType.begin(), ::tolower);
+    transform(this->occludingType.begin(), this->occludingType.end(), this->occludingType.begin(), ::tolower);
 
     // Checking if model type match desired type
-    if (modelType.find(occludingType) == std::string::npos)
+    if (modelType.find(this->occludingType) == std::string::npos)
+    {
         return false;
+    }
 
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
-    rayShape->SetPoints(parentSensor->Pose().Pos(), (parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensor->Pose().Pos());
+    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(),
+                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos());
 
-    rayShape->Update();
+    this->rayShape->Update();
 
     double dist;
     std::string collided_entity;
-    rayShape->GetIntersection(dist, collided_entity);
+    this->rayShape->GetIntersection(dist, collided_entity);
 
     /*
     math::Vector3 start, end;
@@ -219,4 +222,7 @@ bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model)
 
     // true if the model name appears on the collided entity
     return collided_entity.find(model.name()) != std::string::npos;
+}
+// Register this plugin with the simulator
+GZ_REGISTER_SENSOR_PLUGIN(LogicalOcclusionPlugin)
 }
