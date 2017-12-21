@@ -1,10 +1,13 @@
+#include "LogicalOcclusionPlugin.h"
+
 #include <ttb_msgs/LogicalCameraImage.h>
 
 #include <gazebo/physics/RayShape.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/sensors/LogicalCameraSensor.hh>
 
-#include <LogicalOcclusionPlugin.h>
+#include <Configuration.h>
+#include <SystemConfig.h>
 
 namespace gazebo
 {
@@ -13,6 +16,7 @@ LogicalOcclusionPlugin::LogicalOcclusionPlugin()
     : SensorPlugin()
     , seq_number(-1)
 {
+    this->sc = supplementary::SystemConfig::getInstance();
 }
 
 //////////////////////////////////////////////////
@@ -42,7 +46,6 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
         return;
     }
 
-    // TODO: Change ConnectUpdated for suscription to gazebo image topic!
     // Connect to the sensor update event.
     this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&LogicalOcclusionPlugin::OnUpdate, this));
 
@@ -79,22 +82,25 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
     }
     robotName = robotName.substr(0, pos); // Getting only the name
 
-    std::string topicName = robotName + "/" + parentSensor->Name();
-    if (_sdf->HasElement("ros_topic"))
-    {
-        topicName = _sdf->Get<std::string>("ros_topic");
-    }
-    topicName = topicName + "/occluded";
+    std::string topicName = "/" + robotName + "/logical_occlusion_camera";
 
     this->occludedPub = this->nh.advertise<ttb_msgs::LogicalCameraImage>(topicName, 50);
 
-    this->occludingType = "map_point"; // default occluding type
-    if (_sdf->HasElement("occluding_model"))
-    {
-        this->occludingType = _sdf->Get<std::string>("occluding_model");
-    }
+    //    this->occludingType = "map_point"; // default occluding type
+    //    if (_sdf->HasElement("occluding_model"))
+    //    {
+    //        this->occludingType = _sdf->Get<std::string>("occluding_model");
+    //    }
+    //
+    //    transform(this->occludingType.begin(), this->occludingType.end(), this->occludingType.begin(), ::tolower);
 
     ROS_INFO("LogicalOcclusionPlugin loaded!");
+    auto sections = (*this->sc)["LogicalCamera"]->getSections("LogicalCamera", NULL);
+    for (auto section : *sections)
+    {
+    	transform(section.begin(), section.end(), section.begin(), ::tolower);
+        this->occludingTypes.push_back(section);
+    }
 }
 
 void LogicalOcclusionPlugin::Fini()
@@ -144,12 +150,11 @@ void LogicalOcclusionPlugin::OnUpdate()
         // Checking occlusion
         if (isDetected(modelMsg))
         {
-
             // Translating gazebo Model message to ROS message
             ttb_msgs::Model modelROSMsg;
 
             modelROSMsg.name = modelMsg.name();
-            modelROSMsg.type = DetermineModelType(modelMsg.name());
+            modelROSMsg.type = determineModelType(modelMsg.name());
 
             msgs::Vector3d position = modelMsg.pose().position();
             msgs::Quaternion orientation = modelMsg.pose().orientation();
@@ -168,7 +173,7 @@ void LogicalOcclusionPlugin::OnUpdate()
     this->occludedPub.publish(occludedImageROSMsg);
 }
 
-std::string LogicalOcclusionPlugin::DetermineModelType(const std::string &modelName)
+std::string LogicalOcclusionPlugin::determineModelType(const std::string &modelName)
 {
     std::string modelType(modelName);
 
@@ -181,30 +186,47 @@ std::string LogicalOcclusionPlugin::DetermineModelType(const std::string &modelN
     size_t start_index = modelType.find_last_of(":");
 
     if (modelType[end_index] == '_' && end_index > 1)
+    {
         modelType = modelType.substr(0, end_index);
+    }
 
     if (start_index > 1)
+    {
         modelType = modelType.substr(start_index + 1);
+    }
 
     return modelType;
 }
 
 bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model)
 {
-    auto modelType = DetermineModelType(model.name());
-
-    transform(this->occludingType.begin(), this->occludingType.end(), this->occludingType.begin(), ::tolower);
-
+    auto modelType = determineModelType(model.name()); // name());
     // Checking if model type match desired type
-    if (modelType.find(this->occludingType) == std::string::npos)
+
+    bool found = false;
+    for (auto occludingType : this->occludingTypes)
     {
-        return false;
+        if (modelType.find(occludingType) == std::string::npos)
+        {
+           continue;
+        }
+        else
+        {
+        	found = true;
+        	break;
+        }
+    }
+    if(!found)
+    {
+    	return false;
     }
 
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
-    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(),
-                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos());
+    auto parentSensorPose = this->parentSensor->Pose().Pos();
+    parentSensorPose.X(parentSensorPose.X() + 0.15);
+    this->rayShape->SetPoints(parentSensorPose,
+                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
 
     this->rayShape->Update();
 

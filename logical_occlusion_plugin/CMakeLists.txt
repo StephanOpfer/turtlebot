@@ -14,12 +14,13 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
   roscpp
   ttb_msgs
+  system_config
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES   
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp 
+  CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp ttb_msgs system_config
 )
 
 ###########
