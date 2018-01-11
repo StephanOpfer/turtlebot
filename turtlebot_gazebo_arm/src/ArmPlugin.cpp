@@ -42,7 +42,7 @@ void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     ros::NodeHandle n;
     std::stringstream ss;
     ss << "/" << this->model->GetName() << "/ArmCmd";
-    this->doorCmdSub = n.subscribe(ss.str(), 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin *)this);
+    this->armCmdSub = n.subscribe(ss.str(), 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin *)this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
@@ -63,6 +63,10 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
 void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
     std::cout << "ArmPlugin::OnGrab: Msg Name " << msg->objectName << std::endl;
+    if(msg->objectName.empty())
+    {
+    	return;
+    }
     if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr)
     {
         auto modelToCarry = this->world->GetModel(msg->objectName);
@@ -88,7 +92,8 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
         if (msg->objectName == this->transportedModel->GetName())
         {
             auto targetPos = this->model->GetWorldPose();
-            targetPos.pos.x += 1;
+            // TODO setting x does not work properly
+            targetPos.pos.y += 1;
             this->transportedModel->SetWorldPose(targetPos);
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction

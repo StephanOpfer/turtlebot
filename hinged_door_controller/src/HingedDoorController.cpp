@@ -36,6 +36,8 @@ void HingedDoorController::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     this->doorCmdSub = n.subscribe("/DoorCmd", 10, &HingedDoorController::handleDoorCmd, (HingedDoorController *)this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
+
+    ROS_INFO("HingedDoorController PlugIn loaded!");
 }
 
 // Called by the world update start event

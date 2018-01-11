@@ -9,21 +9,22 @@
 #include <chrono>
 #include <ros/ros.h>
 #include <map>
+#include <mutex>
 
 namespace gazebo
 {
-	class ArmPlugin : public ModelPlugin
+	class ObjectPossessionPlugin : public WorldPlugin
 	{
 	public:
 		/**
 		 * Constructor
 		 */
-		ArmPlugin();
+		ObjectPossessionPlugin();
 
 		/**
 		 * Destructor.
 		 */
-		virtual ~ArmPlugin();
+		virtual ~ObjectPossessionPlugin();
 
 		/**
 		 * Load the sensor plugin.
@@ -31,7 +32,7 @@ namespace gazebo
 		 * @param _sdf SDF element that describes the plugin.
 		 */
 
-		virtual void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
+		virtual void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
 
 	private:
 		/**
@@ -42,14 +43,15 @@ namespace gazebo
 		void onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg);
 
 		ros::Subscriber armCmdSub;
+		ros::Publisher pub;
 		ros::AsyncSpinner* spinner;
+		ros::NodeHandle n;
 
 		// Pointer to the model
-		physics::ModelPtr model;
-		physics::ModelPtr transportedModel;
 		physics::WorldPtr world;
 
 		event::ConnectionPtr updateConnection;
-		double armRange = 1.0;
+		std::mutex publisherMutex;
+		std::map<std::string, std::string> objectPossession;
 	};
 }

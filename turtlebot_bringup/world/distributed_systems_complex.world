@@ -491,5 +491,7 @@
 
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
+    <!-- THe central plugin managing the possesseion of objects -->
+    <plugin name="turtlebot_gazebo_object_possession" filename="libturtlebot_gazebo_object_possession.so"/>
   </world>
 </sdf>
