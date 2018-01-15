@@ -1,5 +1,6 @@
 #include "LogicalOcclusionPlugin.h"
 
+#include <ttb_msgs/LogicalCamera.h>
 #include <ttb_msgs/LogicalCameraImage.h>
 
 #include <gazebo/physics/RayShape.hh>
@@ -16,13 +17,54 @@ LogicalOcclusionPlugin::LogicalOcclusionPlugin()
     : SensorPlugin()
     , seq_number(-1)
 {
+    this->sensorYaw = 0;
     this->sc = supplementary::SystemConfig::getInstance();
+    loadModelsFromConfig();
 }
 
 //////////////////////////////////////////////////
 LogicalOcclusionPlugin::~LogicalOcclusionPlugin()
 {
     this->nh.shutdown();
+}
+
+void LogicalOcclusionPlugin::loadModelsFromConfig()
+{
+    const char *lc = "LogicalCamera";
+    const char *da = "DetectAngles";
+
+    auto config = (*this->sc)[lc];
+    this->modelSectionNames = config->getSections(lc, NULL);
+
+    // Iterate over all model sections in config file
+    for (auto section : *(this->modelSectionNames))
+    {
+        const char *sec = section.c_str();
+#ifdef LOGICAL_CAMERA_DEBUG
+        cout << "DistanceSensorPlugin: section: " << section << endl;
+#endif
+        ConfigModel m;
+        m.range = config->get<double>(lc, sec, "range", NULL);
+
+        // Add all angles specified in model to detectAngles vector
+        auto angleSections = config->getSections(lc, sec, da, NULL);
+        for (auto angleSection : *angleSections)
+        {
+            auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
+            auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
+#ifdef LOGICAL_CAMERA_DEBUG
+            cout << "DistanceSensorPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
+#endif
+            m.detectAngles.push_back(pair<double, double>(start, end));
+        }
+
+        m.type = config->get<string>(lc, sec, "type", NULL);
+        m.name = section;
+        m.publishingRate = config->get<double>(lc, sec, "publishingRateHz", NULL);
+        this->modelMap.emplace(m.name, m);
+    }
+
+    this->modelSectionNames = nullptr;
 }
 
 //////////////////////////////////////////////////
@@ -84,23 +126,18 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
 
     std::string topicName = "/" + robotName + "/logical_occlusion_camera";
 
-    this->occludedPub = this->nh.advertise<ttb_msgs::LogicalCameraImage>(topicName, 50);
-
-    //    this->occludingType = "map_point"; // default occluding type
-    //    if (_sdf->HasElement("occluding_model"))
-    //    {
-    //        this->occludingType = _sdf->Get<std::string>("occluding_model");
-    //    }
-    //
-    //    transform(this->occludingType.begin(), this->occludingType.end(), this->occludingType.begin(), ::tolower);
+    this->modelPub = this->nh.advertise<ttb_msgs::LogicalCamera>(topicName, 50);
 
     ROS_INFO("LogicalOcclusionPlugin loaded!");
     auto sections = (*this->sc)["LogicalCamera"]->getSections("LogicalCamera", NULL);
     for (auto section : *sections)
     {
-    	transform(section.begin(), section.end(), section.begin(), ::tolower);
+        transform(section.begin(), section.end(), section.begin(), ::tolower);
         this->occludingTypes.push_back(section);
     }
+
+    // Get the sensor yaw, which is used to distinguish front and back sensor
+    this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 }
 
 void LogicalOcclusionPlugin::Fini()
@@ -121,112 +158,141 @@ void LogicalOcclusionPlugin::Fini()
 //////////////////////////////////////////////////
 void LogicalOcclusionPlugin::OnUpdate()
 {
-    // ROS message to be sent
-    ttb_msgs::LogicalCameraImage occludedImageROSMsg;
-
-    occludedImageROSMsg.header.seq = ++seq_number;
-    occludedImageROSMsg.header.stamp = ros::Time::now();
-    // Was getName() before, but is deprecated
-    occludedImageROSMsg.header.frame_id = this->parentSensor->Name();
-
     // Get all the models in range (as gazebo proto message)
-    auto logicalImageMsg = this->parentSensor->Image();
+    auto models = this->parentSensor->Image();
 
-    // Translating gazebo message to ROS message
-    msgs::Vector3d cameraPosition = logicalImageMsg.pose().position();
-    msgs::Quaternion cameraOrientation = logicalImageMsg.pose().orientation();
-
-    occludedImageROSMsg.pose.position.x = cameraPosition.x();
-    occludedImageROSMsg.pose.position.y = cameraPosition.y();
-    occludedImageROSMsg.pose.position.z = cameraPosition.z();
-    occludedImageROSMsg.pose.orientation.x = cameraOrientation.x();
-    occludedImageROSMsg.pose.orientation.z = cameraOrientation.z();
-    occludedImageROSMsg.pose.orientation.w = cameraOrientation.w();
-
-    for (int i = 0; i < logicalImageMsg.model_size(); i++)
+    for (int i = 0; i < models.model_size(); i++)
     {
-        auto modelMsg = logicalImageMsg.model(i);
+        auto model = models.model(i);
 
-        // Checking occlusion
-        if (isDetected(modelMsg))
+        // Is the model for front or back sensor
+        if (!isSensorResponsible(model))
         {
-            // Translating gazebo Model message to ROS message
-            ttb_msgs::Model modelROSMsg;
-
-            modelROSMsg.name = modelMsg.name();
-            modelROSMsg.type = determineModelType(modelMsg.name());
-
-            msgs::Vector3d position = modelMsg.pose().position();
-            msgs::Quaternion orientation = modelMsg.pose().orientation();
-            modelROSMsg.pose.position.x = position.x();
-            modelROSMsg.pose.position.y = position.y();
-            modelROSMsg.pose.position.z = position.z();
-            modelROSMsg.pose.orientation.x = orientation.x();
-            modelROSMsg.pose.orientation.y = orientation.y();
-            modelROSMsg.pose.orientation.z = orientation.z();
-            modelROSMsg.pose.orientation.w = orientation.w();
-
-            occludedImageROSMsg.models.push_back(modelROSMsg);
+            continue;
+        }
+        for (auto &kv : this->modelMap)
+        {
+            // Checking occlusion
+            if (isDetected(model, kv.second))
+            {
+                // Translating gazebo Model message to ROS message
+            	publishModel(model, kv.second);
+            }
         }
     }
-
-    this->occludedPub.publish(occludedImageROSMsg);
 }
 
-std::string LogicalOcclusionPlugin::determineModelType(const std::string &modelName)
+void LogicalOcclusionPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel &configModel)
 {
-    std::string modelType(modelName);
+    auto x = model.pose().position().x();
+    auto y = model.pose().position().y();
+    auto z = model.pose().position().z();
 
-    // Trim namespaces
-    size_t index = modelType.find_last_of('|');
-    modelType = modelType.substr(index + 1);
+    ttb_msgs::LogicalCamera msg;
+    msg.modelName = model.name();
 
-    // Trim trailing underscore and number caused by inserting multiple of the same model
-    size_t end_index = modelType.find_last_not_of("0123456789");
-    size_t start_index = modelType.find_last_of(":");
-
-    if (modelType[end_index] == '_' && end_index > 1)
+    auto q = model.pose().orientation();
+    // change coordinate system and rotation for backwards sensor
+    if (this->sensorYaw != 0)
     {
-        modelType = modelType.substr(0, end_index);
+        msg.pose.x = -x;
+        msg.pose.y = -y;
+        //			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
+        auto angle = quadToTheata(q.x(), q.y(), q.z(), q.w());
+        msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
+    }
+    else
+    {
+        msg.pose.x = x;
+        msg.pose.y = y;
+        msg.pose.theta = -quadToTheata(q.x(), q.y(), q.z(), q.w());
     }
 
-    if (start_index > 1)
-    {
-        modelType = modelType.substr(start_index + 1);
-    }
+#ifdef LOGICAL_CAMERA_DEBUG
+    cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")" << endl;
+#endif
 
-    return modelType;
+    msg.timeStamp = ros::Time::now();
+    msg.type = configModel.type;
+
+    chrono::time_point<chrono::high_resolution_clock> now = chrono::high_resolution_clock::now();
+
+    if (lastPublishedMap.count(msg.modelName) <= 0)
+    {
+        modelPub.publish(msg);
+        lastPublishedMap[msg.modelName] = now;
+    }
+    else
+    {
+        // Publish message if needed/specified hz from config exceeded
+        auto diff = chrono::duration_cast<chrono::milliseconds>(now - lastPublishedMap[msg.modelName]);
+#ifdef LOGICAL_CAMERA_DEBUG
+        cout << "DistanceSensorPlugin: diff: " << diff.count() << endl;
+#endif
+        if (diff.count() >= (1000.0 / configModel.publishingRate))
+        {
+            modelPub.publish(msg);
+            lastPublishedMap[msg.modelName] = now;
+        }
+    }
 }
 
-bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model)
+// See:
+// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+double LogicalOcclusionPlugin::quadToTheata(double x, double y, double z, double w)
 {
-    auto modelType = determineModelType(model.name()); // name());
+    double ysqr = y * y;
+    double t0 = -2.0f * (ysqr + z * z) + 1.0f;
+    double t1 = +2.0f * (x * y - w * z);
+    return atan2(t1, t0); // yaw
+}
+
+bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel configModel)
+{
     // Checking if model type match desired type
-
-    bool found = false;
-    for (auto occludingType : this->occludingTypes)
+    auto gazeboElementName = configModel.type;
+    transform(gazeboElementName.begin(), gazeboElementName.end(), gazeboElementName.begin(), ::tolower);
+    if (model.name().find(gazeboElementName) == std::string::npos)
     {
-        if (modelType.find(occludingType) == std::string::npos)
-        {
-           continue;
-        }
-        else
-        {
-        	found = true;
-        	break;
-        }
-    }
-    if(!found)
-    {
-    	return false;
+        return false;
     }
 
+    // Model is too far away
+    auto x = model.pose().position().x();
+    auto y = model.pose().position().y();
+    auto z = model.pose().position().z();
+    auto dist = sqrt(x * x + y * y + z * z);
+    if (dist > configModel.range)
+    {
+        return false;
+    }
+
+    /*
+     * angle to model calculated with ego-centric coordinates
+     */
+    double angle = calculateAngle(x, y);
+    if (!isInAngleRange(angle, configModel.detectAngles))
+    {
+        return false;
+    }
+
+    if (isOccluded(model))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool LogicalOcclusionPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
+{
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
-    auto parentSensorPose = this->parentSensor->Pose().Pos();
-    parentSensorPose.X(parentSensorPose.X() + 0.15);
-    this->rayShape->SetPoints(parentSensorPose,
-                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
+    //    auto parentSensorPose = this->parentSensor->Pose().Pos();
+    //    parentSensorPose = parentSensorPose + (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())).Normalize() * 0.15;
+    //    this->rayShape->SetPoints(parentSensorPose, (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
+    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(),
+                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos());
 
     this->rayShape->Update();
 
@@ -234,16 +300,73 @@ bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model)
     std::string collided_entity;
     this->rayShape->GetIntersection(dist, collided_entity);
 
+    // TODO: this does not work, because now he can see through walls if there is a table in front
+
+    // ignore walls and floor
+    if (collided_entity.find("distributed_systems_department") != std::string::npos)
+    {
+        return true;
+    }
+
+    // ignore doors
+    if (collided_entity.find("door") != std::string::npos)
+    {
+        return true;
+    }
+
+// no door or wall or floor blocking sight to model
+#ifdef LOGICAL_OCCLUSION_DEBUG
+    cout << "OcclusionSensorPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model at: x=" << model.pose().position().x()
+         << ", y= " << model.pose().position().y() << ", z= " << model.pose().position().z() << endl;
+#endif
+    return false;
+}
+
+bool LogicalOcclusionPlugin::isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles)
+{
+    // all angles have to be checked so no return after first pair is checked
+    for (auto pair : detectAngles)
+    {
+#ifdef LOGICAL_CAMERA_DEBUG
+        cout << "DistanceSensorPlugin: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
+#endif
+        if (pair.first <= pair.second)
+        {
+            if (pair.first <= angle && angle <= pair.second)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            // this is only the case when the angle range crosses over 180°
+            if (pair.first <= angle || angle <= pair.second)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+double LogicalOcclusionPlugin::calculateAngle(double x, double y)
+{
+    double angle = atan2(y, x) * 180.0 / M_PI;
+
     /*
-    math::Vector3 start, end;
-    rayShape->GetGlobalPoints(start, end);
+     * change angle of backwards facing sensor get sensor range from 90° to 180°
+     * and from -90° to -180°
+     */
+    if (this->sensorYaw != 0)
+    {
+        angle = (angle < 0) ? angle + 180.0 : angle - 180;
+    }
+    return angle;
+}
 
-    ROS_INFO_STREAM(" Start: " << start << " End: " << end );
-    ROS_INFO_STREAM(" Checking Model: " << model.name() << " Colliding: " << collided_entity );
-    */
-
-    // true if the model name appears on the collided entity
-    return collided_entity.find(model.name()) != std::string::npos;
+bool LogicalOcclusionPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
+{
+    return model.pose().position().x() > 0;
 }
 // Register this plugin with the simulator
 GZ_REGISTER_SENSOR_PLUGIN(LogicalOcclusionPlugin)

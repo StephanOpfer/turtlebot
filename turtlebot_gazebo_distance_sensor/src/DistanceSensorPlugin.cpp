@@ -115,7 +115,7 @@ namespace gazebo
 					physics::BasePtr gmodel = world->GetByName(mn);
 					physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
 
-					if (gmodel == NULL)
+					if (ggmodel == NULL)
 					{
 						ROS_FATAL_STREAM("Could not retrieve bounding box of model " << mn << "\n");
 						return; // Can't locate model to determine bounding box
@@ -144,10 +144,6 @@ namespace gazebo
 		auto modelName = model.name();
 		auto gazeboElementName = configModel.type;
 		transform(gazeboElementName.begin(), gazeboElementName.end(), gazeboElementName.begin(), ::tolower);
-		auto x = model.pose().position().x();
-		auto y = model.pose().position().y();
-		auto z = model.pose().position().z();
-		auto dist = sqrt(x * x + y * y + z * z);
 
 		// Model name did not match desired string
 		if (modelName.find(gazeboElementName) == std::string::npos)
@@ -155,6 +151,11 @@ namespace gazebo
 			return false;
 		}
 
+
+		auto x = model.pose().position().x();
+		auto y = model.pose().position().y();
+		auto z = model.pose().position().z();
+		auto dist = sqrt(x * x + y * y + z * z);
 		// Model is too far aways
 		if (dist > configModel.range)
 		{

@@ -126,7 +126,7 @@ namespace gazebo
 		bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
 
 		/**
-		 * calculates to angle from the robot to a model
+		 * calculates the angle from the robot to a model
 		 */
 		double calculateAngle(double x, double y);
 	};

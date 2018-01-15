@@ -18,5 +18,6 @@
   <turtlebot_logical_dist name="sensor1" parent="base_link" orientation_z="0.0"/>
   <turtlebot_logical_dist name="sensor2" parent="base_link" orientation_z="3.141"/>
   <turtlebot_logical_occlusion_dist name="sensor3" parent="base_link" orientation_z="0.0"/>
+  <turtlebot_logical_occlusion_dist name="sensor4" parent="base_link" orientation_z="3.141"/>
   <turtlebot_sim_arm name="arm" parent="base_footprint"/>
 </robot>

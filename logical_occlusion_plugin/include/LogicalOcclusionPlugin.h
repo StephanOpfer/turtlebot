@@ -11,6 +11,8 @@
 
 #include <ros/ros.h>
 
+#define LOGICAL_OCCLUSION_DEBUG
+
 namespace supplementary
 {
 class SystemConfig;
@@ -44,13 +46,36 @@ class GAZEBO_VISIBLE LogicalOcclusionPlugin : public SensorPlugin
     virtual void OnUpdate();
 
   private:
+    struct ConfigModel
+    {
+        double range;
+        /**
+         * pair.first = startAngle
+         * pair.secong = endAngle
+         */
+        double publishingRate;
+        std::vector<std::pair<double, double>> detectAngles;
+        std::string name;
+        std::string type;
+    };
     /**
     * \brief Models configured as "occluding" will be checked for occlusion throught ray casting
     * @param model model detected by sensor
     */
-    bool isDetected(msgs::LogicalCameraImage_Model model);
-
-    std::string determineModelType(const std::string &modelName);
+    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel configModel);
+    bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
+    bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
+    bool isOccluded(msgs::LogicalCameraImage_Model &model);
+    void publishModel(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel &configModel);
+    /**
+	 * calculates the angle from the robot to a model
+	 */
+    double calculateAngle(double x, double y);
+    void loadModelsFromConfig();
+    /**
+	 * calculates angle of object from quaternium
+	 */
+    double quadToTheata(double x, double y, double z, double w);
 
     // Sensor ptr
     sensors::LogicalCameraSensorPtr parentSensor;
@@ -60,10 +85,13 @@ class GAZEBO_VISIBLE LogicalOcclusionPlugin : public SensorPlugin
 
     // Publisher
     ros::NodeHandle nh;
-    ros::Publisher occludedPub;
+    ros::Publisher modelPub;
 
     // Model types that should be considered and occluded
     std::vector<std::string> occludingTypes;
+    // Maps model Name to config model
+    std::shared_ptr<std::vector<std::string>> modelSectionNames;
+    std::map<std::string, ConfigModel> modelMap;
 
     // Number of LogicalCameraImages transmitted
     uint32_t seq_number;
@@ -74,6 +102,13 @@ class GAZEBO_VISIBLE LogicalOcclusionPlugin : public SensorPlugin
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
-    supplementary::SystemConfig* sc;
+
+    // time points of messages sent, need to determine when to send
+    // next message according specified configuration frequency
+    std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> lastPublishedMap;
+
+    // Sensor orientation
+    double sensorYaw;
+    supplementary::SystemConfig *sc;
 };
 }
