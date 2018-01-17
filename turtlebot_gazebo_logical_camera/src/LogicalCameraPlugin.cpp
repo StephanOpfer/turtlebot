@@ -1,4 +1,4 @@
-#include "LogicalOcclusionPlugin.h"
+#include "LogicalCameraPlugin.h"
 
 #include <ttb_msgs/LogicalCamera.h>
 #include <ttb_msgs/LogicalCameraImage.h>
@@ -13,7 +13,7 @@
 namespace gazebo
 {
 //////////////////////////////////////////////////
-LogicalOcclusionPlugin::LogicalOcclusionPlugin()
+LogicalCameraPlugin::LogicalCameraPlugin()
     : SensorPlugin()
     , seq_number(-1)
 {
@@ -23,12 +23,12 @@ LogicalOcclusionPlugin::LogicalOcclusionPlugin()
 }
 
 //////////////////////////////////////////////////
-LogicalOcclusionPlugin::~LogicalOcclusionPlugin()
+LogicalCameraPlugin::~LogicalCameraPlugin()
 {
     this->nh.shutdown();
 }
 
-void LogicalOcclusionPlugin::loadModelsFromConfig()
+void LogicalCameraPlugin::loadModelsFromConfig()
 {
     const char *lc = "LogicalCamera";
     const char *da = "DetectAngles";
@@ -68,7 +68,7 @@ void LogicalOcclusionPlugin::loadModelsFromConfig()
 }
 
 //////////////////////////////////////////////////
-void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
+void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 {
     // Make sure the ROS node for Gazebo has already been initialized
     if (!ros::isInitialized())
@@ -84,12 +84,12 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
     // Make sure the parent sensor is valid.
     if (!this->parentSensor)
     {
-        gzerr << "LogicalOcclusionPlugin requires a LogicalCamera Sensor.\n";
+        gzerr << "LogicalCameraPlugin requires a LogicalCamera Sensor.\n";
         return;
     }
 
     // Connect to the sensor update event.
-    this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&LogicalOcclusionPlugin::OnUpdate, this));
+    this->updateConnection = this->parentSensor->ConnectUpdated(std::bind(&LogicalCameraPlugin::OnUpdate, this));
 
     // Make sure the parent sensor is active.
     this->parentSensor->SetActive(true);
@@ -119,7 +119,7 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
     size_t pos = robotName.find(':');
     if (pos == std::string::npos)
     {
-        gzerr << "LogicalOcclusionPlugin robot/model name(" << robotName << ") is invalid!";
+        gzerr << "LogicalCameraPlugin robot/model name(" << robotName << ") is invalid!";
         return;
     }
     robotName = robotName.substr(0, pos); // Getting only the name
@@ -128,7 +128,7 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
 
     this->modelPub = this->nh.advertise<ttb_msgs::LogicalCamera>(topicName, 50);
 
-    ROS_INFO("LogicalOcclusionPlugin loaded!");
+    ROS_INFO("LogicalCameraPlugin loaded!");
     auto sections = (*this->sc)["LogicalCamera"]->getSections("LogicalCamera", NULL);
     for (auto section : *sections)
     {
@@ -140,7 +140,7 @@ void LogicalOcclusionPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _s
     this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
 }
 
-void LogicalOcclusionPlugin::Fini()
+void LogicalCameraPlugin::Fini()
 {
     if (this->laserCollision)
     {
@@ -156,7 +156,7 @@ void LogicalOcclusionPlugin::Fini()
 }
 
 //////////////////////////////////////////////////
-void LogicalOcclusionPlugin::OnUpdate()
+void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
     auto models = this->parentSensor->Image();
@@ -182,7 +182,7 @@ void LogicalOcclusionPlugin::OnUpdate()
     }
 }
 
-void LogicalOcclusionPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel &configModel)
+void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel)
 {
     auto x = model.pose().position().x();
     auto y = model.pose().position().y();
@@ -239,7 +239,7 @@ void LogicalOcclusionPlugin::publishModel(msgs::LogicalCameraImage_Model model, 
 
 // See:
 // https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-double LogicalOcclusionPlugin::quadToTheata(double x, double y, double z, double w)
+double LogicalCameraPlugin::quadToTheata(double x, double y, double z, double w)
 {
     double ysqr = y * y;
     double t0 = -2.0f * (ysqr + z * z) + 1.0f;
@@ -247,7 +247,7 @@ double LogicalOcclusionPlugin::quadToTheata(double x, double y, double z, double
     return atan2(t1, t0); // yaw
 }
 
-bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel configModel)
+bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel)
 {
     // Checking if model type match desired type
     auto gazeboElementName = configModel.type;
@@ -284,21 +284,23 @@ bool LogicalOcclusionPlugin::isDetected(msgs::LogicalCameraImage_Model model, Lo
     return true;
 }
 
-bool LogicalOcclusionPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
+bool LogicalCameraPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
 {
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
     //    auto parentSensorPose = this->parentSensor->Pose().Pos();
     //    parentSensorPose = parentSensorPose + (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())).Normalize() * 0.15;
     //    this->rayShape->SetPoints(parentSensorPose, (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
-    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(),
-                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos());
+    this->rayShape->SetPoints(this->parentSensor->Pose().Pos() * 1.15,
+                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos() * 1.15);
 
     this->rayShape->Update();
 
     double dist;
     std::string collided_entity;
     this->rayShape->GetIntersection(dist, collided_entity);
+
+    std::cout << "LogicalCameraPlugin: " << collided_entity << std::endl;
 
     // TODO: this does not work, because now he can see through walls if there is a table in front
 
@@ -316,13 +318,13 @@ bool LogicalOcclusionPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
 
 // no door or wall or floor blocking sight to model
 #ifdef LOGICAL_OCCLUSION_DEBUG
-    cout << "OcclusionSensorPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model at: x=" << model.pose().position().x()
+    cout << "LogicalCameraPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model "<< model.name()  <<" at: x=" << model.pose().position().x()
          << ", y= " << model.pose().position().y() << ", z= " << model.pose().position().z() << endl;
 #endif
     return false;
 }
 
-bool LogicalOcclusionPlugin::isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles)
+bool LogicalCameraPlugin::isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles)
 {
     // all angles have to be checked so no return after first pair is checked
     for (auto pair : detectAngles)
@@ -349,7 +351,7 @@ bool LogicalOcclusionPlugin::isInAngleRange(double angle, std::vector<std::pair<
     return false;
 }
 
-double LogicalOcclusionPlugin::calculateAngle(double x, double y)
+double LogicalCameraPlugin::calculateAngle(double x, double y)
 {
     double angle = atan2(y, x) * 180.0 / M_PI;
 
@@ -364,10 +366,10 @@ double LogicalOcclusionPlugin::calculateAngle(double x, double y)
     return angle;
 }
 
-bool LogicalOcclusionPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
+bool LogicalCameraPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
 {
     return model.pose().position().x() > 0;
 }
 // Register this plugin with the simulator
-GZ_REGISTER_SENSOR_PLUGIN(LogicalOcclusionPlugin)
+GZ_REGISTER_SENSOR_PLUGIN(LogicalCameraPlugin)
 }

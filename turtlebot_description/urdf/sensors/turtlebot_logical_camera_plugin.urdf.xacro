@@ -2,7 +2,7 @@
 <robot name="turtlebot_logical_occlusion_dist" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
 
-  <xacro:macro name="turtlebot_logical_occlusion_dist" params="parent orientation_z name">
+  <xacro:macro name="turtlebot_logical_camera_plugin" params="parent orientation_z name">
   <joint name="${name}" type="fixed">
     <origin xyz="0.00 0.00 0.4" rpy="0 0 ${orientation_z}"/>
     <parent link="${parent}" />
@@ -18,7 +18,7 @@
     </visual>
   </link>
 
-  <turtlebot_logical_occlusion name="${name}"/>
+  <turtlebot_logical_camera name="${name}"/>
   </xacro:macro>
 </robot>
 

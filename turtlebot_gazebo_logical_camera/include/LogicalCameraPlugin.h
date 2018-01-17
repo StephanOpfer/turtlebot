@@ -23,15 +23,15 @@ namespace gazebo
 /// \class LogicalOcclusionPlugin LogicalOcclusionPlugin.hh
 /// \brief Adds occlusion checking through ray casting filtering out LogicalCameraImage
 ///        the result is sended as a ROS LogicalCameraImage message
-class GAZEBO_VISIBLE LogicalOcclusionPlugin : public SensorPlugin
+class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
 {
     /// \brief Constructor
   public:
-    LogicalOcclusionPlugin();
+    LogicalCameraPlugin();
 
     /// \brief Destructor
   public:
-    virtual ~LogicalOcclusionPlugin();
+    virtual ~LogicalCameraPlugin();
 
     // Documentation inherited
   public:
@@ -62,11 +62,11 @@ class GAZEBO_VISIBLE LogicalOcclusionPlugin : public SensorPlugin
     * \brief Models configured as "occluding" will be checked for occlusion throught ray casting
     * @param model model detected by sensor
     */
-    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel configModel);
+    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
     bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
     bool isOccluded(msgs::LogicalCameraImage_Model &model);
-    void publishModel(msgs::LogicalCameraImage_Model model, LogicalOcclusionPlugin::ConfigModel &configModel);
+    void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel);
     /**
 	 * calculates the angle from the robot to a model
 	 */

@@ -109,18 +109,18 @@
   </xacro:macro>
 
  <!-- Logical occlusion Sensor -->
-  <xacro:macro name="turtlebot_logical_occlusion" params="name">
+  <xacro:macro name="turtlebot_logical_camera" params="name">
     <gazebo reference="${name}_link">  
-      <sensor type="logical_camera" name="logical_occlusion_camera_${name}">
+      <sensor type="logical_camera" name="logical_occlusion_camera_plugin_${name}">
         <always_on>true</always_on>
         <update_rate>20</update_rate>
         <logical_camera>
           <horizontal_fov>${M_PI}</horizontal_fov>
           <aspect_ratio>1</aspect_ratio>
-          <near>0.15</near>
-          <far>8</far>
+          <near>0.20</near>
+          <far>8.0</far>
         </logical_camera>
-        <plugin name="logical_occlusion_plugin" filename="liblogical_occlusion_plugin.so"/>
+        <plugin name="turtlebot_gazebo_logical_camera" filename="libturtlebot_gazebo_logical_camera.so"/>
       </sensor>
     </gazebo>
   </xacro:macro>
