@@ -478,15 +478,81 @@
     </model>
     <model name='coke_can_1'>
       <pose frame=''>3.77 10.60 0.825 0 0 0</pose>
-      <include>
+      		<include>
 		    <uri>model://coke_can</uri>
-	    </include>
+		</include>
     </model>
-    <model name='coke_can_2'>
-      <pose frame=''>0.77 7.53 0.825 0 0 0</pose>
-      <include>
+    <model name='coke_can_3'>
+      <pose frame=''>0.77 9.93 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_4'>
+      <pose frame=''>4.57 9.40 0.825 0 0 0</pose>
+      		<include>
 		    <uri>model://coke_can</uri>
-	    </include>
+		</include>
+    </model>
+    <model name='coke_can_5'>
+      <pose frame=''>4.57 8.20 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_6'>
+      <pose frame=''>9.11 8.01 0.825 0 0 0</pose>
+      		<include>
+		    <uri>model://coke_can</uri>
+		</include>
+    </model>
+    <model name='coke_can_7'>
+      <pose frame=''>12.16 10.40 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_8'>
+      <pose frame=''>13.16 8.40 0.825 0 0 0</pose>
+      		<include>
+		    <uri>model://coke_can</uri>
+		</include>
+    </model>
+    <model name='coke_can_9'>
+      <pose frame=''>15.16 5.62 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_10'>
+      <pose frame=''>16.61 9.13 0.825 0 0 0</pose>
+      		<include>
+		    <uri>model://coke_can</uri>
+		</include>
+    </model>
+    <model name='coke_can_11'>
+      <pose frame=''>16.26 7.81 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_12'>
+      <pose frame=''>27.2 6.85 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
+    <model name='coke_can_13'>
+      <pose frame=''>36.86 8.7 0.825 0 0 0</pose>
+      		<include>
+		    <uri>model://coke_can</uri>
+		</include>
+    </model>
+    <model name='coke_can_14'>
+      <pose frame=''>46.3 10.42 0.825 0 0 0</pose>
+      		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
     </model>
 
     <!-- The central door controller. -->

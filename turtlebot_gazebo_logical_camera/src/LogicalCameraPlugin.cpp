@@ -31,14 +31,7 @@ LogicalCameraPlugin::~LogicalCameraPlugin()
 
 void LogicalCameraPlugin::loadOccludingTypes()
 {
-    auto names = (*this->sc)["LogicalCamera"]->getNames("LogicalCamera.OccludingTypes", NULL);
-    for (auto name : *names)
-    {
-    	std::string type = (*this->sc)["LogicalCamera"]->get<string>("LogicalCamera.OccludingTypes", name.c_str(), NULL);
-        transform(type.begin(), type.end(), type.begin(), ::tolower);
-        std::cout << type << std::endl;
-        this->occludingTypes.push_back(type);
-    }
+    this->occludingTypes = (*this->sc)["LogicalCamera"]->getList<string>("occludingTypes", NULL);
 }
 
 void LogicalCameraPlugin::loadModelsFromConfig()
@@ -55,10 +48,6 @@ void LogicalCameraPlugin::loadModelsFromConfig()
 #ifdef LOGICAL_CAMERA_DEBUG
         cout << "LogicalCameraPlugin: section: " << section << endl;
 #endif
-        if (section.compare("OccludingTypes") == 0)
-        {
-            continue;
-        }
         const char *sec = section.c_str();
         ConfigModel m;
         m.range = config->get<double>(lc, sec, "range", NULL);
