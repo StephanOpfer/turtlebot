@@ -6,12 +6,15 @@
 #include <gazebo/physics/PhysicsTypes.hh>
 #include <gazebo/sensors/LogicalCameraSensor.hh>
 
+#include <memory>
 #include <string>
 #include <vector>
 
+
 #include <ros/ros.h>
 
-#define LOGICAL_OCCLUSION_DEBUG
+//#define LOGICAL_OCCLUSION_DEBUG
+//#define LOGICAL_CAMERA_DEBUG
 
 namespace supplementary
 {
@@ -72,6 +75,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
 	 */
     double calculateAngle(double x, double y);
     void loadModelsFromConfig();
+    void loadOccludingTypes();
     /**
 	 * calculates angle of object from quaternium
 	 */

@@ -4,6 +4,7 @@
 #include <string>
 
 // library for processing camera data for gazebo / ros conversions
+#include <turtlebot_gazebo_distance_sensor/LogicalCameraSensor.hh>
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
@@ -11,7 +12,7 @@
 #include <SystemConfig.h>
 #include <chrono>
 
-#include <turtlebot_gazebo_distance_sensor/LogicalCameraSensor.hh>
+#include <ros/ros.h>
 
 //#define LOGICAL_CAMERA_DEBUG
 

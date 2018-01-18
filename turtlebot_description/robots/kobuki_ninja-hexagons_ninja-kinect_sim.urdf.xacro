@@ -7,7 +7,7 @@
 <robot name="turtlebot" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_library.urdf.xacro" />
-  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_dist.urdf.xacro"/>
+  <!--<xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_dist.urdf.xacro"/>-->
   <xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_camera_plugin.urdf.xacro"/>
   <xacro:include filename="$(find turtlebot_description)/urdf/actuators/turtlebot_sim_arm.urdf.xacro"/>
 
@@ -15,9 +15,9 @@
   <stack_ninja-hexagons parent="base_link"/>
   <sensor_ninja-kinect  parent="base_link"/>
   <sensor_hokuyo parent="base_link"/>
-  <turtlebot_logical_dist name="sensor1" parent="base_link" orientation_z="0.0"/>
-  <turtlebot_logical_dist name="sensor2" parent="base_link" orientation_z="3.141"/>
-  <turtlebot_logical_camera_plugin name="sensor3" parent="base_link" orientation_z="0.0"/>
-  <turtlebot_logical_camera_plugin name="sensor4" parent="base_link" orientation_z="3.141"/>
+  <!--<turtlebot_logical_dist name="sensor1" parent="base_link" orientation_z="0.0"/>
+  <turtlebot_logical_dist name="sensor2" parent="base_link" orientation_z="3.141"/> -->
+  <turtlebot_logical_camera_plugin name="sensor1" parent="base_link" orientation_z="0.0"/>
+  <turtlebot_logical_camera_plugin name="sensor2" parent="base_link" orientation_z="3.141"/>
   <turtlebot_sim_arm name="arm" parent="base_footprint"/>
 </robot>

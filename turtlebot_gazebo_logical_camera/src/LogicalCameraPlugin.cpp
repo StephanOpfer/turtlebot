@@ -20,12 +20,25 @@ LogicalCameraPlugin::LogicalCameraPlugin()
     this->sensorYaw = 0;
     this->sc = supplementary::SystemConfig::getInstance();
     loadModelsFromConfig();
+    loadOccludingTypes();
 }
 
 //////////////////////////////////////////////////
 LogicalCameraPlugin::~LogicalCameraPlugin()
 {
     this->nh.shutdown();
+}
+
+void LogicalCameraPlugin::loadOccludingTypes()
+{
+    auto names = (*this->sc)["LogicalCamera"]->getNames("LogicalCamera.OccludingTypes", NULL);
+    for (auto name : *names)
+    {
+    	std::string type = (*this->sc)["LogicalCamera"]->get<string>("LogicalCamera.OccludingTypes", name.c_str(), NULL);
+        transform(type.begin(), type.end(), type.begin(), ::tolower);
+        std::cout << type << std::endl;
+        this->occludingTypes.push_back(type);
+    }
 }
 
 void LogicalCameraPlugin::loadModelsFromConfig()
@@ -39,10 +52,14 @@ void LogicalCameraPlugin::loadModelsFromConfig()
     // Iterate over all model sections in config file
     for (auto section : *(this->modelSectionNames))
     {
-        const char *sec = section.c_str();
 #ifdef LOGICAL_CAMERA_DEBUG
-        cout << "DistanceSensorPlugin: section: " << section << endl;
+        cout << "LogicalCameraPlugin: section: " << section << endl;
 #endif
+        if (section.compare("OccludingTypes") == 0)
+        {
+            continue;
+        }
+        const char *sec = section.c_str();
         ConfigModel m;
         m.range = config->get<double>(lc, sec, "range", NULL);
 
@@ -124,17 +141,11 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
     }
     robotName = robotName.substr(0, pos); // Getting only the name
 
-    std::string topicName = "/" + robotName + "/logical_occlusion_camera";
+    std::string topicName = "/" + robotName + "/logical_camera";
 
     this->modelPub = this->nh.advertise<ttb_msgs::LogicalCamera>(topicName, 50);
 
     ROS_INFO("LogicalCameraPlugin loaded!");
-    auto sections = (*this->sc)["LogicalCamera"]->getSections("LogicalCamera", NULL);
-    for (auto section : *sections)
-    {
-        transform(section.begin(), section.end(), section.begin(), ::tolower);
-        this->occludingTypes.push_back(section);
-    }
 
     // Get the sensor yaw, which is used to distinguish front and back sensor
     this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
@@ -176,7 +187,7 @@ void LogicalCameraPlugin::OnUpdate()
             if (isDetected(model, kv.second))
             {
                 // Translating gazebo Model message to ROS message
-            	publishModel(model, kv.second);
+                publishModel(model, kv.second);
             }
         }
     }
@@ -300,25 +311,19 @@ bool LogicalCameraPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
     std::string collided_entity;
     this->rayShape->GetIntersection(dist, collided_entity);
 
-    std::cout << "LogicalCameraPlugin: " << collided_entity << std::endl;
-
     // TODO: this does not work, because now he can see through walls if there is a table in front
 
-    // ignore walls and floor
-    if (collided_entity.find("distributed_systems_department") != std::string::npos)
+    for(auto occludingType : this->occludingTypes)
     {
-        return true;
-    }
-
-    // ignore doors
-    if (collided_entity.find("door") != std::string::npos)
-    {
-        return true;
+    	if(collided_entity.find(occludingType) != std::string::npos)
+    	{
+    		return true;
+    	}
     }
 
 // no door or wall or floor blocking sight to model
 #ifdef LOGICAL_OCCLUSION_DEBUG
-    cout << "LogicalCameraPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model "<< model.name()  <<" at: x=" << model.pose().position().x()
+    cout << "LogicalCameraPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model " << model.name() << " at: x=" << model.pose().position().x()
          << ", y= " << model.pose().position().y() << ", z= " << model.pose().position().z() << endl;
 #endif
     return false;
