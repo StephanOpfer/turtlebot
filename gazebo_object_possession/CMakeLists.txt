@@ -7,6 +7,7 @@ find_package(catkin REQUIRED
   gazebo_plugins
   gazebo_ros
   system_config
+  ttb_msgs
 )
 
 find_package(gazebo REQUIRED)
@@ -14,7 +15,7 @@ find_package(gazebo REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES gazebo_object_possession
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime system_config
+  CATKIN_DEPENDS gazebo_plugins gazebo_ros message_runtime system_config ttb_msgs
 #  DEPENDS system_lib
 )
 
@@ -34,5 +35,5 @@ target_link_libraries(${PROJECT_NAME}
   ${GAZEBO_LIBRARIES}
 )
 
-add_dependencies(gazebo_object_possession turtelbot_gazebo_arm_generate_messages_cpp)
+add_dependencies(gazebo_object_possession ttb_msgs)
 
