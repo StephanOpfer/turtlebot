@@ -734,6 +734,174 @@
 		   <uri>model://monkey_wrench</uri>
 	    	</include>
     </model>
+    <model name='bookshelf_1'>
+      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_2'>
+      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_3'>
+      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_4'>
+      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_5'>
+      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_6'>
+      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_7'>
+      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_8'>
+      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_9'>
+      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_10'>
+      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_11'>
+      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_12'>
+      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_13'>
+      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_14'>
+      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_15'>
+      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_16'>
+      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_17'>
+      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_18'>
+      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_19'>
+      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_20'>
+      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_21'>
+      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_22'>
+      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_23'>
+      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_24'>
+      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_25'>
+      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_26'>
+      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_27'>
+      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='bookshelf_28'>
+      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
 
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
