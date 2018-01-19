@@ -8,6 +8,7 @@
         <geometry>
           <mesh>
             <uri>model://coke_can/meshes/coke_can.dae</uri>
+	    <scale>0.5 0.5 0.5</scale>
           </mesh>
         </geometry>
       </visual>
@@ -16,6 +17,7 @@
         <geometry>
           <mesh>
             <uri>model://coke_can/meshes/coke_can.dae</uri>
+	    <scale>0.5 0.5 0.5</scale>
           </mesh>
         </geometry>
       </collision>
