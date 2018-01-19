@@ -1,16 +1,16 @@
 <launch>
+  <!-- Generate urdf-model of TurtleBot according to the given base, stack and 3d sensor.  -->
   <arg name="base" default="kobuki"/>
   <arg name="stacks" default="ninja-hexagons"/>
-  <arg name="3d_sensor" default="ninja-kinect"/>
-  <arg name="init_pose" default="-x 1 -y 1 -z 0"/>
-  <arg name="robot" default="leonardo"/>
-
+  <arg name="3d_sensor" default="ninja-kinect"/>  
   <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor)_sim.urdf.xacro'" />
   <param name="robot_description" command="$(arg urdf_file)" />
 
-  <!-- Gazebo model spawner -->
+  <!-- Spawn the generated turtlebot model. (Spawn process terminates after spawning.)-->
+  <arg name="robot_model_name" default="leonardo"/>
+  <arg name="init_pose" default="-x 1 -y 1 -z 0"/>
   <node name="spawn_turtlebot_model" pkg="gazebo_ros" type="spawn_model"
-        args="$(arg init_pose) -unpause -urdf -param robot_description -model $(arg robot)"/>
+        args="$(arg init_pose) -unpause -urdf -param robot_description -model $(arg robot_model_name)"/>
 
   <!-- Velocity muxer -->
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
@@ -20,24 +20,9 @@
     <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
   </node>
 
-  <!-- Bumper/cliff to pointcloud (not working, as it needs sensors/core messages) -->
-  <include file="$(find turtlebot_bringup)/launch/includes/kobuki/bumper2pc.launch.xml"/>
-
+  <!-- Robot State Publisher: Responsible for publishing the transformations between the different parts of the robot (TF). -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
-
-  <!-- Fake laser -->
-  <!-- We don't need a 2D fake scan from simulated Kinect
-  <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
-  <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
-        args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet laserscan_nodelet_manager">
-    <param name="scan_height" value="10"/>
-    <param name="output_frame_id" value="/camera_depth_frame"/>
-    <param name="range_min" value="0.45"/>
-    <remap from="image" to="/camera/depth/image_raw"/>
-    <remap from="scan" to="/scan"/>
-  </node>
-  -->
 </launch>
 
