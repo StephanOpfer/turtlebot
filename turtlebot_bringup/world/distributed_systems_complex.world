@@ -21,6 +21,9 @@
     <include>
       <uri>model://sun</uri>
     </include>
+    <scene>
+    	<shadows>0</shadows>
+    </scene>
     <!-- Own physics settings to speed up simulation -->
     <physics type="ode">
       <max_step_size>0.01</max_step_size>
