@@ -956,6 +956,385 @@
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
+    <model name='cup_1'>
+      <pose frame=''>3.9 9.1 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_2'>
+      <pose frame=''>3.77 7.91 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_3'>
+      <pose frame=''>4.54 10.55 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_4'>
+      <pose frame=''>4.08 6.07 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_5'>
+      <pose frame=''>4.73 4.93 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_6'>
+      <pose frame=''>7.06 8.82 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_7'>
+      <pose frame=''>8.87 10.92 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_8'>
+      <pose frame=''>17.08 9.36 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_9'>
+      <pose frame=''>21.02 6.49 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_10'>
+      <pose frame=''>21.03 9.35 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_11'>
+      <pose frame=''>24.03 6.39 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_12'>
+      <pose frame=''>23.07 9.16 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_13'>
+      <pose frame=''>27.07 6.61 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_14'>
+      <pose frame=''>27.19 7.24 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_15'>
+      <pose frame=''>27.26 9.80 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_16'>
+      <pose frame=''>30.17 9.71 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_17'>
+      <pose frame=''>33.16 10.51 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_18'>
+      <pose frame=''>41.03 7.95 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_19'>
+      <pose frame=''>46.50 10.07 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_20'>
+      <pose frame=''>46.73 9.05 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_21'>
+      <pose frame=''>47.96 5.19 0.78 0 0 0</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_22'>
+      <pose frame=''>39.13 5.85 0 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_23'>
+      <pose frame=''>34.25 5.67 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_24'>
+      <pose frame=''>34.57 5.64 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_25'>
+      <pose frame=''>34.85 5.64 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_26'>
+      <pose frame=''>35.22 5.63 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_27'>
+      <pose frame=''>35.47 5.63 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_28'>
+      <pose frame=''>35.73 5.63 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_29'>
+      <pose frame=''>34.31 5.65 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_30'>
+      <pose frame=''>34.54 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_31'>
+      <pose frame=''>34.54 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_32'>
+      <pose frame=''>34.81 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_33'>
+      <pose frame=''>35.20 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_34'>
+      <pose frame=''>35.44 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_35'>
+      <pose frame=''>35.69 5.63 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_36'>
+      <pose frame=''>34.51 5.69 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_37'>
+      <pose frame=''>34.29 5.64 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_38'>
+      <pose frame=''>34.81 5.64 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_39'>
+      <pose frame=''>35.21 5.65 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_40'>
+      <pose frame=''>35.43 5.65 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_41'>
+      <pose frame=''>35.71 5.65 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_42'>
+      <pose frame=''>35.76 3.24 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_43'>
+      <pose frame=''>35.49 3.25 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_44'>
+      <pose frame=''>35.24 3.26 1.67 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_45'>
+      <pose frame=''>34.36 3.31 1.31 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_46'>
+      <pose frame=''>35.73 3.03 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_47'>
+      <pose frame=''>34.55 3.29 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='cup_48'>
+      <pose frame=''>35.22 3.29 0.92 0 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://cup</uri>
+	    	</include>
+    </model>
+    <model name='red_book_1'>
+      <pose frame=''>0.83 8.48 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_red</uri>
+	    	</include>
+    </model>
+    <model name='green_book_1'>
+      <pose frame=''>0.91 8.88 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_green</uri>
+	    	</include>
+    </model>
+    <model name='blue_book_1'>
+      <pose frame=''>0.59 8.73 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_blue</uri>
+	    	</include>
+    </model>
+    <model name='blue_book_2'>
+      <pose frame=''>0.92 7.5 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_blue</uri>
+	    	</include>
+    </model>
+    <model name='red_book_2'>
+      <pose frame=''>0.69 7.22 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_red</uri>
+	    	</include>
+    </model>
+    <model name='green_book_2'>
+      <pose frame=''>3.68 5.18 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_green</uri>
+	    	</include>
+    </model>
+    <model name='blue_book_3'>
+      <pose frame=''>7.30 10.82 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_blue</uri>
+	    	</include>
+    </model>
+    <model name='red_book_3'>
+      <pose frame=''>21.21 9.73 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_red</uri>
+	    	</include>
+    </model>
+    <model name='blue_book_4'>
+      <pose frame=''>24.34 6.93 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_blue</uri>
+	    	</include>
+    </model>
+    <model name='green_book_3'>
+      <pose frame=''>27.36 9.40 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_green</uri>
+	    	</include>
+    </model>
+    <model name='red_book_4'>
+      <pose frame=''>30.30 6.81 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_red</uri>
+	    	</include>
+    </model>
+    <model name='red_book_5'>
+      <pose frame=''>31.24 5.52 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_red</uri>
+	    	</include>
+    </model>
+    <model name='blue_book_4'>
+      <pose frame=''>40.47 8.97 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_blue</uri>
+	    	</include>
+    </model>
+    <model name='green_book_4'>
+      <pose frame=''>46.34 10.68 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_green</uri>
+	    	</include>
+    </model>
+    <model name='green_book_5'>
+      <pose frame=''>46.18 9.96 0.74 1.570796327 0 -1.570796327</pose>
+      		<include>
+		   <uri>model://book_green</uri>
+	    	</include>
+    </model>
+
 
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
