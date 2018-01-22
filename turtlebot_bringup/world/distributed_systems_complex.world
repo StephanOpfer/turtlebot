@@ -144,16 +144,16 @@
       </include>
     </model>
     <model name='r1411A_medium_table_wall_left'>
-      <pose frame=''>9.11 8.01 0 0 0 0</pose>
-      <include>
-        <uri>model://medium_table</uri>
-      </include>
+          <pose frame=''>9.11 8.01 0 0 0 0</pose>
+          <include>
+        	<uri>model://medium_table</uri>
+          </include>
     </model>
     <model name='r1411A_medium_table_wall_right'>
-      <pose frame=''>7.1 8.91 0 0 0 0</pose>
-      <include>
-        <uri>model://medium_table</uri>
-      </include>
+          <pose frame=''>7.1 8.91 0 0 0 0</pose>
+          <include>
+       		 <uri>model://medium_table</uri>
+     	  </include>
     </model>
     <model name='r1410A_large_table_atwindow'>
   	  <pose frame=''>12.16 10.40 0 0 0 0</pose>
@@ -327,6 +327,30 @@
   	  <pose frame=''>47.85 5.257 0 0 0 1.570796327</pose>
   	  <include>
   		  <uri>model://large_table</uri>
+  	  </include>
+    </model>
+    <model name='r1405B_large_table_dish_washer'>
+  	  <pose frame=''>35.17 5.50 0 0 0 -1.570796327</pose>
+  	  <include>
+  		  <uri>model://large_table</uri>
+  	  </include>
+    </model>
+    <model name='r1405B_large_table_coffee'>
+  	  <pose frame=''>35.14 3.55 0 0 0 -1.570796327</pose>
+  	  <include>
+  		  <uri>model://large_table</uri>
+  	  </include>
+    </model>
+    <model name='r1403C_large_table_printer'>
+  	  <pose frame=''>38.83 3.62 0 0 0 1.570796327</pose>
+  	  <include>
+  		  <uri>model://large_table</uri>
+  	  </include>
+    </model>
+    <model name='r1403A_small_table'>
+  	  <pose frame=''>40.28 3.30 0 0 0 1.570796327</pose>
+  	  <include>
+  		  <uri>model://small_table</uri>
   	  </include>
     </model>
     <!-- Doors: Naming Convention - The door is opening into the second room of its name. -->
@@ -554,91 +578,91 @@
 		   <uri>model://coke_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_1'>
+    <model name='r1411_trash_can_1'>
       <pose frame=''>6.30 9.30 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_2'>
+    <model name='r1411_trash_can_2'>
       <pose frame=''>6.30 8.70 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_3'>
+    <model name='r1411A_trash_can'>
       <pose frame=''>7.0 7.5 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_4'>
+    <model name='r1410A_trash_can'>
       <pose frame=''>12.1 7.0 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_5'>
+    <model name='r1410B_trash_can'>
       <pose frame=''>15.22 6.92 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_6'>
+    <model name='r1408A_trash_can'>
       <pose frame=''>16.14 10.95 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_7'>
+    <model name='r1408B_trash_can'>
       <pose frame=''>21.13 8.21 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_8'>
+    <model name='r1408c_trash_can'>
       <pose frame=''>24.07 8.21 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_9'>
+    <model name='r1406A_trash_can'>
       <pose frame=''>27.03 8.21 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_10'>
+    <model name='r1406B_trash_can'>
       <pose frame=''>29.94 8.21 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_11'>
+    <model name='r1406C_trash_can'>
       <pose frame=''>33.12 6.52 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_12'>
+    <model name='r_1405B_trash_can'>
       <pose frame=''>35.5 3.75 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_13'>
+    <model name='r1403C_trash_can'>
       <pose frame=''>39.01 3.58 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_14'>
+    <model name='r1403A_trash_can'>
       <pose frame=''>40.3 9.98 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
 	    	</include>
     </model>
-    <model name='trash_can_15'>
+    <model name='r1403_trash_can'>
       <pose frame=''>48.03 10.66 0.19 0 0 0</pose>
       		<include>
 		   <uri>model://trash_can</uri>
@@ -734,170 +758,200 @@
 		   <uri>model://monkey_wrench</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_1'>
+    <model name='r1411A_bookshelf'>
       <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_2'>
+    <model name='r1410A_bookshelf_1'>
       <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_3'>
+    <model name='r1410A_bookshelf_2'>
       <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_4'>
+    <model name='r1408A_bookshelf_1'>
       <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_5'>
+    <model name='r1408A_bookshelf_2'>
       <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_6'>
+    <model name='r1408A_bookshelf_3'>
       <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_7'>
+    <model name='r1408A_bookshelf_4'>
       <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_8'>
-      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+    <model name='r1408B_bookshelf_1'>
+      <pose frame=''>18.75 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_9'>
-      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+    <model name='r1408B_bookshelf_2'>
+      <pose frame=''>18.75 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_10'>
-      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+    <model name='r1408C_bookshelf_1'>
+      <pose frame=''>21.81 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_11'>
-      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+    <model name='r1408C_bookshelf_2'>
+      <pose frame=''>21.81 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_12'>
-      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+    <model name='r1406A_bookshelf_1'>
+      <pose frame=''>24.87 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_13'>
-      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+    <model name='r1406A_bookshelf_2'>
+      <pose frame=''>24.87 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_14'>
-      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+    <model name='r1406B_bookshelf_1'>
+      <pose frame=''>27.88 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_15'>
-      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+    <model name='r1406B_bookshelf_2'>
+      <pose frame=''>27.88 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_16'>
-      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+    <model name='r1406C_bookshelf_1'>
+      <pose frame=''>30.83 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_17'>
-      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+    <model name='r1406C_bookshelf_2'>
+      <pose frame=''>30.83 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_18'>
-      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+    <model name='r1405_bookshelf_1'>
+      <pose frame=''>39.15 6.00 0 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_19'>
-      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+    <model name='r1400_bookshelf_2'>
+      <pose frame=''>38.25 6.00 0 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_20'>
-      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+    <model name='r1403A_bookshelf_1'>
+      <pose frame=''>42.67 9.82 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_21'>
-      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+    <model name='r1403A_bookshelf_2'>
+      <pose frame=''>42.67 8.89 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_22'>
-      <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
+    <model name='r1403A_bookshelf_3'>
+      <pose frame=''>42.67 7.96 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_23'>
-      <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
+    <model name='r1403A_bookshelf_4'>
+      <pose frame=''>42.67 7.06 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_24'>
-      <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
+    <model name='r1403_bookshelf_1'>
+      <pose frame=''>48.17 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_25'>
-      <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
+    <model name='r1403_bookshelf_2'>
+      <pose frame=''>47.27 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_26'>
-      <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
+    <model name='r1403_bookshelf_3'>
+      <pose frame=''>46.37 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_27'>
-      <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
+    <model name='r1403_bookshelf_4'>
+      <pose frame=''>45.47 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='bookshelf_28'>
-      <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
+    <model name='r1403_bookshelf_5'>
+      <pose frame=''>44.57 3.11 0 0 0 -3.141592654</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='r1405B_bookshelf_1'>
+      <pose frame=''>35.47 5.85 0.80 0 0 0</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='r1405B_bookshelf_2'>
+      <pose frame=''>34.55 5.85 0.80 0 0 0</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='r1405B_bookshelf_3'>
+      <pose frame=''>35.47 3.10 0.80 0 0 3.141592654</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='r1405B_bookshelf_4'>
+      <pose frame=''>34.56 3.10 0.80 0 0 3.141592654</pose>
+      		<include>
+		   <uri>model://bookshelf</uri>
+	    	</include>
+    </model>
+    <model name='r1403C_bookshelf'>
+      <pose frame=''>39.13 5.85 0 0 0 0</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
