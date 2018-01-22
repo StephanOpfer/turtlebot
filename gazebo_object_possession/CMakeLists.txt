@@ -35,5 +35,5 @@ target_link_libraries(${PROJECT_NAME}
   ${GAZEBO_LIBRARIES}
 )
 
-add_dependencies(gazebo_object_possession ttb_msgs)
+add_dependencies(gazebo_object_possession ttb_msgs_generate_messages_cpp)
 
