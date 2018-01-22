@@ -12,8 +12,17 @@
   <node name="spawn_turtlebot_model" pkg="gazebo_ros" type="spawn_model"
         args="$(arg init_pose) -unpause -urdf -param robot_description -model $(arg robot_model_name)"/>
 
-  <!-- Robot State Publisher: Responsible for publishing the transformations between the different parts of the robot (TF). 
-  Its input is the "joint_states" topic from Gazebo and the parameter "robot_description" from above. -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <!-- Velocity muxer -->
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
+        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml" />
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node>
+
+  <!-- Robot State Publisher: Responsible for publishing the transformations between the different parts of the robot (TF). -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
 </launch>
 

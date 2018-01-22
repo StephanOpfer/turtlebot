@@ -2,10 +2,22 @@
   <group ns="leonardo">
     <param name="tf_prefix" value="leonardo" />
     <!-- Localization -->
+    <!--<include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-amcl-simulation.launch.xml">
+      <arg name="initial_pose_x" value="1"/>
+      <arg name="initial_pose_y" value="1"/>
+      <arg name="initial_pose_a" value="0"/>
+      <arg name="scan_topic" value="scan_hokuyo"/>
+      <arg name="odom_frame_id" value="leonardo/odom"/>
+      <arg name="base_frame_id" value="leonardo/base_link"/>
+    </include>-->
     <node pkg="fake_localization" type="fake_localization" name="fake_localization">
-      <param name="odom_frame_id"   value="/leonardo/odom"/>
-      <param name="base_frame_id"   value="/leonardo/base_link"/>
-      <remap from="base_pose_ground_truth" to="ground_truth_pose"/>
+      <param name="delta_x"         value="0.0"/>
+      <param name="delta_y"         value="0.0"/>
+      <param name="delta_yaw"       value="0.0"/>
+      <param name="global_frame_id" value="/map"/>
+      <param name="odom_frame_id"   value="leonardo/odom"/>
+      <param name="base_frame_id"   value="leonardo/base_link"/>
+      <remap from="base_pose_ground_truth" to="odom"/>
     </node>
     <!-- Move base -->
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
