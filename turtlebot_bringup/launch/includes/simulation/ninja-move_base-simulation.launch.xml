@@ -17,7 +17,6 @@
     <rosparam file="$(find turtlebot_bringup)/param/dwa_local_planner_params_ninja.yaml" command="load" />
     <rosparam file="$(find turtlebot_bringup)/param/global_planner_params_ninja.yaml" command="load" />
     <rosparam file="$(find turtlebot_bringup)/param/move_base_params_ninja.yaml" command="load" />
-    <rosparam file="$(find turtlebot_bringup)/param/navfn_global_planner_params_ninja.yaml" command="load" />
     
     <!-- external params file that could be loaded into the move_base namespace -->
     <rosparam file="$(arg custom_param_file)" command="load" />
