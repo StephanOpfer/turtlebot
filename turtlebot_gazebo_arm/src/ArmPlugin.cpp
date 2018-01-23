@@ -91,9 +91,9 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
     {
         if (msg->objectName == this->transportedModel->GetName())
         {
-            auto targetPos = this->model->GetWorldPose();
+            auto targetPos = this->transportedModel->GetWorldPose();
             // TODO setting x does not work properly
-            targetPos.pos.y += 1;
+            targetPos.pos.x += 1.0;
             this->transportedModel->SetWorldPose(targetPos);
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction
