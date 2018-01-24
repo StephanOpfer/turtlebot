@@ -17,6 +17,7 @@ ArmPlugin::ArmPlugin()
 {
     this->spinner = nullptr;
     this->transportedModel = nullptr;
+    this->previousTransportedModel = nullptr;
 }
 
 ArmPlugin::~ArmPlugin()
@@ -58,14 +59,20 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
         ownPos.pos.z += 1;
         this->transportedModel->SetWorldPose(ownPos);
     }
+    if (this->previousTransportedModel != nullptr)
+    {
+    	this->previousTransportedModel->SetWorldPose(this->previousTransportedModel->GetWorldPose());
+    	this->previousTransportedModel->SetStatic(true);
+        this->previousTransportedModel->Update();
+    }
 }
 
 void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
     std::cout << "ArmPlugin::OnGrab: Msg Name " << msg->objectName << std::endl;
-    if(msg->objectName.empty())
+    if (msg->objectName.empty())
     {
-    	return;
+        return;
     }
     if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr)
     {
@@ -75,7 +82,7 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
             auto robotPosition = this->model->GetWorldPose().pos;
             auto transportedModelPose = modelToCarry->GetWorldPose().pos;
             double distance = sqrt(pow(transportedModelPose.x - robotPosition.x, 2) + pow(transportedModelPose.y - robotPosition.y, 2));
-            std::cout << "ArmPlugin: distance to model " << msg->objectName << ": " << distance << std::endl;
+            std::cout << "ArmPlugin: Grab: distance to model " << msg->objectName << ": " << distance << std::endl;
             if (distance <= armRange)
             {
                 this->transportedModel = modelToCarry;
@@ -98,7 +105,12 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction
             // y and z work fine ...
-            this->transportedModel->Update();
+//            this->transportedModel->Update();
+            auto robotPosition = this->model->GetWorldPose().pos;
+            auto transportedModelPose = this->transportedModel->GetWorldPose().pos;
+            double distance = sqrt(pow(transportedModelPose.x - robotPosition.x, 2) + pow(transportedModelPose.y - robotPosition.y, 2));
+            std::cout << "ArmPlugin: Drop: distance to model " << msg->objectName << ": " << distance << std::endl;
+            this->previousTransportedModel = this->transportedModel;
             this->transportedModel = nullptr;
         }
         else

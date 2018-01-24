@@ -509,6 +509,12 @@
 		    <uri>model://coke_can</uri>
 		</include>
     </model>
+    <model name='coke_can_2'>
+      <pose frame=''>0.72 7.53 0.95 0 0 0</pose>
+		<include>
+		   <uri>model://coke_can</uri>
+	    	</include>
+    </model>
     <model name='coke_can_3'>
       <pose frame=''>0.77 9.93 0.95 0 0 0</pose>
       		<include>

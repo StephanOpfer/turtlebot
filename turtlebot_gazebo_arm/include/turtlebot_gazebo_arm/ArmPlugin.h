@@ -47,9 +47,10 @@ namespace gazebo
 		// Pointer to the model
 		physics::ModelPtr model;
 		physics::ModelPtr transportedModel;
+		physics::ModelPtr previousTransportedModel;
 		physics::WorldPtr world;
 
 		event::ConnectionPtr updateConnection;
-		double armRange = 1.0;
+		double armRange = 3.0;
 	};
 }
