@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+    <model name='poi'>
+    	<static>true</static>
+		<link name='link'>
+			<visual name='visual'>
+				  <geometry>
+						<cylinder>
+						  	<radius>0.2</radius>
+						  	<length>0.01</length>
+						</cylinder>
+				  </geometry>
+				  <material>
+						<script>
+							  <name>Gazebo/FlatBlack</name>
+							  <uri>file://media/materials/scripts/gazebo.material</uri>
+						</script>
+				  </material>
+			</visual>
+		</link>
+	</model>
+</sdf>

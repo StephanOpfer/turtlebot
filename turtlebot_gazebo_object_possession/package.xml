@@ -4,10 +4,10 @@
   <version>0.0.0</version>
   <description>The turtlebot_gazebo_object_possession package</description>
 
-  <maintainer email="stefan@todo.todo">stefan</maintainer>
+  <maintainer email="jakob@vs.uni-kassel.de">Stefan Jakob</maintainer>
 
 
-  <license>TODO</license>
+  <license>MIT</license>
 
 
   <buildtool_depend>catkin</buildtool_depend>

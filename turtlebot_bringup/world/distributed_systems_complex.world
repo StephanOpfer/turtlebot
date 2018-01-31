@@ -4,19 +4,11 @@
     <!-- Initial Camera Position -->
     <gui>
       <camera name="camera_default">
-        <!--<pose>
-          -4.0 2.0 8.0 0.0 0.7 0.0
-        </pose>-->
         <pose>
           11.80 7.9 14.0 0.0 1.5 0.0
         </pose>
       </camera>
     </gui>
-    <!--
-    <include>
-      <uri>model://ground_plane</uri>
-    </include>
-    -->
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
@@ -29,21 +21,7 @@
       <max_step_size>0.01</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>0</real_time_update_rate>
-      <!--<real_time_update_rate>0</real_time_update_rate>-->
       <gravity>0 0 -9.8</gravity>
-      <!--<ode>
-        <solver>
-          <type>quick</type>
-          <iters>50</iters>
-          <sor>1.4</sor>
-        </solver>
-        <constraints>
-          <cfm>0</cfm>
-          <erp>1</erp>
-          <contact_max_correcting_vel>0</contact_max_correcting_vel>
-          <contact_surface_layer>0</contact_surface_layer>
-        </constraints>
-      </ode>-->
     </physics>
     <!-- walls & floor -->
     <include>
@@ -2208,7 +2186,9 @@
 
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>
-    <!-- THe central plugin managing the possesseion of objects -->
+    <!-- The central plugin managing the possesseion of objects -->
     <plugin name="turtlebot_gazebo_object_possession" filename="libturtlebot_gazebo_object_possession.so"/>
+    <!-- Inserts POIs into the simulation according to its config file. -->
+    <plugin name="poi_spawner" filename="libpoi_spawner.so"/>
   </world>
 </sdf>

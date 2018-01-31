@@ -43,8 +43,6 @@ void HingedDoorController::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 // Called by the world update start event
 void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
 {
-    // Apply a small linear velocity to the model.
-    // this->model->SetLinearVel(math::Vector3(.03, 0, 0));
 }
 
 /**
