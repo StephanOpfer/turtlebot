@@ -3,7 +3,7 @@
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
 
   <xacro:macro name="turtlebot_sim_arm" params="name parent">
-  <joint name="${name}" type="continuous">
+  <joint name="${name}" type="fixed">
     <origin xyz="0.00 0.00 0.5" rpy="0 0 0"/>
     <parent link="${parent}" />
     <child link="${name}_link" />
