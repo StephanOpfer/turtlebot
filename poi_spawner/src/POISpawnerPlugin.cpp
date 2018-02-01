@@ -120,13 +120,13 @@ void POISpawnerPlugin::OnUpdate(const common::UpdateInfo &info)
         spawned = true;
     }
 
-    for (auto &entry : this->poiTextMap)
-    {
-        if (!entry.second)
-        {
-            this->setText(entry.first);
-        }
-    }
+//    for (auto &entry : this->poiTextMap)
+//    {
+//        if (!entry.second)
+//        {
+//            this->setText(entry.first);
+//        }
+//    }
 }
 
 // Register this plugin with the simulator
