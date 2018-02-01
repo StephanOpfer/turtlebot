@@ -12,7 +12,7 @@
 				  </geometry>
 				  <material>
 						<script>
-							  <name>Gazebo/White</name>
+							  <name>Gazebo/Grey</name>
 							  <uri>file://media/materials/scripts/gazebo.material</uri>
 						</script>
 				  </material>

@@ -61,7 +61,6 @@ void POISpawnerPlugin::setText(std::string name)
     scene = rendering::get_scene();
     if (!scene || !scene->Initialized())
     {
-    	//std::cout << "POISpawner: No Scene!" << std::endl;
         return;
     }
 
@@ -70,7 +69,6 @@ void POISpawnerPlugin::setText(std::string name)
     // Visual is not in the scene yet
     if (!vis)
     {
-        //std::cout << "POISpawner: No Visual!" << std::endl;
         return;
     }
 
@@ -79,11 +77,15 @@ void POISpawnerPlugin::setText(std::string name)
     std::cout << "POISpawner: "<<name << std::endl;
     // Create text
     auto text = new rendering::MovableText;
-    text->Load(textName, name, "Arial", 0.1, common::Color::Blue);
+    //text->Load(textName, name, "Arial", 0.1, common::Color::Blue);
+    text->SetText(name);
+    //text->SetFontName("Arial");
+    text->SetCharHeight(1.0);
+    text->SetColor(common::Color::Blue);
     text->SetBaseline(modelBox.Max().Z() + 0.1);
     text->SetShowOnTop(true);
-
-    // Attach modelName to the visual's node
+//
+//    // Attach modelName to the visual's node
     auto textNode = vis->GetSceneNode()->createChildSceneNode(textName + "__NODE__");
     textNode->attachObject(text);
     textNode->setInheritScale(false);
@@ -120,7 +122,6 @@ void POISpawnerPlugin::OnUpdate(const common::UpdateInfo &info)
 
     for (auto &entry : this->poiTextMap)
     {
-        std::cout << "POISpawner: In Loop!" << std::endl;
         if (!entry.second)
         {
             this->setText(entry.first);
