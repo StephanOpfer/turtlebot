@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<sdf version="1.4">
+<sdf version="1.6">
     <model name='poi'>
     	<static>true</static>
 		<link name='link'>
@@ -12,7 +12,7 @@
 				  </geometry>
 				  <material>
 						<script>
-							  <name>Gazebo/FlatBlack</name>
+							  <name>Gazebo/White</name>
 							  <uri>file://media/materials/scripts/gazebo.material</uri>
 						</script>
 				  </material>

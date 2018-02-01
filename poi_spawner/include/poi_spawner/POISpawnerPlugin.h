@@ -4,8 +4,9 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
-#include <string>
 #include <ros/ros.h>
+#include <string>
+#include <map>
 
 namespace gazebo
 {
@@ -35,11 +36,14 @@ class POISpawnerPlugin : public WorldPlugin
      * Callback that receives the contact sensor's update signal.
      */
     void OnUpdate(const common::UpdateInfo &info);
+    void setText(std::string name);
 
     // Pointer to the model
     physics::WorldPtr world;
-    ros::NodeHandle n;
-    ros::ServiceClient robotSpawnServiceClient;
+    transport::PublisherPtr factoryPub;
+    transport::NodePtr node;
+    rendering::ScenePtr scene;
+    std::map<std::string, bool> poiTextMap;
     std::string poi_model_xml;
     bool spawned;
     event::ConnectionPtr updateConnection;
