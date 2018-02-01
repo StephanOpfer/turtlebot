@@ -13,7 +13,7 @@
 namespace gazebo
 {
 
-POISpawnerPlugin::POISpawnerPlugin() : WorldPlugin()
+POISpawnerPlugin::POISpawnerPlugin()
 {
     string path = ros::package::getPath("turtlebot_bringup");
     ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
@@ -23,7 +23,6 @@ POISpawnerPlugin::POISpawnerPlugin() : WorldPlugin()
 
 POISpawnerPlugin::~POISpawnerPlugin()
 {
-
 }
 
 void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
@@ -76,6 +75,7 @@ void POISpawnerPlugin::setText(std::string name)
     {
         return;
     }
+
     auto vis = scene->GetVisual(name);
 
     // Visual is not in the scene yet
