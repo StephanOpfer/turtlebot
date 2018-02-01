@@ -13,7 +13,7 @@
 namespace gazebo
 {
 
-POISpawnerPlugin::POISpawnerPlugin()
+POISpawnerPlugin::POISpawnerPlugin() : WorldPlugin()
 {
     string path = ros::package::getPath("turtlebot_bringup");
     ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
@@ -23,16 +23,18 @@ POISpawnerPlugin::POISpawnerPlugin()
 
 POISpawnerPlugin::~POISpawnerPlugin()
 {
+
 }
 
 void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     this->world = _parent;
 
-    this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&POISpawnerPlugin::OnUpdate, this, _1));
+    this->updateConnections.push_back(event::Events::ConnectWorldUpdateBegin(boost::bind(&POISpawnerPlugin::OnModelUpdate, this, _1)));
+    this->updateConnections.push_back(event::Events::ConnectPreRender(std::bind(&POISpawnerPlugin::OnUpdate, this)));
 
-    // Create a new transport node
-    node = boost::make_shared<transport::Node>();
+        // Create a new transport node
+        node = boost::make_shared<transport::Node>();
 
     // Initialize the node with the world name
     node->Init(this->world->GetName());
@@ -56,6 +58,17 @@ void POISpawnerPlugin::spawnPOI(string name, double x, double y)
     this->poiTextMap.emplace(modelName, false);
 }
 
+void POISpawnerPlugin::OnUpdate()
+{
+    for (auto &entry : this->poiTextMap)
+    {
+        if (!entry.second)
+        {
+            this->setText(entry.first);
+        }
+    }
+}
+
 void POISpawnerPlugin::setText(std::string name)
 {
     scene = rendering::get_scene();
@@ -63,7 +76,6 @@ void POISpawnerPlugin::setText(std::string name)
     {
         return;
     }
-
     auto vis = scene->GetVisual(name);
 
     // Visual is not in the scene yet
@@ -74,18 +86,19 @@ void POISpawnerPlugin::setText(std::string name)
 
     std::string textName = name + "__TEXT__";
     auto modelBox = vis->GetBoundingBox().Ign();
-    std::cout << "POISpawner: "<<name << std::endl;
+    std::cout << "POISpawner: " << name << std::endl;
     // Create text
-    auto text = new rendering::MovableText;
-    //text->Load(textName, name, "Arial", 0.1, common::Color::Blue);
+    auto text = new rendering::MovableText();
+//    text->Load(textName, name, "Arial", 0.1, common::Color::Blue);
     text->SetText(name);
-    //text->SetFontName("Arial");
+    text->SetFontName("Arial");
     text->SetCharHeight(1.0);
     text->SetColor(common::Color::Blue);
-    text->SetBaseline(modelBox.Max().Z() + 0.1);
-    text->SetShowOnTop(true);
-//
-//    // Attach modelName to the visual's node
+    text->SetBaseline(modelBox.Max().Z() + 1);
+//    text->SetShowOnTop(true);
+//    text->setVisible(true);
+    //
+    //    // Attach modelName to the visual's node
     auto textNode = vis->GetSceneNode()->createChildSceneNode(textName + "__NODE__");
     textNode->attachObject(text);
     textNode->setInheritScale(false);
@@ -93,7 +106,7 @@ void POISpawnerPlugin::setText(std::string name)
     std::cout << "POISpawner: SetText Done!" << std::endl;
 }
 
-void POISpawnerPlugin::OnUpdate(const common::UpdateInfo &info)
+void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo &info)
 {
     if (!spawned)
     {
@@ -118,14 +131,6 @@ void POISpawnerPlugin::OnUpdate(const common::UpdateInfo &info)
             }
         }
         spawned = true;
-    }
-
-    for (auto &entry : this->poiTextMap)
-    {
-        if (!entry.second)
-        {
-            this->setText(entry.first);
-        }
     }
 }
 
