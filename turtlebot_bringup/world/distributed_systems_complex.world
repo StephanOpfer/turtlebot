@@ -8,6 +8,8 @@
           11.80 7.9 14.0 0.0 1.5 0.0
         </pose>
       </camera>
+	<!-- Inserts POIs labels into the simulation according to its config file. -->
+    <plugin name="poi_labeling" filename="libpoi_labeling.so"/>
     </gui>
     <!-- A global light source -->
     <include>
@@ -2180,9 +2182,6 @@
 		   <uri>model://book_blue</uri>
 	    	</include>
     </model>
-
-
-
 
     <!-- The central door controller. -->
     <plugin name="hinged_door_controller" filename="libhinged_door_controller.so"/>

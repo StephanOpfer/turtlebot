@@ -36,8 +36,6 @@ class POISpawnerPlugin : public WorldPlugin
      * Callback that receives the contact sensor's update signal.
      */
     void OnModelUpdate(const common::UpdateInfo &info);
-    void OnUpdate();
-    void setText(std::string name);
 
     // Pointer to the model
     physics::WorldPtr world;
@@ -47,6 +45,6 @@ class POISpawnerPlugin : public WorldPlugin
     std::map<std::string, bool> poiTextMap;
     std::string poi_model_xml;
     bool spawned;
-    std::vector<event::ConnectionPtr> updateConnections;
+    event::ConnectionPtr updateConnection;
 };
 }

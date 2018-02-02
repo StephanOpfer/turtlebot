@@ -29,11 +29,10 @@ void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     this->world = _parent;
 
-    this->updateConnections.push_back(event::Events::ConnectWorldUpdateBegin(boost::bind(&POISpawnerPlugin::OnModelUpdate, this, _1)));
-    this->updateConnections.push_back(event::Events::ConnectPreRender(std::bind(&POISpawnerPlugin::OnUpdate, this)));
+    this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&POISpawnerPlugin::OnModelUpdate, this, _1));
 
-        // Create a new transport node
-        node = boost::make_shared<transport::Node>();
+    // Create a new transport node
+    node = boost::make_shared<transport::Node>();
 
     // Initialize the node with the world name
     node->Init(this->world->GetName());
@@ -55,55 +54,6 @@ void POISpawnerPlugin::spawnPOI(string name, double x, double y)
     model->GetElement("pose")->Set(to_string(x) + " " + to_string(y) + " 0 0 0 0");
     world->InsertModelSDF(sphereSDF);
     this->poiTextMap.emplace(modelName, false);
-}
-
-void POISpawnerPlugin::OnUpdate()
-{
-    for (auto &entry : this->poiTextMap)
-    {
-        if (!entry.second)
-        {
-            this->setText(entry.first);
-        }
-    }
-}
-
-void POISpawnerPlugin::setText(std::string name)
-{
-    scene = rendering::get_scene();
-    if (!scene || !scene->Initialized())
-    {
-        return;
-    }
-
-    auto vis = scene->GetVisual(name);
-
-    // Visual is not in the scene yet
-    if (!vis)
-    {
-        return;
-    }
-
-    std::string textName = name + "__TEXT__";
-    auto modelBox = vis->GetBoundingBox().Ign();
-    std::cout << "POISpawner: " << name << std::endl;
-    // Create text
-    auto text = new rendering::MovableText();
-//    text->Load(textName, name, "Arial", 0.1, common::Color::Blue);
-    text->SetText(name);
-    text->SetFontName("Arial");
-    text->SetCharHeight(1.0);
-    text->SetColor(common::Color::Blue);
-    text->SetBaseline(modelBox.Max().Z() + 1);
-//    text->SetShowOnTop(true);
-//    text->setVisible(true);
-    //
-    //    // Attach modelName to the visual's node
-    auto textNode = vis->GetSceneNode()->createChildSceneNode(textName + "__NODE__");
-    textNode->attachObject(text);
-    textNode->setInheritScale(false);
-    this->poiTextMap[name] = true;
-    std::cout << "POISpawner: SetText Done!" << std::endl;
 }
 
 void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo &info)

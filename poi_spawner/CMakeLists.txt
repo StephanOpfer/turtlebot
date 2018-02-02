@@ -9,7 +9,8 @@ find_package(catkin REQUIRED
   roscpp
   system_config
 )
-    
+find_package (Qt4)
+find_package(Protobuf REQUIRED)
 find_package (gazebo REQUIRED)
 
 catkin_package(
@@ -19,6 +20,10 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
+include (${QT_USE_FILE})
+add_definitions(${QT_DEFINITIONS})
+
+include_directories(SYSTEM ${GAZEBO_INCLUDE_DIRS})
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(include
   ${catkin_INCLUDE_DIRS} 
@@ -26,8 +31,11 @@ include_directories(include
   ${GAZEBO_INCLUDE_DIRS}
 )
 
+QT4_WRAP_CPP(headers_MOC poi_spawner/POISpawnerPlugin.h)
+
 add_library(${PROJECT_NAME}
   src/POISpawnerPlugin.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${QT_LIBRARIES}
+    ${PROTOBUF_LIBRARIES})
 
