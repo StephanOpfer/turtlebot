@@ -2057,7 +2057,7 @@
 	    	</include>
     </model>
     <model name='green_book_67'>
-      <pose frame=''>18.35 10.04 0 0 0 0</pose>
+      <pose frame=''>18.35 10.04 0.935975 0 0 0</pose>
 	    	<include>
 		   <uri>model://book_green</uri>
 	    	</include>
