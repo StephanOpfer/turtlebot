@@ -65,11 +65,11 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     * \brief Models configured as "occluding" will be checked for occlusion throught ray casting
     * @param model model detected by sensor
     */
-    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel);
+    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
     bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
-    bool isOccluded(msgs::LogicalCameraImage_Model &model);
-    void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel);
+    bool isOccluded(gazebo::msgs::Pose &outCorrectedPose);
+    void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
     /**
 	 * calculates the angle from the robot to a model
 	 */

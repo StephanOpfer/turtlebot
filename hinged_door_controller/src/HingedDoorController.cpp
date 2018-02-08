@@ -64,7 +64,7 @@ void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
     if (cmd->state == ttb_msgs::DoorCmd::OPEN)
     {
         // Get limits of that joint
-    	setAngle = (*sc)["Doors"]->get<double>("Doors", cmd->name.c_str(), "openAngle", NULL);
+    	setAngle = (*sc)["TopologicalModel"]->get<double>("DistributedSystems.Doors", cmd->name.c_str(), "openAngle", NULL);
     }
 
     hingeJoint->SetPosition(0, setAngle);

@@ -59,7 +59,7 @@ void LogicalCameraPlugin::loadModelsFromConfig()
             auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
             auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
 #ifdef LOGICAL_CAMERA_DEBUG
-            cout << "DistanceSensorPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
+            cout << "LogicalCameraPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
 #endif
             m.detectAngles.push_back(pair<double, double>(start, end));
         }
@@ -173,31 +173,34 @@ void LogicalCameraPlugin::OnUpdate()
         for (auto &kv : this->modelMap)
         {
             // Checking occlusion
-            if (isDetected(model, kv.second))
+        	gazebo::msgs::Pose correctedPosition;
+            if (isDetected(model, kv.second, correctedPosition))
             {
                 // Translating gazebo Model message to ROS message
-                publishModel(model, kv.second);
+                publishModel(model, kv.second, correctedPosition);
             }
         }
     }
 }
 
-void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel)
+void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel,
+                                       gazebo::msgs::Pose &outCorrectedPose)
 {
-    auto x = model.pose().position().x();
-    auto y = model.pose().position().y();
-    auto z = model.pose().position().z();
+
+    auto x = outCorrectedPose.position().x();
+    auto y = outCorrectedPose.position().y();
+    auto z = outCorrectedPose.position().z();
 
     ttb_msgs::LogicalCamera msg;
     msg.modelName = model.name();
 
-    auto q = model.pose().orientation();
+    auto q = outCorrectedPose.orientation();
+
     // change coordinate system and rotation for backwards sensor
     if (this->sensorYaw != 0)
     {
         msg.pose.x = -x;
         msg.pose.y = -y;
-        //			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
         auto angle = quadToTheata(q.x(), q.y(), q.z(), q.w());
         msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
     }
@@ -227,7 +230,7 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, Log
         // Publish message if needed/specified hz from config exceeded
         auto diff = chrono::duration_cast<chrono::milliseconds>(now - lastPublishedMap[msg.modelName]);
 #ifdef LOGICAL_CAMERA_DEBUG
-        cout << "DistanceSensorPlugin: diff: " << diff.count() << endl;
+        cout << "LogicalCameraPlugin: diff: " << diff.count() << endl;
 #endif
         if (diff.count() >= (1000.0 / configModel.publishingRate))
         {
@@ -247,7 +250,7 @@ double LogicalCameraPlugin::quadToTheata(double x, double y, double z, double w)
     return atan2(t1, t0); // yaw
 }
 
-bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel)
+bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose)
 {
     // Checking if model type match desired type
     auto gazeboElementName = configModel.type;
@@ -257,10 +260,34 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         return false;
     }
 
+    if (model.name().find("_door") != string::npos)
+    {
+        auto world = physics::get_world(this->parentSensor->WorldName());
+        auto doorModel = world->GetModel(model.name());
+        auto doorLink = doorModel->GetChildLink("hinged_door::door");
+
+        auto vector = new gazebo::msgs::Vector3d();
+        vector->set_x(doorLink->GetWorldPose().pos.x);
+		vector->set_y(doorLink->GetWorldPose().pos.y);
+		vector->set_z(doorLink->GetWorldPose().pos.z);
+        outCorrectedPose.set_allocated_position(vector);
+        auto quaternion = new gazebo::msgs::Quaternion();
+        quaternion->set_w(doorLink->GetWorldPose().rot.w);
+        quaternion->set_x(doorLink->GetWorldPose().rot.x);
+        quaternion->set_y(doorLink->GetWorldPose().rot.y);
+        quaternion->set_z(doorLink->GetWorldPose().rot.z);
+        outCorrectedPose.set_allocated_orientation(quaternion);
+        cout << outCorrectedPose.DebugString() << endl;
+    }
+    else
+    {
+        outCorrectedPose.set_allocated_position(new gazebo::msgs::Vector3d(model.pose().position()));
+        outCorrectedPose.set_allocated_orientation(new gazebo::msgs::Quaternion(model.pose().orientation()));
+    }
+    double x = outCorrectedPose.position().x();
+    double y = outCorrectedPose.position().y();
+    double z = outCorrectedPose.position().z();
     // Model is too far away
-    auto x = model.pose().position().x();
-    auto y = model.pose().position().y();
-    auto z = model.pose().position().z();
     auto dist = sqrt(x * x + y * y + z * z);
     if (dist > configModel.range)
     {
@@ -276,7 +303,7 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         return false;
     }
 
-    if (isOccluded(model))
+    if (isOccluded(outCorrectedPose))
     {
         return false;
     }
@@ -284,7 +311,7 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     return true;
 }
 
-bool LogicalCameraPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
+bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose)
 {
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
@@ -292,7 +319,7 @@ bool LogicalCameraPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
     //    parentSensorPose = parentSensorPose + (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())).Normalize() * 0.15;
     //    this->rayShape->SetPoints(parentSensorPose, (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
     this->rayShape->SetPoints(this->parentSensor->Pose().Pos() * 1.15,
-                              (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + this->parentSensor->Pose().Pos() * 1.15);
+                              (this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15);
 
     this->rayShape->Update();
 
@@ -302,12 +329,12 @@ bool LogicalCameraPlugin::isOccluded(msgs::LogicalCameraImage_Model &model)
 
     // TODO: this does not work, because now he can see through walls if there is a table in front
 
-    for(auto occludingType : this->occludingTypes)
+    for (auto occludingType : this->occludingTypes)
     {
-    	if(collided_entity.find(occludingType) != std::string::npos)
-    	{
-    		return true;
-    	}
+        if (collided_entity.find(occludingType) != std::string::npos)
+        {
+            return true;
+        }
     }
 
 // no door or wall or floor blocking sight to model
@@ -324,7 +351,7 @@ bool LogicalCameraPlugin::isInAngleRange(double angle, std::vector<std::pair<dou
     for (auto pair : detectAngles)
     {
 #ifdef LOGICAL_CAMERA_DEBUG
-        cout << "DistanceSensorPlugin: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
+        cout << "LogicalCameraPlugin: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
 #endif
         if (pair.first <= pair.second)
         {
