@@ -106,6 +106,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
+    bool test;
 
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency

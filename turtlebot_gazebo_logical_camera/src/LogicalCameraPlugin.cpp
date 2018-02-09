@@ -10,6 +10,8 @@
 #include <Configuration.h>
 #include <SystemConfig.h>
 
+#include <ros/package.h>
+
 namespace gazebo
 {
 //////////////////////////////////////////////////
@@ -21,6 +23,7 @@ LogicalCameraPlugin::LogicalCameraPlugin()
     this->sc = supplementary::SystemConfig::getInstance();
     loadModelsFromConfig();
     loadOccludingTypes();
+    test = true;
 }
 
 //////////////////////////////////////////////////
@@ -173,7 +176,7 @@ void LogicalCameraPlugin::OnUpdate()
         for (auto &kv : this->modelMap)
         {
             // Checking occlusion
-        	gazebo::msgs::Pose correctedPosition;
+            gazebo::msgs::Pose correctedPosition;
             if (isDetected(model, kv.second, correctedPosition))
             {
                 // Translating gazebo Model message to ROS message
@@ -265,19 +268,69 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         auto world = physics::get_world(this->parentSensor->WorldName());
         auto doorModel = world->GetModel(model.name());
         auto doorLink = doorModel->GetChildLink("hinged_door::door");
-
+        if (model.name().find("r1411C_r1401") != string::npos)
+        {
+            if (test)
+            {
+                string path = ros::package::getPath("turtlebot_bringup");
+                ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
+                std::string tmp = string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+                sdf::SDF sphereSDF;
+                sphereSDF.SetFromString(tmp);
+                // Demonstrate using a custom model name.
+                sdf::ElementPtr m = sphereSDF.Root()->GetElement("model");
+                string modelName = "debug";
+                m->GetAttribute("name")->SetFromString(modelName);
+                std::string pos = to_string((this->parentSensor->Pose().Pos() * 1.15).X()) + " " + to_string((this->parentSensor->Pose().Pos() * 1.15).Y()) +
+                                  to_string((this->parentSensor->Pose().Pos() * 1.15).Z()) + "  0 0 0";
+                m->GetElement("pose")->Set(pos);
+                sdf::SDF sphereSDF2;
+                sphereSDF2.SetFromString(tmp);
+                // Demonstrate using a custom model name.
+                sdf::ElementPtr m2 = sphereSDF2.Root()->GetElement("model");
+                string modelName2 = "debug2";
+                m2->GetAttribute("name")->SetFromString(modelName2);
+                std::string pos2 =
+                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).X()) +
+                    " " +
+                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).Y()) +
+                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).Z()) +
+                    "  0 0 0";
+                m2->GetElement("pose")->Set(pos2);
+                auto world = physics::get_world(this->parentSensor->WorldName());
+                world->InsertModelSDF(sphereSDF);
+                world->InsertModelSDF(sphereSDF2);
+                test = false;
+            }
+            else
+            {
+                auto world = physics::get_world(this->parentSensor->WorldName());
+                auto m = world->GetModel("debug");
+                m->SetRelativePose(this->parentSensor->Pose());
+                auto m2 = world->GetModel("debug2");
+                m2->SetRelativePose(ConvertIgn(outCorrectedPose));
+                m->Update();
+                m2->Update();
+            }
+            std::cout << "LogicalCameraPlugin::isDetected: door found:" << model.name() << " at " << doorLink->GetWorldPose().pos.x << " "
+                      << doorLink->GetWorldPose().pos.y << std::endl;
+        }
         auto vector = new gazebo::msgs::Vector3d();
         vector->set_x(doorLink->GetWorldPose().pos.x);
-		vector->set_y(doorLink->GetWorldPose().pos.y);
-		vector->set_z(doorLink->GetWorldPose().pos.z);
+        vector->set_y(doorLink->GetWorldPose().pos.y);
+        vector->set_z(doorLink->GetWorldPose().pos.z);
         outCorrectedPose.set_allocated_position(vector);
+        if (model.name().find("r1411C_r1401") != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: door found:" << model.name() << " at " << outCorrectedPose.position().x() << " "
+                      << outCorrectedPose.position().y() << std::endl;
+        }
         auto quaternion = new gazebo::msgs::Quaternion();
         quaternion->set_w(doorLink->GetWorldPose().rot.w);
         quaternion->set_x(doorLink->GetWorldPose().rot.x);
         quaternion->set_y(doorLink->GetWorldPose().rot.y);
         quaternion->set_z(doorLink->GetWorldPose().rot.z);
         outCorrectedPose.set_allocated_orientation(quaternion);
-        cout << outCorrectedPose.DebugString() << endl;
     }
     else
     {
@@ -291,6 +344,10 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     auto dist = sqrt(x * x + y * y + z * z);
     if (dist > configModel.range)
     {
+        if (model.name().find("r1411C_r1401") != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: out of range" << model.name() << std::endl;
+        }
         return false;
     }
 
@@ -300,11 +357,19 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     double angle = calculateAngle(x, y);
     if (!isInAngleRange(angle, configModel.detectAngles))
     {
+        if (model.name().find("r1411C_r1401") != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: wrong angle" << model.name() << std::endl;
+        }
         return false;
     }
 
     if (isOccluded(outCorrectedPose))
     {
+        if (model.name().find("r1411C_r1401") != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: is occluded" << model.name() << std::endl;
+        }
         return false;
     }
 
@@ -314,10 +379,11 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose)
 {
     // Starting and ending points of the ray, in absolute coordinates relative to the world
-    // NOTE: Documentation api saids that should be relative to the sensor, but is not apparently
+    // NOTE: Documentation api said that should be relative to the sensor, but is not apparently
     //    auto parentSensorPose = this->parentSensor->Pose().Pos();
     //    parentSensorPose = parentSensorPose + (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())).Normalize() * 0.15;
     //    this->rayShape->SetPoints(parentSensorPose, (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
+
     this->rayShape->SetPoints(this->parentSensor->Pose().Pos() * 1.15,
                               (this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15);
 
