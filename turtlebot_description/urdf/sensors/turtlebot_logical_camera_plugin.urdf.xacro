@@ -4,7 +4,7 @@
 
   <xacro:macro name="turtlebot_logical_camera_plugin" params="parent orientation_z name">
   <joint name="${name}" type="fixed">
-    <origin xyz="0.00 0.00 0.4" rpy="0 0 ${orientation_z}"/>
+    <origin xyz="0.00 0.00 0.55" rpy="0 0 ${orientation_z}"/>
     <parent link="${parent}" />
     <child link="${name}_link" />
   </joint>

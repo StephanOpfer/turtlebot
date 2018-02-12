@@ -68,7 +68,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
     bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
-    bool isOccluded(gazebo::msgs::Pose &outCorrectedPose);
+    bool isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::string name);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
     /**
 	 * calculates the angle from the robot to a model
@@ -106,7 +106,6 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
-    bool test;
 
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency
@@ -115,5 +114,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     // Sensor orientation
     double sensorYaw;
     supplementary::SystemConfig *sc;
+
+    std::string robotName;
 };
 }

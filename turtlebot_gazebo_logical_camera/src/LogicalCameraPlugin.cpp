@@ -23,7 +23,6 @@ LogicalCameraPlugin::LogicalCameraPlugin()
     this->sc = supplementary::SystemConfig::getInstance();
     loadModelsFromConfig();
     loadOccludingTypes();
-    test = true;
 }
 
 //////////////////////////////////////////////////
@@ -124,7 +123,7 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
     this->rayShape->Init();
 
     // Extracting robot name, erasing link
-    std::string robotName = this->parentSensor->ParentName();
+    robotName = this->parentSensor->ParentName();
     size_t pos = robotName.find(':');
     if (pos == std::string::npos)
     {
@@ -268,57 +267,10 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         auto world = physics::get_world(this->parentSensor->WorldName());
         auto doorModel = world->GetModel(model.name());
         auto doorLink = doorModel->GetChildLink("hinged_door::door");
-        if (model.name().find("r1411C_r1401") != string::npos)
-        {
-            if (test)
-            {
-                string path = ros::package::getPath("turtlebot_bringup");
-                ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
-                std::string tmp = string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-                sdf::SDF sphereSDF;
-                sphereSDF.SetFromString(tmp);
-                // Demonstrate using a custom model name.
-                sdf::ElementPtr m = sphereSDF.Root()->GetElement("model");
-                string modelName = "debug";
-                m->GetAttribute("name")->SetFromString(modelName);
-                std::string pos = to_string((this->parentSensor->Pose().Pos() * 1.15).X()) + " " + to_string((this->parentSensor->Pose().Pos() * 1.15).Y()) +
-                                  to_string((this->parentSensor->Pose().Pos() * 1.15).Z()) + "  0 0 0";
-                m->GetElement("pose")->Set(pos);
-                sdf::SDF sphereSDF2;
-                sphereSDF2.SetFromString(tmp);
-                // Demonstrate using a custom model name.
-                sdf::ElementPtr m2 = sphereSDF2.Root()->GetElement("model");
-                string modelName2 = "debug2";
-                m2->GetAttribute("name")->SetFromString(modelName2);
-                std::string pos2 =
-                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).X()) +
-                    " " +
-                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).Y()) +
-                    to_string(((this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15).Z()) +
-                    "  0 0 0";
-                m2->GetElement("pose")->Set(pos2);
-                auto world = physics::get_world(this->parentSensor->WorldName());
-                world->InsertModelSDF(sphereSDF);
-                world->InsertModelSDF(sphereSDF2);
-                test = false;
-            }
-            else
-            {
-                auto world = physics::get_world(this->parentSensor->WorldName());
-                auto m = world->GetModel("debug");
-                m->SetRelativePose(this->parentSensor->Pose());
-                auto m2 = world->GetModel("debug2");
-                m2->SetRelativePose(ConvertIgn(outCorrectedPose));
-                m->Update();
-                m2->Update();
-            }
-            std::cout << "LogicalCameraPlugin::isDetected: door found:" << model.name() << " at " << doorLink->GetWorldPose().pos.x << " "
-                      << doorLink->GetWorldPose().pos.y << std::endl;
-        }
         auto vector = new gazebo::msgs::Vector3d();
         vector->set_x(doorLink->GetWorldPose().pos.x);
         vector->set_y(doorLink->GetWorldPose().pos.y);
-        vector->set_z(doorLink->GetWorldPose().pos.z);
+        vector->set_z(doorLink->GetWorldPose().pos.z - 1.0);
         outCorrectedPose.set_allocated_position(vector);
         if (model.name().find("r1411C_r1401") != string::npos)
         {
@@ -364,11 +316,11 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         return false;
     }
 
-    if (isOccluded(outCorrectedPose))
+    if (isOccluded(outCorrectedPose, model.name()))
     {
         if (model.name().find("r1411C_r1401") != string::npos)
         {
-            std::cout << "LogicalCameraPlugin::isDetected: is occluded" << model.name() << std::endl;
+            std::cout << "LogicalCameraPlugin::isDetected: is occluded " << model.name() << std::endl;
         }
         return false;
     }
@@ -376,29 +328,42 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     return true;
 }
 
-bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose)
+bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::string name)
 {
     // Starting and ending points of the ray, in absolute coordinates relative to the world
-    // NOTE: Documentation api said that should be relative to the sensor, but is not apparently
-    //    auto parentSensorPose = this->parentSensor->Pose().Pos();
-    //    parentSensorPose = parentSensorPose + (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())).Normalize() * 0.15;
-    //    this->rayShape->SetPoints(parentSensorPose, (this->parentSensor->Pose().Rot() * ConvertIgn(model.pose().position())) + parentSensorPose);
-
-    this->rayShape->SetPoints(this->parentSensor->Pose().Pos() * 1.15,
-                              (this->parentSensor->Pose().Rot() * ConvertIgn(outCorrectedPose.position())) + this->parentSensor->Pose().Pos() * 1.15);
+    auto world = physics::get_world(this->parentSensor->WorldName());
+    auto robotPos = world->GetModel(this->robotName);
+    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(),
+                              (this->parentSensor->Pose().Rot() * (ConvertIgn(outCorrectedPose.position()) - robotPos->GetWorldPose().pos.Ign())) * 1.5);
 
     this->rayShape->Update();
+
+#ifdef LOGICAL_CAMERA_DEBUG
+    if (name.compare("r1411C_r1401_door") == 0)
+    {
+        math::Vector3 posA;
+        math::Vector3 posB;
+        this->rayShape->GetGlobalPoints(posA, posB);
+
+        std::cout << posA << " " << posB << std::endl;
+    }
+#endif
 
     double dist;
     std::string collided_entity;
     this->rayShape->GetIntersection(dist, collided_entity);
 
     // TODO: this does not work, because now he can see through walls if there is a table in front
-
+    // door have been occluding themselves => added name to prevent this
     for (auto occludingType : this->occludingTypes)
     {
-        if (collided_entity.find(occludingType) != std::string::npos)
+        if (collided_entity.find(occludingType) != std::string::npos || collided_entity.empty())
         {
+            if (collided_entity.find(name) != std::string::npos)
+            {
+                std::cout << collided_entity << " " << name << std::endl;
+                return false;
+            }
             return true;
         }
     }
