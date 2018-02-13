@@ -70,6 +70,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
     bool isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::string name);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
+    double quaterniumToYaw(double x, double y, double z, double w);
     /**
 	 * calculates the angle from the robot to a model
 	 */
@@ -79,8 +80,6 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     /**
 	 * calculates angle of object from quaternium
 	 */
-    double quadToTheata(double x, double y, double z, double w);
-
     // Sensor ptr
     sensors::LogicalCameraSensorPtr parentSensor;
 
@@ -106,7 +105,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
-
+    bool test;
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency
     std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> lastPublishedMap;
