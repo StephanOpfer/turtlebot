@@ -73,7 +73,9 @@ void LogicalCameraPlugin::loadModelsFromConfig()
     }
 
     this->modelSectionNames = nullptr;
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
     test = true;
+#endif
 }
 
 //////////////////////////////////////////////////
@@ -179,7 +181,9 @@ void LogicalCameraPlugin::OnUpdate()
             gazebo::msgs::Pose correctedPosition;
             if (isDetected(model, kv.second, correctedPosition))
             {
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
                 std::cout << "LogicalCameraPlugin: publishing model " << model.name() << std::endl;
+#endif
                 // Translating gazebo Model message to ROS message
                 publishModel(model, kv.second, correctedPosition);
             }
@@ -309,7 +313,8 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     }
     else
     {
-        if (model.name().find("poi_10") != string::npos)
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find("poi_4") != string::npos)
         {
             if (test)
             {
@@ -344,12 +349,13 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
                 test = false;
             }
         }
+#endif
         auto world = physics::get_world(this->parentSensor->WorldName());
         auto objectModel = world->GetModel(model.name());
         auto vector = new gazebo::msgs::Vector3d();
         vector->set_x(objectModel->GetWorldPose().pos.x);
         vector->set_y(objectModel->GetWorldPose().pos.y);
-        vector->set_z(objectModel->GetWorldPose().pos.z - 1.0);
+        vector->set_z(objectModel->GetWorldPose().pos.z);
         outCorrectedPose.set_allocated_position(vector);
         auto quaternion = new gazebo::msgs::Quaternion();
         quaternion->set_w(objectModel->GetWorldPose().rot.w);
@@ -365,10 +371,12 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     auto dist = sqrt(x * x + y * y + z * z);
     if (dist > configModel.range)
     {
-        if (model.name().find("poi_10") != string::npos)
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find("r1411C_r1401") != string::npos)
         {
             std::cout << "LogicalCameraPlugin::isDetected: out of range" << model.name() << std::endl;
         }
+#endif
         return false;
     }
 
@@ -378,19 +386,23 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     double angle = calculateAngle(x, y);
     if (!isInAngleRange(angle, configModel.detectAngles))
     {
-        if (model.name().find("poi_10") != string::npos)
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find("r1411C_r1401") != string::npos)
         {
             std::cout << "LogicalCameraPlugin::isDetected: wrong angle" << model.name() << std::endl;
         }
+        #endif
         return false;
     }
 
     if (isOccluded(outCorrectedPose, model.name()))
     {
-        if (model.name().find("poi_10") != string::npos)
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find("r1411C_r1401") != string::npos)
         {
             std::cout << "LogicalCameraPlugin::isDetected: is occluded " << model.name() << std::endl;
         }
+#endif
         return false;
     }
 
@@ -402,19 +414,19 @@ bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::
     // Starting and ending points of the ray, in absolute coordinates relative to the world
     auto world = physics::get_world(this->parentSensor->WorldName());
     auto robotPos = world->GetModel(this->robotName);
-    auto rayEndPoint = (ConvertIgn(outCorrectedPose.position()) - robotPos->GetWorldPose().pos.Ign() + this->parentSensor->Pose().Pos());
+    auto rayEndPoint = (ConvertIgn(outCorrectedPose.position()) - robotPos->GetWorldPose().pos.Ign());
     this->rayShape->SetPoints(this->parentSensor->Pose().Pos(), rayEndPoint);
 
     this->rayShape->Update();
 
-    //#ifdef LOGICAL_CAMERA_DEBUG
-    if (name.compare("poi_10") == 0)
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+    if (name.compare("poi_4") == 0)
     {
         math::Vector3 posA;
         math::Vector3 posB;
         this->rayShape->GetGlobalPoints(posA, posB);
 
-        std::cout << posA << " " << posB << std::endl;
+        std::cout << "LogicalCameraPlugin: ray start point: " <<  posA << " ray end point: " << posB << std::endl;
         auto world = physics::get_world(this->parentSensor->WorldName());
         auto m = world->GetModel("debug");
         auto m2 = world->GetModel("debug2");
@@ -426,7 +438,7 @@ bool LogicalCameraPlugin::isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::
             m2->Update();
         }
     }
-    //#endif
+#endif
 
     double dist;
     std::string collided_entity;

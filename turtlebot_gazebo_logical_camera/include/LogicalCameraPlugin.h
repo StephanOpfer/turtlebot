@@ -15,6 +15,7 @@
 
 //#define LOGICAL_OCCLUSION_DEBUG
 //#define LOGICAL_CAMERA_DEBUG
+#define LOGICAL_CAMERA_DEBUG_POINTS
 
 namespace supplementary
 {
@@ -105,7 +106,9 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
     bool test;
+#endif
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency
     std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> lastPublishedMap;
