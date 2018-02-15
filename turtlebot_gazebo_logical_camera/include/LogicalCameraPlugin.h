@@ -63,19 +63,17 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
         std::string type;
     };
     /**
-    * \brief Models configured as "occluding" will be checked for occlusion throught ray casting
+    * \brief Models configured as "occluding" will be checked for occlusion through ray casting
     * @param model model detected by sensor
     */
     bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
-    bool isInAngleRange(double angle, std::vector<std::pair<double, double>> detectAngles);
-    bool isOccluded(gazebo::msgs::Pose &outCorrectedPose, std::string name);
+    bool isInRange(gazebo::msgs::Pose &outCorrectedPose, double range);
+    bool isInAngleRange(gazebo::msgs::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
+    bool isVisible(gazebo::msgs::Pose &outCorrectedPose, std::string name);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
     double quaterniumToYaw(double x, double y, double z, double w);
-    /**
-	 * calculates the angle from the robot to a model
-	 */
-    double calculateAngle(double x, double y);
+
     void loadModelsFromConfig();
     void loadOccludingTypes();
     /**
@@ -107,7 +105,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    bool test;
+    bool initializedDebugPoints;
 #endif
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency
