@@ -10,12 +10,11 @@
 #include <string>
 #include <vector>
 
-
 #include <ros/ros.h>
 
 //#define LOGICAL_OCCLUSION_DEBUG
 //#define LOGICAL_CAMERA_DEBUG
-#define LOGICAL_CAMERA_DEBUG_POINTS
+//#define LOGICAL_CAMERA_DEBUG_POINTS
 
 namespace supplementary
 {
@@ -105,7 +104,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     physics::CollisionPtr laserCollision;
     physics::RayShapePtr rayShape;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    bool initializedDebugPoints;
+    std::string debugName;
 #endif
     // time points of messages sent, need to determine when to send
     // next message according specified configuration frequency
@@ -116,5 +115,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     supplementary::SystemConfig *sc;
 
     std::string robotName;
+    void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
+    void moveDebugPoint(std::string name, gazebo::math::Pose& pose);
 };
 }
