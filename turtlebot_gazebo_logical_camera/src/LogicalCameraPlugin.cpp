@@ -59,12 +59,13 @@ void LogicalCameraPlugin::loadModelsFromConfig()
             auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
             auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
 #ifdef LOGICAL_CAMERA_DEBUG
-            cout << "LogicalCameraPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end << endl;
+            cout << "LogicalCameraPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end
+                 << endl;
 #endif
             m.detectAngles.push_back(pair<double, double>(start, end));
         }
 
-        m.type = config->get<string>(lc, sec, "type", NULL);
+        m.type = section;
         m.name = section;
         m.publishingRate = config->get<double>(lc, sec, "publishingRateHz", NULL);
         this->modelMap.emplace(m.name, m);
@@ -72,7 +73,7 @@ void LogicalCameraPlugin::loadModelsFromConfig()
 
     this->modelSectionNames = nullptr;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    this->debugName = "r1410_r1410A";
+    this->debugName = "r1411C_r1401";
 #endif
 }
 
@@ -145,7 +146,7 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
-    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debug_point/debug_point.sdf"));
+    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
     std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     std::string positionString = "0 0 0 0 0 0";
     this->createDebugPoint(sdfString, positionString, "debugPoint");
@@ -172,7 +173,8 @@ void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
     auto models = this->parentSensor->Image();
-    //std::cout << "LCP: SensorYaw: " << this->sensorYaw << " Number of Models seen: " << models.model_size() << std::endl;
+    // std::cout << "LCP: SensorYaw: " << this->sensorYaw << " Number of Models seen: " << models.model_size() <<
+    // std::endl;
 
     for (int i = 0; i < models.model_size(); i++)
     {
@@ -189,9 +191,6 @@ void LogicalCameraPlugin::OnUpdate()
             gazebo::msgs::Pose correctedPosition;
             if (isDetected(model, kv.second, correctedPosition))
             {
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
-                std::cout << "LogicalCameraPlugin: publishing model " << model.name() << std::endl;
-#endif
                 // Translating gazebo Model message to ROS message
                 publishModel(model, kv.second, correctedPosition);
             }
@@ -199,7 +198,8 @@ void LogicalCameraPlugin::OnUpdate()
     }
 }
 
-void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel,
+void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
+                                       LogicalCameraPlugin::ConfigModel &configModel,
                                        gazebo::msgs::Pose &outCorrectedPose)
 {
 
@@ -231,12 +231,13 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, Log
      * Dirty fix for open door angles.
      * See is detected method for detailed description
      */
-    if(model.name().find("_door"))
+    if (model.name().find("door_"))
     {
-    	msg.pose.theta = q.z();
+        msg.pose.theta = q.z();
     }
 #ifdef LOGICAL_CAMERA_DEBUG
-    cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")" << endl;
+    cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y
+         << ", " << z << ")" << endl;
 #endif
 
     msg.timeStamp = ros::Time::now();
@@ -274,7 +275,8 @@ double LogicalCameraPlugin::quaterniumToYaw(double x, double y, double z, double
     return atan2(t1, t0); // yaw
 }
 
-bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose)
+bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel,
+                                     gazebo::msgs::Pose &outCorrectedPose)
 {
     // Checking if model type match desired type
     auto gazeboElementName = configModel.type;
@@ -287,9 +289,9 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     auto world = physics::get_world(this->parentSensor->WorldName());
     auto objectModel = world->GetModel(model.name());
     math::Pose objectWorldPose;
-    if (model.name().find("_door") != std::string::npos)
+    if (model.name().find("door_") != std::string::npos)
     {
-        auto doorLink = objectModel->GetChildLink("hinged_door::door");
+        auto doorLink = objectModel->GetChildLink("door::door");
         objectWorldPose.pos = doorLink->GetWorldPose().CoordPositionAdd(math::Vector3(0.45, 0.0, 1.0));
         /*
          * Dirty hack to set the correct angle of the door
@@ -297,7 +299,7 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
          * the rotation on the z-axis is replaced with the angle of the joint between the
          * doorframe and the door leaf
          */
-        auto doorJoint = objectModel->GetJoint("hinged_door::hinge");
+        auto doorJoint = objectModel->GetJoint("door::hinge");
         objectWorldPose.rot.z = *doorJoint->GetAngle(0);
     }
     else
@@ -322,7 +324,10 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     if (!this->isInRange(outCorrectedPose, configModel.range))
     {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-        std::cout << "LogicalCameraPlugin::isDetected: out of range " << model.name() << std::endl;
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: out of range " << model.name() << std::endl;
+        }
 #endif
         return false;
     }
@@ -330,36 +335,46 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     if (!this->isInAngleRange(outCorrectedPose, configModel.detectAngles))
     {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-        std::cout << "LogicalCameraPlugin::isDetected: is occluded " << model.name() << std::endl;
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: out of angle range" << model.name() << std::endl;
+        }
 #endif
         return false;
     }
     // Check whether the object is occluded by other things
-    if (!this->isVisible(outCorrectedPose, model.name()))
+    if (!this->isVisible(outCorrectedPose, model))
     {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-        std::cout << "LogicalCameraPlugin::isDetected: is occluded " << model.name() << std::endl;
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin::isDetected: is occluded " << model.name() << std::endl;
+        }
 #endif
         return false;
     }
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    std::cout << "LCP: CorrectedPose " << outCorrectedPose.DebugString() << std::endl;
+    if (model.name().find(debugName) != string::npos)
+    {
+        std::cout << "LCP: CorrectedPose " << outCorrectedPose.DebugString() << std::endl;
+    }
 #endif
     return true;
 }
 
-bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose &outCorrectedPose, std::string name)
+bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose correctedPose, msgs::LogicalCameraImage_Model model)
 {
-    // Starting and ending points of the ray, in absolute coordinates relative to the world
-    auto world = physics::get_world(this->parentSensor->WorldName());
-    auto robotPos = world->GetModel(this->robotName);
-    auto rayEndPoint = (ConvertIgn(outCorrectedPose.position()) - robotPos->GetWorldPose().pos.Ign());
+    // Starting and ending points of the ray
+//    auto world = physics::get_world(this->parentSensor->WorldName());
+//    auto robotPos = world->GetModel(this->robotName);
+    auto rayEndPoint = (ConvertIgn(correctedPose.position()) - this->parentSensor->Pose().Pos());
+    //auto rayEndPoint = ConvertIgn(model.pose().position());
     this->rayShape->SetPoints(this->parentSensor->Pose().Pos(), rayEndPoint);
 
     this->rayShape->Update();
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    if (name.find(this->debugName) != std::string::npos)
+    if (model.name().find(this->debugName) != std::string::npos)
     {
         math::Vector3 posA;
         math::Vector3 posB;
@@ -379,10 +394,14 @@ bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose &outCorrectedPose, std::s
     this->rayShape->GetIntersection(dist, collided_entity);
 
     // Things should not occlude themselves (only relevant for things with a collision)
-    if (collided_entity.find(name) != std::string::npos)
+    if (collided_entity.find(model.name()) != std::string::npos)
     {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-        std::cout << "LogicalCameraPlugin: object is occluding itself. Entity: " << collided_entity << " Object name: " << name << std::endl;
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin: object is occluding itself. Entity: " << collided_entity
+                      << " Object name: " << model.name() << std::endl;
+        }
 #endif
         return true;
     }
@@ -392,13 +411,21 @@ bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose &outCorrectedPose, std::s
     {
         if (collided_entity.find(occludingType) != std::string::npos)
         {
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin: object is occluded by. Entity: " << collided_entity
+                      << " OccludingType: " << occludingType << std::endl;
+        }
+#endif
             return false;
         }
     }
 
 #ifdef LOGICAL_OCCLUSION_DEBUG
-    cout << "LogicalCameraPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model " << model.name() << " at: x=" << model.pose().position().x()
-         << ", y= " << model.pose().position().y() << ", z= " << model.pose().position().z() << endl;
+    cout << "LogicalCameraPlugin: " << (this->sensorYaw != 0 ? "Back" : "Front") << " found model " << model.name()
+         << " at: x=" << model.pose().position().x() << ", y= " << model.pose().position().y()
+         << ", z= " << model.pose().position().z() << endl;
 #endif
     return true;
 }

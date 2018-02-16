@@ -14,7 +14,7 @@
 
 //#define LOGICAL_OCCLUSION_DEBUG
 //#define LOGICAL_CAMERA_DEBUG
-//#define LOGICAL_CAMERA_DEBUG_POINTS
+#define LOGICAL_CAMERA_DEBUG_POINTS
 
 namespace supplementary
 {
@@ -69,7 +69,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
     bool isInRange(gazebo::msgs::Pose &outCorrectedPose, double range);
     bool isInAngleRange(gazebo::msgs::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
-    bool isVisible(gazebo::msgs::Pose &outCorrectedPose, std::string name);
+    bool isVisible(gazebo::msgs::Pose correctedPose, msgs::LogicalCameraImage_Model model);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
     double quaterniumToYaw(double x, double y, double z, double w);
 
