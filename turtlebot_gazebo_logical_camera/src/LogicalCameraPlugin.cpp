@@ -140,6 +140,8 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 
     // Get the sensor yaw, which is used to distinguish front and back sensor
     this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
+    std::cout << "LogicalCameraPlugin: Sensor far range:" << this->parentSensor->Far() << std::endl;
+    std::cout << "LogicalCameraPlugin: Sensor near range:" << this->parentSensor->Near() << std::endl;
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
@@ -225,6 +227,14 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model, Log
         msg.pose.theta = -quaterniumToYaw(q.x(), q.y(), q.z(), q.w());
     }
 
+    /*
+     * Dirty fix for open door angles.
+     * See is detected method for detailed description
+     */
+    if(model.name().find("_door"))
+    {
+    	msg.pose.theta = q.z();
+    }
 #ifdef LOGICAL_CAMERA_DEBUG
     cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y << ", " << z << ")" << endl;
 #endif
@@ -281,6 +291,14 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     {
         auto doorLink = objectModel->GetChildLink("hinged_door::door");
         objectWorldPose.pos = doorLink->GetWorldPose().CoordPositionAdd(math::Vector3(0.45, 0.0, 1.0));
+        /*
+         * Dirty hack to set the correct angle of the door
+         * the angle of the door itself does not change when it is opened therefore
+         * the rotation on the z-axis is replaced with the angle of the joint between the
+         * doorframe and the door leaf
+         */
+        auto doorJoint = objectModel->GetJoint("hinged_door::hinge");
+        objectWorldPose.rot.z = *doorJoint->GetAngle(0);
     }
     else
     {
