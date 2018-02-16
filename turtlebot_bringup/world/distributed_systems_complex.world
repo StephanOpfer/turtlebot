@@ -30,631 +30,631 @@
       <uri>model://distributed_systems_department</uri>
     </include>
     <!-- tables -->
-    <model name='r1411_small_table'>
+    <model name='smallTable_r1411'>
 		  <pose frame=''>0.77 4.46 0 0 0 0</pose>
 		  <include>
-        <uri>model://small_table</uri>
+        <uri>model://smallTable</uri>
 		  </include>
     </model>
-    <model name='r1411A_small_table'>
+    <model name='smallTable_r1411A'>
 	    <pose frame=''>7.13 6.42 0 0 0 0</pose>
 	    <include>
-	  	  <uri>model://small_table</uri>
+	  	  <uri>model://smallTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc1'>
+    <model name='mediumTable_r1411_labpc1'>
 	    <pose frame=''>4.57 10.60 0 0 0 0</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc2'>
+    <model name='mediumTable_r1411_labpc2'>
 	    <pose frame=''>4.57 9.40 0 0 0 0</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc3'>
+    <model name='mediumTable_r1411_labpc3'>
 	    <pose frame=''>4.57 8.20 0 0 0 0</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc4'>
+    <model name='mediumTable_r1411_labpc4'>
 	    <pose frame=''>3.77 8.20 0 0 0 0</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc5'>
+    <model name='mediumTable_r1411_labpc5'>
 	    <pose frame=''>3.77 9.40 0 0 0 0</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc6'>
+    <model name='mediumTable_r1411_labpc6'>
       <pose frame=''>3.77 10.60 0 0 0 0</pose>
       <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc7'>
+    <model name='mediumTable_r1411_labpc7'>
 	    <pose frame=''>0.77 9.93 0 0 0 0</pose>
   	  <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc8'>
+    <model name='mediumTable_r1411_labpc8'>
 	    <pose frame=''>0.77 8.73 0 0 0 0</pose>
 	    <include>
-	  	  <uri>model://medium_table</uri>
+	  	  <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411_medium_table_labpc9'>
+    <model name='mediumTable_r1411_labpc9'>
   	  <pose frame=''>0.77 7.53 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1411_large_table_atdoor'>
+    <model name='largeTable_r1411_atdoor'>
   	  <pose frame=''>4.59 4.93 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1411_large_table_atkicker'>
+    <model name='largeTable_r1411_atkicker'>
   	  <pose frame=''>3.69 4.93 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1411_medium_table_center'>
+    <model name='mediumTable_r1411_center'>
   	  <pose frame=''>4.19 6.13 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1411A_medium_table_window_left'>
+    <model name='mediumTable_r1411A_window_left'>
   	  <pose frame=''>7.29 10.81 0 0 0 1.570796327</pose>
       <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
 	    </include>
     </model>
-    <model name='r1411A_medium_table_window_right'>
+    <model name='mediumTable_r1411A_window_right'>
 	    <pose frame=''>8.93 10.81 0 0 0 1.570796327</pose>
 	    <include>
-		    <uri>model://medium_table</uri>
+		    <uri>model://mediumTable</uri>
       </include>
     </model>
-    <model name='r1411A_medium_table_wall_left'>
+    <model name='mediumTable_r1411A_wall_left'>
           <pose frame=''>9.11 8.01 0 0 0 0</pose>
           <include>
-        	<uri>model://medium_table</uri>
+        	<uri>model://mediumTable</uri>
           </include>
     </model>
-    <model name='r1411A_medium_table_wall_right'>
+    <model name='mediumTable_r1411A_wall_right'>
           <pose frame=''>7.1 8.91 0 0 0 0</pose>
           <include>
-       		 <uri>model://medium_table</uri>
+       		 <uri>model://mediumTable</uri>
      	  </include>
     </model>
-    <model name='r1410A_large_table_atwindow'>
+    <model name='largeTable_r1410A_atwindow'>
   	  <pose frame=''>12.16 10.40 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1410A_large_table_atdoor'>
+    <model name='largeTable_r1410A_atdoor'>
   	  <pose frame=''>12.16 8.40 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1410B_large_table_atwindow'>
+    <model name='largeTable_r1410B_atwindow'>
   	  <pose frame=''>13.16 10.40 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1410B_large_table_atdoor'>
+    <model name='largeTable_r1410B_atdoor'>
   	  <pose frame=''>13.16 8.40 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1410B_small_table_atwindow'>
+    <model name='smallTable_r1410B_atwindow'>
   	  <pose frame=''>15.16 10.8 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://small_table</uri>
+  		  <uri>model://smallTable</uri>
   	  </include>
     </model>
-    <model name='r1410B_small_table_atmiddle'>
+    <model name='smallTable_r1410B_atmiddle'>
   	  <pose frame=''>15.16 10.0 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://small_table</uri>
+  		  <uri>model://smallTable</uri>
   	  </include>
     </model>
-    <model name='r1410B_medium_table'>
+    <model name='mediumTable_r1410B'>
   	  <pose frame=''>15.16 5.62 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1408A_large_table_atwindow'>
+    <model name='largeTable_r1408A_atwindow'>
   	  <pose frame=''>16.61 9.13 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1408A_large_table_atdoor'>
+    <model name='largeTable_r1408A_atdoor'>
   	  <pose frame=''>16.26 7.87 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1408B_large_table_atwindow'>
+    <model name='largeTable_r1408B_atwindow'>
   	  <pose frame=''>21.2 9.64 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1408B_large_table_atdoor'>
+    <model name='largeTable_r1408B_atdoor'>
   	  <pose frame=''>21.2 6.85 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1408C_large_table_atwindow'>
+    <model name='largeTable_r1408C_atwindow'>
   	  <pose frame=''>24.2 9.64 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1408C_large_table_atdoor'>
+    <model name='largeTable_r1408C_atdoor'>
   	  <pose frame=''>24.2 6.85 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1406A_large_table_atwindow'>
+    <model name='largeTable_r1406A_atwindow'>
   	  <pose frame=''>27.2 9.64 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1406A_large_table_atdoor'>
+    <model name='largeTable_r1406A_atdoor'>
   	  <pose frame=''>27.2 6.85 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1406B_large_table_atwindow'>
+    <model name='largeTable_r1406B_atwindow'>
   	  <pose frame=''>30.2 9.64 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1406B_large_table_atdoor'>
+    <model name='largeTable_r1406B_atdoor'>
   	  <pose frame=''>30.2 6.85 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1406C_large_table'>
+    <model name='largeTable_r1406C'>
   	  <pose frame=''>33.16 10.42 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1401_small_table'>
+    <model name='smallTable_r1401'>
   	  <pose frame=''>31.18 5.46 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://small_table</uri>
+  		  <uri>model://smallTable</uri>
   	  </include>
     </model>
-    <model name='r1405_medium_table_neartv'>
+    <model name='mediumTable_r1405_neartv'>
   	  <pose frame=''>35.26 8.7 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1405_medium_table_middleleft'>
+    <model name='mediumTable_r1405_middleleft'>
   	  <pose frame=''>36.06 8.7 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1405_medium_table_middle'>
+    <model name='mediumTable_r1405_middle'>
   	  <pose frame=''>36.86 8.7 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1405_medium_table_middleright'>
+    <model name='mediumTable_r1405_middleright'>
   	  <pose frame=''>37.66 8.7 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1405_medium_table_nearwall'>
+    <model name='mediumTable_r1405_nearwall'>
   	  <pose frame=''>38.46 8.7 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://medium_table</uri>
+  		  <uri>model://mediumTable</uri>
   	  </include>
     </model>
-    <model name='r1403A_large_table_atwindow'>
+    <model name='largeTable_r1403A_atwindow'>
   	  <pose frame=''>40.33  8.95 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403A_large_table_atcenter'>
+    <model name='largeTable_r1403A_atcenter'>
   	  <pose frame=''>40.68 7.69 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403_large_table_atwindow'>
+    <model name='largeTable_r1403_atwindow'>
   	  <pose frame=''>46.3 10.42 0 0 0 0</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403_large_table_diagonal'>
+    <model name='largeTable_r1403_diagonal'>
   	  <pose frame=''>46.64 8.7 0 0 0 0.385778</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403_large_table_atwall'>
+    <model name='largeTable_r1403_atwall'>
   	  <pose frame=''>47.85 5.257 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1405B_large_table_dish_washer'>
+    <model name='largeTable_r1405B_dish_washer'>
   	  <pose frame=''>35.17 5.45 0 0 0 -1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1405B_large_table_coffee'>
+    <model name='largeTable_r1405B_coffee'>
   	  <pose frame=''>35.14 3.55 0 0 0 -1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403C_large_table_printer'>
+    <model name='largeTable_r1403C_printer'>
   	  <pose frame=''>38.83 3.62 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://large_table</uri>
+  		  <uri>model://largeTable</uri>
   	  </include>
     </model>
-    <model name='r1403A_small_table'>
+    <model name='smallTable_r1403A'>
   	  <pose frame=''>40.28 3.30 0 0 0 1.570796327</pose>
   	  <include>
-  		  <uri>model://small_table</uri>
+  		  <uri>model://smallTable</uri>
   	  </include>
     </model>
     <!-- Doors: Naming Convention - The door is opening into the second room of its name. -->
-    <model name='r1411C_r1411_door'>
+    <model name='door_r1411C_r1411'>
       <pose frame=''>6.63 4.5 0.0 0.0 0.0 0.0</pose>
       <include>
-        <uri>model://hinged_door</uri>
+        <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1411C_r1411B_door'>
+    <model name='door_r1411C_r1411B'>
       <pose frame=''>9.8 3.58 0.0 0.0 0.0 0.0</pose>
       <include>
-        <uri>model://hinged_door</uri>
+        <uri>model://door</uri>
       </include>
     </model>
-    <model name='r1411C_r1411A_door'>
+    <model name='door_r1411C_r1411A'>
       <pose frame=''>8.56 5.97 0.0 0.0 0.0 1.570796327</pose>
       <include>
-        <uri>model://hinged_door</uri>
+        <uri>model://door</uri>
 	    </include>
     </model> 
-    <model name='r1411C_r1401_door'>
+    <model name='door_r1411C_r1401'>
       <pose frame=''>9.14 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1410_r1401_door'>
+    <model name='door_r1410_r1401'>
       <pose frame=''>13.12 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1410_r1410A_door'>
+    <model name='door_r1410_r1410A'>
       <pose frame=''>12.04 5.14 0.0 0.0 0.0 5.7</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1410_r1410B_door'>
+    <model name='door_r1410_r1410B'>
       <pose frame=''>13.345 5.17 0.0 0.0 0.0 0.575</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1401_1_door'>
+    <model name='door_r1407_r1401_1'>
       <pose frame=''>17.78 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1401_2_door'>
+    <model name='door_r1407_r1401_2'>
       <pose frame=''>32.6 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1409_door'>
+    <model name='door_r1407_r1409'>
       <pose frame=''>15.6 3.52 0.0 0.0 0.0 0.0</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1408A_door'>
+    <model name='door_r1407_r1408A'>
       <pose frame=''>17.7 6.04 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1408B_door'>
+    <model name='door_r1407_r1408B'>
       <pose frame=''>20.65 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1408C_door'>
+    <model name='door_r1407_r1408C'>
       <pose frame=''>23.64 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1406A_door'>
+    <model name='door_r1407_r1406A'>
       <pose frame=''>26.7 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1406B_door'>
+    <model name='door_r1407_r1406B'>
       <pose frame=''>29.7 5.02 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1407_r1406C_door'>
+    <model name='door_r1407_r1406C'>
       <pose frame=''>32.68 6.04 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1405A_r1405_door'>
+    <model name='door_r1405A_r1405'>
       <pose frame=''>37.2 5.98 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1405A_r1401_door'>
+    <model name='door_r1405A_r1401'>
       <pose frame=''>36.27 2.84 0.0 0.0 0.0 -1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1403A_r1401_door'>
+    <model name='door_r1403A_r1401'>
       <pose frame=''>41.87 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1403A_r1403C_door'>
+    <model name='door_r1403A_r1403C'>
       <pose frame=''>39.88 4.14 0.0 0.0 0.0 0.0</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1403A_r1403_door'>
+    <model name='door_r1403A_r1403'>
       <pose frame=''>42.825 4.14 0.0 0.0 0.0 0.0</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
     <!-- This door is much smaller than the usual ones. 
-    <model name='r1401_r1402_door'>
+    <model name='door_r1401_r1402'>
       <pose frame=''>49.87 2.9 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
     -->
-    <model name='r1401_r1402B_door'>
+    <model name='door_r1401_r1402B'>
       <pose frame=''>52.0 3.1 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='r1401_r1402D_door'>
+    <model name='door_r1401_r1402D'>
       <pose frame=''>53.5 3.1 0.0 0.0 0.0 1.570796327</pose>
 	    <include>
-		    <uri>model://hinged_door</uri>
+		    <uri>model://door</uri>
 	    </include>
     </model>
-    <model name='coke_can_1'>
+    <model name='cokeCan_1'>
       <pose frame=''>3.77 10.60 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_2'>
+    <model name='cokeCan_2'>
       <pose frame=''>0.72 7.53 0.95 0 0 0</pose>
 		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_3'>
+    <model name='cokeCan_3'>
       <pose frame=''>0.77 9.93 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_4'>
+    <model name='cokeCan_4'>
       <pose frame=''>4.57 9.40 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_5'>
+    <model name='cokeCan_5'>
       <pose frame=''>4.57 8.20 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_6'>
+    <model name='cokeCan_6'>
       <pose frame=''>9.11 8.01 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_7'>
+    <model name='cokeCan_7'>
       <pose frame=''>12.16 10.40 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_8'>
+    <model name='cokeCan_8'>
       <pose frame=''>13.16 8.40 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_9'>
+    <model name='cokeCan_9'>
       <pose frame=''>15.16 5.62 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_10'>
+    <model name='cokeCan_10'>
       <pose frame=''>16.61 9.13 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_11'>
+    <model name='cokeCan_11'>
       <pose frame=''>16.26 7.81 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_12'>
+    <model name='cokeCan_12'>
       <pose frame=''>27.2 6.85 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='coke_can_13'>
+    <model name='cokeCan_13'>
       <pose frame=''>36.86 8.7 0.95 0 0 0</pose>
       		<include>
-		    <uri>model://coke_can</uri>
+		    <uri>model://cokeCan</uri>
 		</include>
     </model>
-    <model name='coke_can_14'>
+    <model name='cokeCan_14'>
       <pose frame=''>46.3 10.42 0.95 0 0 0</pose>
       		<include>
-		   <uri>model://coke_can</uri>
+		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
-    <model name='r1411_trash_can_1'>
+    <model name='trashCan_r1411_1'>
       <pose frame=''>6.30 9.30 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1411_trash_can_2'>
+    <model name='trashCan_r1411_2'>
       <pose frame=''>6.30 8.70 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1411A_trash_can'>
+    <model name='trashCan_r1411A'>
       <pose frame=''>7.0 7.5 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1410A_trash_can'>
+    <model name='trashCan_r1410A'>
       <pose frame=''>12.1 7.0 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1410B_trash_can'>
+    <model name='trashCan_r1410B'>
       <pose frame=''>15.22 6.92 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1408A_trash_can'>
+    <model name='trashCan_r1408A'>
       <pose frame=''>16.14 10.95 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1408B_trash_can'>
+    <model name='trashCan_r1408B'>
       <pose frame=''>21.13 8.21 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1408c_trash_can'>
+    <model name='trashCan_r1408c'>
       <pose frame=''>24.07 8.21 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1406A_trash_can'>
+    <model name='trashCan_r1406A'>
       <pose frame=''>27.03 8.21 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1406B_trash_can'>
+    <model name='trashCan_r1406B'>
       <pose frame=''>29.94 8.21 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1406C_trash_can'>
+    <model name='trashCan_r1406C'>
       <pose frame=''>33.12 6.52 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r_1405B_trash_can'>
+    <model name='trashCan_r_1405B'>
       <pose frame=''>35.5 3.75 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1403C_trash_can'>
+    <model name='trashCan_r1403C'>
       <pose frame=''>39.01 3.58 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1403A_trash_can'>
+    <model name='trashCan_r1403A'>
       <pose frame=''>40.3 9.98 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
-    <model name='r1403_trash_can'>
+    <model name='trashCan_r1403'>
       <pose frame=''>48.03 10.66 0.19 0 0 0</pose>
       		<include>
-		   <uri>model://trash_can</uri>
+		   <uri>model://trashCan</uri>
 	    	</include>
     </model>
     <model name='hammer_1'>
@@ -717,229 +717,229 @@
 		   <uri>model://cordless_drill</uri>
 	    	</include>
     </model>
-    <model name='monkey_wrench_1'>
+    <model name='monkeyWrench_1'>
       <pose frame=''>12.03 8.9 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://monkey_wrench</uri>
+		   <uri>model://monkeyWrench</uri>
 	    	</include>
     </model>
-    <model name='monkey_wrench_2'>
+    <model name='monkeyWrench_2'>
       <pose frame=''>13.25 10.36 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://monkey_wrench</uri>
+		   <uri>model://monkeyWrench</uri>
 	    	</include>
     </model>
-    <model name='monkey_wrench_3'>
+    <model name='monkeyWrench_3'>
       <pose frame=''>13.25 9.0 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://monkey_wrench</uri>
+		   <uri>model://monkeyWrench</uri>
 	    	</include>
     </model>
-    <model name='monkey_wrench_4'>
+    <model name='monkeyWrench_4'>
       <pose frame=''>15.08 9.7 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://monkey_wrench</uri>
+		   <uri>model://monkeyWrench</uri>
 	    	</include>
     </model>
-    <model name='monkey_wrench_5'>
+    <model name='monkeyWrench_5'>
       <pose frame=''>15.24 10.71 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://monkey_wrench</uri>
+		   <uri>model://monkeyWrench</uri>
 	    	</include>
     </model>
-    <model name='r1411A_bookshelf'>
+    <model name='bookshelf_r1411A'>
       <pose frame=''>9.52 6.58 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1410A_bookshelf_1'>
+    <model name='bookshelf_r1410A_1'>
       <pose frame=''>9.79 10.06 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1410A_bookshelf_2'>
+    <model name='bookshelf_r1410A_2'>
       <pose frame=''>9.79 9.11 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408A_bookshelf_1'>
+    <model name='bookshelf_r1408A_1'>
       <pose frame=''>18.61 9.88 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408A_bookshelf_2'>
+    <model name='bookshelf_r1408A_2'>
       <pose frame=''>18.61 8.98 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408A_bookshelf_3'>
+    <model name='bookshelf_r1408A_3'>
       <pose frame=''>18.61 8.08 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408A_bookshelf_4'>
+    <model name='bookshelf_r1408A_4'>
       <pose frame=''>18.61 7.18 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408B_bookshelf_1'>
+    <model name='bookshelf_r1408B_1'>
       <pose frame=''>18.75 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408B_bookshelf_2'>
+    <model name='bookshelf_r1408B_2'>
       <pose frame=''>18.75 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408C_bookshelf_1'>
+    <model name='bookshelf_r1408C_1'>
       <pose frame=''>21.81 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1408C_bookshelf_2'>
+    <model name='bookshelf_r1408C_2'>
       <pose frame=''>21.81 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406A_bookshelf_1'>
+    <model name='bookshelf_r1406A_1'>
       <pose frame=''>24.87 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406A_bookshelf_2'>
+    <model name='bookshelf_r1406A_2'>
       <pose frame=''>24.87 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406B_bookshelf_1'>
+    <model name='bookshelf_r1406B_1'>
       <pose frame=''>27.88 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406B_bookshelf_2'>
+    <model name='bookshelf_r1406B_2'>
       <pose frame=''>27.88 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406C_bookshelf_1'>
+    <model name='bookshelf_r1406C_1'>
       <pose frame=''>30.83 9.95 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1406C_bookshelf_2'>
+    <model name='bookshelf_r1406C_2'>
       <pose frame=''>30.83 9.05 0 0 0 1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1405_bookshelf_1'>
+    <model name='bookshelf_r1405_1'>
       <pose frame=''>39.15 6.00 0 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1400_bookshelf_2'>
+    <model name='bookshelf_r1400_2'>
       <pose frame=''>38.25 6.00 0 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403A_bookshelf_1'>
+    <model name='bookshelf_r1403A_1'>
       <pose frame=''>42.67 9.82 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403A_bookshelf_2'>
+    <model name='bookshelf_r1403A_2'>
       <pose frame=''>42.67 8.89 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403A_bookshelf_3'>
+    <model name='bookshelf_r1403A_3'>
       <pose frame=''>42.67 7.96 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403A_bookshelf_4'>
+    <model name='bookshelf_r1403A_4'>
       <pose frame=''>42.67 7.06 0 0 0 -1.570796327</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403_bookshelf_1'>
+    <model name='bookshelf_r1403_1'>
       <pose frame=''>48.17 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403_bookshelf_2'>
+    <model name='bookshelf_r1403_2'>
       <pose frame=''>47.27 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403_bookshelf_3'>
+    <model name='bookshelf_r1403_3'>
       <pose frame=''>46.37 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403_bookshelf_4'>
+    <model name='bookshelf_r1403_4'>
       <pose frame=''>45.47 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403_bookshelf_5'>
+    <model name='bookshelf_r1403_5'>
       <pose frame=''>44.57 3.11 0 0 0 -3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1405B_bookshelf_1'>
+    <model name='bookshelf_r1405B_1'>
       <pose frame=''>35.47 5.85 0.80 0 0 0</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1405B_bookshelf_2'>
+    <model name='bookshelf_r1405B_2'>
       <pose frame=''>34.55 5.85 0.80 0 0 0</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1405B_bookshelf_3'>
+    <model name='bookshelf_r1405B_3'>
       <pose frame=''>35.47 3.10 0.80 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1405B_bookshelf_4'>
+    <model name='bookshelf_r1405B_4'>
       <pose frame=''>34.56 3.10 0.80 0 0 3.141592654</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
 	    	</include>
     </model>
-    <model name='r1403C_bookshelf'>
+    <model name='bookshelf_r1403C'>
       <pose frame=''>39.13 5.85 0 0 0 0</pose>
       		<include>
 		   <uri>model://bookshelf</uri>
@@ -1233,953 +1233,953 @@
 		   <uri>model://cup</uri>
 	    	</include>
     </model>
-    <model name='red_book_1'>
+    <model name='redBook_1'>
       <pose frame=''>0.83 8.48 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_1'>
+    <model name='greenBook_1'>
       <pose frame=''>0.91 8.88 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_1'>
+    <model name='blueBook_1'>
       <pose frame=''>0.59 8.73 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_2'>
+    <model name='blueBook_2'>
       <pose frame=''>0.92 7.5 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_2'>
+    <model name='redBook_2'>
       <pose frame=''>0.69 7.22 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_2'>
+    <model name='greenBook_2'>
       <pose frame=''>3.68 5.18 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_3'>
+    <model name='blueBook_3'>
       <pose frame=''>7.30 10.82 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_3'>
+    <model name='redBook_3'>
       <pose frame=''>21.21 9.73 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_4'>
+    <model name='blueBook_4'>
       <pose frame=''>24.34 6.93 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_3'>
+    <model name='greenBook_3'>
       <pose frame=''>27.36 9.40 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_4'>
+    <model name='redBook_4'>
       <pose frame=''>30.30 6.81 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_5'>
+    <model name='redBook_5'>
       <pose frame=''>31.24 5.52 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_4'>
+    <model name='blueBook_4'>
       <pose frame=''>40.47 8.97 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_4'>
+    <model name='greenBook_4'>
       <pose frame=''>46.34 10.68 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_5'>
+    <model name='greenBook_5'>
       <pose frame=''>46.18 9.96 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_7'>
+    <model name='redBook_7'>
       <pose frame=''>48.2476 3.30816 0.582587 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_10'>
+    <model name='greenBook_10'>
       <pose frame=''>48.1617 3.29838 0.582587 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_9'>
+    <model name='blueBook_9'>
       <pose frame=''>47.2512 3.34391 0.582587 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_10'>
+    <model name='blueBook_10'>
       <pose frame=''>47.1746 3.35109 0.186407 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_11'>
+    <model name='greenBook_11'>
       <pose frame=''>47.107 3.34176 0.186407 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_12'>
+    <model name='greenBook_12'>
       <pose frame=''>47.324 3.33659 0.186407 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_11'>
+    <model name='blueBook_11'>
       <pose frame=''>47.3842 3.34585 0.186407 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_8'>
+    <model name='redBook_8'>
       <pose frame=''>46.4846 3.34086 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_13'>
+    <model name='greenBook_13'>
       <pose frame=''>46.4012 3.33964 0.186407 0 0 -1.53468</pose>
             	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_14'>
+    <model name='greenBook_14'>
       <pose frame=''>46.3167 3.33004 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_12'>
+    <model name='blueBook_12'>
       <pose frame=''>46.2406 3.32896 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_15'>
+    <model name='greenBook_15'>
       <pose frame=''>44.7863 3.28678 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_16'>
+    <model name='greenBook_16'>
       <pose frame=''>44.689 3.35967 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_9'>
+    <model name='redBook_9'>
       <pose frame=''>44.5896 3.37783 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-       <model name='green_book_17'>
+       <model name='greenBook_17'>
       <pose frame=''>44.4841 3.34874 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_13'>
+    <model name='blueBook_13'>
       <pose frame=''>44.3726 3.33787 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_10'>
+    <model name='redBook_10'>
       <pose frame=''>46.1594 3.32 0.186407 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_18'>
+    <model name='greenBook_18'>
       <pose frame=''>47.1818 3.33995 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-        <model name='green_book_19'>
+        <model name='greenBook_19'>
       <pose frame=''>47.3215 3.33737 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_20'>
+    <model name='greenBook_20'>
       <pose frame=''>47.4001 3.34779 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_14'>
+    <model name='blueBook_14'>
       <pose frame=''>45.6584 3.35437 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_11'>
+    <model name='redBook_11'>
       <pose frame=''>45.564 3.34692 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_21'>
+    <model name='greenBook_21'>
       <pose frame=''>45.4764 3.35777 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
     
-    <model name='blue_book_15'>
+    <model name='blueBook_15'>
       <pose frame=''>45.3773 3.3623 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_22'>
+    <model name='greenBook_22'>
       <pose frame=''>44.7589 3.36577 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_23'>
+    <model name='greenBook_23'>
       <pose frame=''>44.6812 3.36465 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_12'>
+    <model name='redBook_12'>
       <pose frame=''>44.5983 3.35549 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_13'>
+    <model name='redBook_13'>
       <pose frame=''>44.4985 3.34604 0.958151 0 0 -1.53468</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_14'>
+    <model name='redBook_14'>
       <pose frame=''>42.37 9.06 0.958151 0 0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_24'>
+    <model name='greenBook_24'>
       <pose frame=''>42.4109 10.0044 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_16'>
+    <model name='blueBook_16'>
       <pose frame=''>42.4142 9.9093 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_15'>
+    <model name='redBook_15'>
       <pose frame=''>42.4186 9.8255 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_16'>
+    <model name='redBook_16'>
       <pose frame=''>42.4187 8.28849 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_25'>
+    <model name='greenBook_25'>
       <pose frame=''>42.4239 8.20397 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_17'>
+    <model name='blueBook_17'>
       <pose frame=''>42.4289 8.11599 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_18'>
+    <model name='blueBook_18'>
       <pose frame=''>42.4331 8.02142 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_26'>
+    <model name='greenBook_26'>
       <pose frame=''>42.4225 7.3117 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_17'>
+    <model name='redBook_17'>
       <pose frame=''>42.4353 7.2041 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_18'>
+    <model name='redBook_18'>
       <pose frame=''>42.4249 7.10147 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_27'>
+    <model name='greenBook_27'>
       <pose frame=''>42.3823 9.1288 0.958151 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_19'>
+    <model name='blueBook_19'>
       <pose frame=''>42.3925 9.04987 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_28'>
+    <model name='greenBook_28'>
       <pose frame=''>42.3844 8.97391 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_29'>
+    <model name='greenBook_29'>
       <pose frame=''>42.384 8.90863 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_19'>
+    <model name='redBook_19'>
       <pose frame=''>42.3936 8.10754 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_20'>
+    <model name='redBook_20'>
       <pose frame=''>42.3994 8.02036 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_30'>
+    <model name='greenBook_30'>
       <pose frame=''>42.4036 7.92483 0.571409 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_31'>
+    <model name='greenBook_31'>
       <pose frame=''>42.3995 9.2254 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_20'>
+    <model name='blueBook_20'>
       <pose frame=''>42.3925 9.15965 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_21'>
+    <model name='blueBook_21'>
       <pose frame=''>42.4135 9.65303 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_32'>
+    <model name='greenBook_32'>
       <pose frame=''>42.4126 9.58658 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_22'>
+    <model name='blueBook_22'>
       <pose frame=''>42.401 9.52726 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_33'>
+    <model name='greenBook_33'>
       <pose frame=''>42.43 7.4079 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_21'>
+    <model name='redBook_21'>
       <pose frame=''>42.4214 7.34113 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_22'>
+    <model name='redBook_22'>
       <pose frame=''>42.4252 7.26811 0.191656 0 -0 0.045059</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_34'>
+    <model name='greenBook_34'>
       <pose frame=''>39.3657 6.26307 0.191656 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_35'>
+    <model name='greenBook_35'>
       <pose frame=''>39.2888 6.25851 0.191656 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_24'>
+    <model name='blueBook_24'>
       <pose frame=''>39.1871 6.25854 0.191656 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_36'>
+    <model name='greenBook_36'>
       <pose frame=''>38.3669 6.22877 0.564072 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_25'>
+    <model name='blueBook_25'>
       <pose frame=''>38.2274 6.21872 0.564072 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_37'>
+    <model name='greenBook_37'>
       <pose frame=''>38.1593 6.24792 0.564072 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_38'>
+    <model name='greenBook_38'>
       <pose frame=''>38.2945 6.22 0.564072 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_39'>
+    <model name='greenBook_39'>
       <pose frame=''>38.4438 6.24487 0.942357 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_40'>
+    <model name='greenBook_40'>
       <pose frame=''>38.373 6.23997 0.942357 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_26'>
+    <model name='blueBook_26'>
       <pose frame=''>37.8809 6.24307 0.942357 0 0 -1.59516</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_23'>
+    <model name='redBook_23'>
       <pose frame=''>31.09 9.06 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_24'>
+    <model name='redBook_24'>
       <pose frame=''>31.1081 8.84044 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_41'>
+    <model name='greenBook_41'>
       <pose frame=''>31.1014 8.91793 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_25'>
+    <model name='redBook_25'>
       <pose frame=''>31.0453 9.79474 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_42'>
+    <model name='greenBook_42'>
       <pose frame=''>31.0343 9.86992 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_27'>
+    <model name='blueBook_27'>
       <pose frame=''>31.0486 9.97043 0.942357 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_43'>
+    <model name='greenBook_43'>
       <pose frame=''>31.06 8.99 0.93 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_26'>
+    <model name='redBook_26'>
       <pose frame=''>31.0827 8.97131 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_44'>
+    <model name='greenBook_44'>
       <pose frame=''>31.0758 9.05583 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_28'>
+    <model name='blueBook_28'>
       <pose frame=''>31.07 9.13 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_45'>
+    <model name='greenBook_45'>
       <pose frame=''>31.0894 9.76865 0.199497 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_27'>
+    <model name='redBook_27'>
       <pose frame=''>31.0868 9.85636 0.199497 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_46'>
+    <model name='greenBook_46'>
       <pose frame=''>28.1421 8.74783 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_47'>
+    <model name='greenBook_47'>
       <pose frame=''>28.1373 8.82966 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_29'>
+    <model name='blueBook_29'>
       <pose frame=''>28.1427 8.91533 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_28'>
+    <model name='redBook_28'>
       <pose frame=''>28.1363 9.01309 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_29'>
+    <model name='redBook_29'>
       <pose frame=''>28.13 9.81 0.579734 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_48'>
+    <model name='greenBook_48'>
       <pose frame=''>28.1177 9.88194 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_30'>
+    <model name='blueBook_30'>
       <pose frame=''>28.1272 9.95724 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_30'>
+    <model name='redBook_30'>
       <pose frame=''>28.1386 10.0407 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_31'>
+    <model name='redBook_31'>
       <pose frame=''>25.1109 8.85552 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_49'>
+    <model name='greenBook_49'>
       <pose frame=''>25.1021 8.94226 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_31'>
+    <model name='blueBook_31'>
       <pose frame=''>25.1022 9.03745 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_32'>
+    <model name='blueBook_32'>
       <pose frame=''>25.097 9.81117 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_50'>
+    <model name='greenBook_50'>
       <pose frame=''>25.0899 9.88 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_51'>
+    <model name='greenBook_51'>
       <pose frame=''>25.0919 9.95328 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_52'>
+    <model name='greenBook_52'>
       <pose frame=''>25.01 9.10 0.940595 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_32'>
+    <model name='redBook_32'>
       <pose frame=''>25.1316 9.6973 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_33'>
+    <model name='redBook_33'>
       <pose frame=''>25.1317 9.77531 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_53'>
+    <model name='greenBook_53'>
       <pose frame=''>22.0719 9.65893 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_54'>
+    <model name='greenBook_54'>
       <pose frame=''>22.0849 9.7327 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_33'>
+    <model name='blueBook_33'>
       <pose frame=''>22.0876 9.80839 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_34'>
+    <model name='blueBook_34'>
       <pose frame=''>22.0504 8.91541 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_35'>
+    <model name='blueBook_35'>
       <pose frame=''>22.0696 9.00589 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_55'>
+    <model name='greenBook_55'>
       <pose frame=''>22.0647 9.09781 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_34'>
+    <model name='redBook_34'>
       <pose frame=''>22.0702 9.18568 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_35'>
+    <model name='redBook_35'>
       <pose frame=''>22.0858 10.0918 0.187441 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_56'>
+    <model name='greenBook_56'>
       <pose frame=''>22.0797 10.0191 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_36'>
+    <model name='redBook_36'>
       <pose frame=''>22.0742 9.93323 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_57'>
+    <model name='greenBook_57'>
       <pose frame=''>18.9972 9.74654 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_58'>
+    <model name='greenBook_58'>
       <pose frame=''>19.004 9.81803 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_37'>
+    <model name='redBook_37'>
       <pose frame=''>19.0145 9.88641 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_59'>
+    <model name='greenBook_59'>
       <pose frame=''>19.0169 9.97467 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_36'>
+    <model name='blueBook_36'>
       <pose frame=''>18.9921 8.90746 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_60'>
+    <model name='greenBook_60'>
       <pose frame=''>18.995 8.98608 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_37'>
+    <model name='blueBook_37'>
       <pose frame=''>19.005 9.06809 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_38'>
+    <model name='redBook_38'>
       <pose frame=''>18.99 9.14 0.582228 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_61'>
+    <model name='greenBook_61'>
       <pose frame=''>19.0039 9.22098 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_62'>
+    <model name='greenBook_62'>
       <pose frame=''>18.9944 9.13073 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_63'>
+    <model name='greenBook_63'>
       <pose frame=''>10.0277 9.74485 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_38'>
+    <model name='blueBook_38'>
       <pose frame=''>10.02 9.8243 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_39'>
+    <model name='redBook_39'>
       <pose frame=''>10.0266 9.89894 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_64'>
+    <model name='greenBook_64'>
       <pose frame=''>10.02 9.97 0.929116 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_65'>
+    <model name='greenBook_65'>
       <pose frame=''>10.0224 10.3056 0.575297 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_39'>
+    <model name='blueBook_39'>
       <pose frame=''>10.0121 10.3681 0.575297 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_66'>
+    <model name='greenBook_66'>
       <pose frame=''>10.01 10.22 0.575297 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_40'>
+    <model name='redBook_40'>
       <pose frame=''>10.0757 10.1706 0.200768 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_41'>
+    <model name='redBook_41'>
       <pose frame=''>10.0853 10.0852 0.200768 0 0 -3.1407</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_67'>
+    <model name='greenBook_67'>
       <pose frame=''>18.35 10.04 0.935975 0 0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_40'>
+    <model name='blueBook_40'>
       <pose frame=''>18.3608 10.1403 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_68'>
+    <model name='greenBook_68'>
       <pose frame=''>18.3744 8.36995 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_42'>
+    <model name='redBook_42'>
       <pose frame=''>18.3805 8.29779 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_69'>
+    <model name='greenBook_69'>
       <pose frame=''>18.3761 8.22101 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_41'>
+    <model name='blueBook_41'>
       <pose frame=''>18.3751 8.13017 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_70'>
+    <model name='greenBook_70'>
       <pose frame=''>18.33 9.12 0.935975 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_43'>
+    <model name='redBook_43'>
       <pose frame=''>18.3488 9.13055 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_71'>
+    <model name='greenBook_71'>
       <pose frame=''>18.3514 9.06499 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_72'>
+    <model name='greenBook_72'>
       <pose frame=''>18.3402 8.99631 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_42'>
+    <model name='blueBook_42'>
       <pose frame=''>18.3632 7.4372 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_73'>
+    <model name='greenBook_73'>
       <pose frame=''>18.3587 7.35547 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_44'>
+    <model name='redBook_44'>
       <pose frame=''>18.3679 7.26754 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_74'>
+    <model name='greenBook_74'>
       <pose frame=''>18.35 7.18 0.589125 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_75'>
+    <model name='greenBook_75'>
       <pose frame=''>18.3442 7.32568 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_45'>
+    <model name='redBook_45'>
       <pose frame=''>18.35 7.23337 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_76'>
+    <model name='greenBook_76'>
       <pose frame=''>18.3455 7.14366 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='green_book_77'>
+    <model name='greenBook_77'>
       <pose frame=''>18.3839 10.0571 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_green</uri>
+		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_43'>
+    <model name='blueBook_43'>
       <pose frame=''>18.3692 9.9887 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
-    <model name='red_book_46'>
+    <model name='redBook_46'>
       <pose frame=''>18.382 9.90051 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_red</uri>
+		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='blue_book_44'>
+    <model name='blueBook_44'>
       <pose frame=''>18.3776 9.81211 0.204601 0 -0 0</pose>
 	    	<include>
-		   <uri>model://book_blue</uri>
+		   <uri>model://blueBook</uri>
 	    	</include>
     </model>
 

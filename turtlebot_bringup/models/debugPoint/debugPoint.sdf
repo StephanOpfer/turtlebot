@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <model name='debugPoint'>
+    	<static>true</static>
+		<link name='link'>
+			<visual name='visual'>
+				  <geometry>
+						<cylinder>
+						  	<radius>0.05</radius>
+						  	<length>0.01</length>
+						</cylinder>
+				  </geometry>
+				  <material>
+						<script>
+							  <name>Gazebo/Red</name>
+							  <uri>file://media/materials/scripts/gazebo.material</uri>
+						</script>
+				  </material>
+			</visual>
+		</link>
+	</model>
+</sdf>

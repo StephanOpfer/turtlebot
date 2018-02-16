@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="cokeCan">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <pose>0 0 -0.46 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://coke_can/meshes/coke_can.dae</uri>
+	    <scale>0.5 0.5 0.5</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 -0.46 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://coke_can/meshes/coke_can.dae</uri>
+	    <scale>0.5 0.5 0.5</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

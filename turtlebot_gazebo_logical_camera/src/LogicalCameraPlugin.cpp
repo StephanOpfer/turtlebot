@@ -172,7 +172,7 @@ void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
     auto models = this->parentSensor->Image();
-    std::cout << "LCP: SensorYaw: " << this->sensorYaw << " Number of Models seen: " << models.model_size() << std::endl;
+    //std::cout << "LCP: SensorYaw: " << this->sensorYaw << " Number of Models seen: " << models.model_size() << std::endl;
 
     for (int i = 0; i < models.model_size(); i++)
     {
