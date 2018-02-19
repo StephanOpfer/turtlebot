@@ -104,12 +104,13 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
     this->parentSensor->SetActive(true);
 
     // Initializing physics engine for collision checking
-    this->physicsEngine = physics::get_world(this->parentSensor->WorldName())->GetPhysicsEngine();
+    this->world = physics::get_world(this->parentSensor->WorldName());
+    GZ_ASSERT(this->world != nullptr, "Unable to get a pointer to the world");
 
+    this->physicsEngine = this->world->GetPhysicsEngine();
     GZ_ASSERT(this->physicsEngine != nullptr, "Unable to get a pointer to the physics engine");
 
     this->laserCollision = this->physicsEngine->CreateCollision("ray", this->parentSensor->ParentName());
-
     GZ_ASSERT(this->laserCollision != nullptr, "Unable to create a ray collision using the physics engine.");
 
     this->laserCollision->SetName("logical_occlusion_collision");
@@ -141,16 +142,18 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 
     // Get the sensor yaw, which is used to distinguish front and back sensor
     this->sensorYaw = this->parentSensor->Pose().Rot().Yaw();
-    std::cout << "LogicalCameraPlugin: Sensor far range:" << this->parentSensor->Far() << std::endl;
-    std::cout << "LogicalCameraPlugin: Sensor near range:" << this->parentSensor->Near() << std::endl;
+#ifdef LOGICAL_CAMERA_DEBUG
+    std::cout << "LogicalCameraPlugin: Sensor yaw: " << this->sensorYaw << std::endl;
+    std::cout << "LogicalCameraPlugin: Sensor far range: " << this->parentSensor->Far() << std::endl;
+    std::cout << "LogicalCameraPlugin: Sensor near range: " << this->parentSensor->Near() << std::endl;
+#endif
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
     std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
     std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    std::string positionString = "0 0 0 0 0 0";
-    this->createDebugPoint(sdfString, positionString, "debugPoint");
-    this->createDebugPoint(sdfString, positionString, "debugPoint2");
+    this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
+    this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");
 #endif
 }
 
@@ -173,8 +176,6 @@ void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
     auto models = this->parentSensor->Image();
-    // std::cout << "LCP: SensorYaw: " << this->sensorYaw << " Number of Models seen: " << models.model_size() <<
-    // std::endl;
 
     for (int i = 0; i < models.model_size(); i++)
     {
@@ -206,29 +207,24 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
                                        LogicalCameraPlugin::ConfigModel &configModel,
                                        gazebo::math::Pose outCorrectedPose)
 {
-
-    auto x = outCorrectedPose.pos.x;
-    auto y = outCorrectedPose.pos.y;
-    auto z = outCorrectedPose.pos.z;
-
     ttb_msgs::LogicalCamera msg;
     msg.modelName = model.name();
 
-    auto q = outCorrectedPose.rot;
+    auto quaternion = outCorrectedPose.rot;
 
     // change coordinate system and rotation for backwards sensor
     if (this->sensorYaw != 0)
     {
-        msg.pose.x = -x;
-        msg.pose.y = -y;
-        auto angle = quaterniumToYaw(q.x, q.y, q.z, q.w);
+        msg.pose.x = -outCorrectedPose.pos.x;
+        msg.pose.y = -outCorrectedPose.pos.y;
+        auto angle = quaternionToYaw(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
         msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
     }
     else
     {
-        msg.pose.x = x;
-        msg.pose.y = y;
-        msg.pose.theta = -quaterniumToYaw(q.x, q.y, q.z, q.w);
+        msg.pose.x = outCorrectedPose.pos.x;
+        msg.pose.y = outCorrectedPose.pos.y;
+        msg.pose.theta = -quaternionToYaw(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     /*
@@ -237,11 +233,11 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
      */
     if (model.name().find("door_"))
     {
-        msg.pose.theta = q.z;
+        msg.pose.theta = quaternion.z;
     }
 #ifdef LOGICAL_CAMERA_DEBUG
-    cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y
-         << ", " << z << ")" << endl;
+    cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << outCorrectedPose.pos.x << ", " << outCorrectedPose.pos.y
+         << ", " << outCorrectedPose.pos.z << ")" << endl;
 #endif
 
     msg.timeStamp = ros::Time::now();
@@ -271,7 +267,7 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
 
 // See:
 // https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-double LogicalCameraPlugin::quaterniumToYaw(double x, double y, double z, double w)
+double LogicalCameraPlugin::quaternionToYaw(double x, double y, double z, double w)
 {
     double ysqr = y * y;
     double t0 = -2.0f * (ysqr + z * z) + 1.0f;
@@ -290,8 +286,7 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
         return false;
     }
 
-    auto world = physics::get_world(this->parentSensor->WorldName());
-    auto objectModel = world->GetModel(model.name());
+    auto objectModel = this->world->GetModel(model.name());
 
     if (model.name().find("door_") != std::string::npos)
     {
@@ -308,7 +303,7 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
     }
     else
     {
-    	outCorrectedPose = objectModel->GetWorldPose();
+        outCorrectedPose = objectModel->GetWorldPose();
     }
 
     // Check the distance to the correctedPose
@@ -356,9 +351,17 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 bool LogicalCameraPlugin::isVisible(gazebo::math::Pose correctedPose, msgs::LogicalCameraImage_Model model)
 {
     // Starting and ending points of the ray
-    auto world = physics::get_world(this->parentSensor->WorldName());
-    auto robotPos = world->GetModel(this->robotName)->GetWorldPose();
-    auto rayEndPoint = correctedPose - robotPos;
+    auto rayEndPoint = correctedPose - this->world->GetModel(this->robotName)->GetWorldPose();
+    if (this->sensorYaw != 0)
+    {
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+        if (model.name().find(debugName) != string::npos)
+        {
+            std::cout << "LogicalCameraPlugin: Correcting angle for back sensor!" << std::endl;
+        }
+#endif
+        rayEndPoint.RotatePositionAboutOrigin(math::Quaternion::EulerToQuaternion(math::Vector3(0.0, 0.0, M_PI)));
+    }
 
     // auto rayEndPoint = ConvertIgn(model.pose().position());
     this->rayShape->SetPoints(this->parentSensor->Pose().Pos(), rayEndPoint.pos);
@@ -373,7 +376,6 @@ bool LogicalCameraPlugin::isVisible(gazebo::math::Pose correctedPose, msgs::Logi
         this->rayShape->GetGlobalPoints(posA, posB);
 
         std::cout << "LogicalCameraPlugin: ray start point: " << posA << " ray end point: " << posB << std::endl;
-        auto world = physics::get_world(this->parentSensor->WorldName());
         auto debugPosA = gazebo::math::Pose(posA.x, posA.y, posA.z, 0, 0, 0);
         auto debugPosB = gazebo::math::Pose(posB.x, posB.y, posB.z, 0, 0, 0);
         this->moveDebugPoint("debugPoint", debugPosA);
@@ -462,13 +464,8 @@ bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<s
 
 bool LogicalCameraPlugin::isInRange(gazebo::math::Pose &outCorrectedPose, double range)
 {
-    auto world = physics::get_world(this->parentSensor->WorldName());
-    auto sensorPos = world->GetModel(this->robotName)->GetWorldPose().pos + this->parentSensor->Pose().Pos();
-    double x = outCorrectedPose.pos.x - sensorPos.x;
-    double y = outCorrectedPose.pos.y - sensorPos.y;
-    double z = outCorrectedPose.pos.z - sensorPos.z;
-    auto dist = sqrt(x * x + y * y + z * z);
-    return dist <= range;
+    auto sensorPos = this->world->GetModel(this->robotName)->GetWorldPose().pos + this->parentSensor->Pose().Pos();
+    return (outCorrectedPose.pos - sensorPos).GetLength() <= range;
 }
 
 bool LogicalCameraPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
@@ -478,7 +475,6 @@ bool LogicalCameraPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model mod
 
 void LogicalCameraPlugin::createDebugPoint(std::string sdfString, std::string positionString, std::string name)
 {
-    auto world = physics::get_world(this->parentSensor->WorldName());
     // first debug point
     sdf::SDF sphereSDF;
     sphereSDF.SetFromString(sdfString);
@@ -486,13 +482,12 @@ void LogicalCameraPlugin::createDebugPoint(std::string sdfString, std::string po
     sdf::ElementPtr m = sphereSDF.Root()->GetElement("model");
     m->GetAttribute("name")->SetFromString(name);
     m->GetElement("pose")->Set(positionString);
-    world->InsertModelSDF(sphereSDF);
+    this->world->InsertModelSDF(sphereSDF);
 }
 
 void LogicalCameraPlugin::moveDebugPoint(std::string name, gazebo::math::Pose &pose)
 {
-    auto world = physics::get_world(this->parentSensor->WorldName());
-    auto model = world->GetModel(name);
+    auto model = this->world->GetModel(name);
     if (model)
     {
         model->SetWorldPose(pose);

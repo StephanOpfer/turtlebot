@@ -71,7 +71,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     bool isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
     bool isVisible(gazebo::math::Pose correctedPose, msgs::LogicalCameraImage_Model model);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::math::Pose outCorrectedPose);
-    double quaterniumToYaw(double x, double y, double z, double w);
+    double quaternionToYaw(double x, double y, double z, double w);
 
     void loadModelsFromConfig();
     void loadOccludingTypes();
@@ -99,6 +99,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
 
     // Engine pointer for ray collision initialization
     physics::PhysicsEnginePtr physicsEngine;
+    physics::WorldPtr world;
 
     // Collision and shape ptrs
     physics::CollisionPtr laserCollision;
