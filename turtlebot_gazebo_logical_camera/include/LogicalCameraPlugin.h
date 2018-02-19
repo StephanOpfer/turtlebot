@@ -14,7 +14,7 @@
 
 //#define LOGICAL_OCCLUSION_DEBUG
 //#define LOGICAL_CAMERA_DEBUG
-#define LOGICAL_CAMERA_DEBUG_POINTS
+//#define LOGICAL_CAMERA_DEBUG_POINTS
 
 namespace supplementary
 {
@@ -67,7 +67,7 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     */
     bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::math::Pose &outCorrectedPose);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
-    bool isInRange(gazebo::math::Pose &outCorrectedPose, double range);
+    bool isInRange(gazebo::math::Pose modelPose, double range);
     bool isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
     bool isVisible(gazebo::math::Pose correctedPose, msgs::LogicalCameraImage_Model model);
     void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::math::Pose outCorrectedPose);

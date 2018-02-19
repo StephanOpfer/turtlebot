@@ -51,7 +51,7 @@ void POISpawnerPlugin::spawnPOI(string name, double x, double y)
     sdf::ElementPtr model = sphereSDF.Root()->GetElement("model");
     string modelName = "poi_" + name;
     model->GetAttribute("name")->SetFromString(modelName);
-    model->GetElement("pose")->Set(to_string(x) + " " + to_string(y) + " 0 0 0 0");
+    model->GetElement("pose")->Set(to_string(x) + " " + to_string(y) + " 0.02 0 0 0");
     world->InsertModelSDF(sphereSDF);
     this->poiTextMap.emplace(modelName, false);
 }

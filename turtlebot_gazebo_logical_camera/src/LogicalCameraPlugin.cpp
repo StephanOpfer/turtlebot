@@ -36,11 +36,8 @@ void LogicalCameraPlugin::loadOccludingTypes()
 
 void LogicalCameraPlugin::loadModelsFromConfig()
 {
-    const char *lc = "LogicalCamera";
-    const char *da = "DetectAngles";
-
-    auto config = (*this->sc)[lc];
-    this->modelSectionNames = config->getSections(lc, NULL);
+    auto config = (*this->sc)["LogicalCamera"];
+    this->modelSectionNames = config->getSections("LogicalCamera", NULL);
 
     // Iterate over all model sections in config file
     for (auto section : *(this->modelSectionNames))
@@ -50,14 +47,14 @@ void LogicalCameraPlugin::loadModelsFromConfig()
 #endif
         const char *sec = section.c_str();
         ConfigModel m;
-        m.range = config->get<double>(lc, sec, "range", NULL);
+        m.range = config->get<double>("LogicalCamera", sec, "range", NULL);
 
         // Add all angles specified in model to detectAngles vector
-        auto angleSections = config->getSections(lc, sec, da, NULL);
+        auto angleSections = config->getSections("LogicalCamera", sec, "DetectAngles", NULL);
         for (auto angleSection : *angleSections)
         {
-            auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
-            auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
+            auto start = config->get<double>("LogicalCamera", sec, "DetectAngles", angleSection.c_str(), "startAngle", NULL);
+            auto end = config->get<double>("LogicalCamera", sec, "DetectAngles", angleSection.c_str(), "endAngle", NULL);
 #ifdef LOGICAL_CAMERA_DEBUG
             cout << "LogicalCameraPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end
                  << endl;
@@ -67,13 +64,13 @@ void LogicalCameraPlugin::loadModelsFromConfig()
 
         m.type = section;
         m.name = section;
-        m.publishingRate = config->get<double>(lc, sec, "publishingRateHz", NULL);
+        m.publishingRate = config->get<double>("LogicalCamera", sec, "publishingRateHz", NULL);
         this->modelMap.emplace(m.name, m);
     }
 
     this->modelSectionNames = nullptr;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    this->debugName = "r1411C_r1401";
+    this->debugName = "redBook_1";
 #endif
 }
 
@@ -280,7 +277,6 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 {
     // Checking if model type match desired type
     auto gazeboElementName = configModel.type;
-    transform(gazeboElementName.begin(), gazeboElementName.end(), gazeboElementName.begin(), ::tolower);
     if (model.name().find(gazeboElementName) == std::string::npos)
     {
         return false;
@@ -462,10 +458,10 @@ bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<s
     return false;
 }
 
-bool LogicalCameraPlugin::isInRange(gazebo::math::Pose &outCorrectedPose, double range)
+bool LogicalCameraPlugin::isInRange(gazebo::math::Pose modelPose, double range)
 {
     auto sensorPos = this->world->GetModel(this->robotName)->GetWorldPose().pos + this->parentSensor->Pose().Pos();
-    return (outCorrectedPose.pos - sensorPos).GetLength() <= range;
+    return (modelPose.pos - sensorPos).GetLength() <= range;
 }
 
 bool LogicalCameraPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
