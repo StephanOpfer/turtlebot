@@ -65,12 +65,12 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     * \brief Models configured as "occluding" will be checked for occlusion through ray casting
     * @param model model detected by sensor
     */
-    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::msgs::Pose &outCorrectedPose);
+    bool isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel, gazebo::math::Pose &outCorrectedPose);
     bool isSensorResponsible(msgs::LogicalCameraImage_Model model);
-    bool isInRange(gazebo::msgs::Pose &outCorrectedPose, double range);
-    bool isInAngleRange(gazebo::msgs::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
-    bool isVisible(gazebo::msgs::Pose correctedPose, msgs::LogicalCameraImage_Model model);
-    void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::msgs::Pose &outCorrectedPose);
+    bool isInRange(gazebo::math::Pose &outCorrectedPose, double range);
+    bool isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
+    bool isVisible(gazebo::math::Pose correctedPose, msgs::LogicalCameraImage_Model model);
+    void publishModel(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel &configModel, gazebo::math::Pose outCorrectedPose);
     double quaterniumToYaw(double x, double y, double z, double w);
 
     void loadModelsFromConfig();

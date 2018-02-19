@@ -185,46 +185,50 @@ void LogicalCameraPlugin::OnUpdate()
         {
             continue;
         }
-        for (auto &kv : this->modelMap)
+
+        std::string type = model.name().substr(0, model.name().find_first_of('_'));
+        auto mapEntry = this->modelMap.find(type);
+        if (mapEntry == this->modelMap.end())
         {
-            // Checking occlusion
-            gazebo::msgs::Pose correctedPosition;
-            if (isDetected(model, kv.second, correctedPosition))
-            {
-                // Translating gazebo Model message to ROS message
-                publishModel(model, kv.second, correctedPosition);
-            }
+            continue;
+        }
+
+        gazebo::math::Pose correctedPosition;
+        if (isDetected(model, mapEntry->second, correctedPosition))
+        {
+            // Translating gazebo Model message to ROS message
+            publishModel(model, mapEntry->second, correctedPosition);
         }
     }
 }
 
 void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
                                        LogicalCameraPlugin::ConfigModel &configModel,
-                                       gazebo::msgs::Pose &outCorrectedPose)
+                                       gazebo::math::Pose outCorrectedPose)
 {
 
-    auto x = outCorrectedPose.position().x();
-    auto y = outCorrectedPose.position().y();
-    auto z = outCorrectedPose.position().z();
+    auto x = outCorrectedPose.pos.x;
+    auto y = outCorrectedPose.pos.y;
+    auto z = outCorrectedPose.pos.z;
 
     ttb_msgs::LogicalCamera msg;
     msg.modelName = model.name();
 
-    auto q = outCorrectedPose.orientation();
+    auto q = outCorrectedPose.rot;
 
     // change coordinate system and rotation for backwards sensor
     if (this->sensorYaw != 0)
     {
         msg.pose.x = -x;
         msg.pose.y = -y;
-        auto angle = quaterniumToYaw(q.x(), q.y(), q.z(), q.w());
+        auto angle = quaterniumToYaw(q.x, q.y, q.z, q.w);
         msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
     }
     else
     {
         msg.pose.x = x;
         msg.pose.y = y;
-        msg.pose.theta = -quaterniumToYaw(q.x(), q.y(), q.z(), q.w());
+        msg.pose.theta = -quaterniumToYaw(q.x, q.y, q.z, q.w);
     }
 
     /*
@@ -233,7 +237,7 @@ void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
      */
     if (model.name().find("door_"))
     {
-        msg.pose.theta = q.z();
+        msg.pose.theta = q.z;
     }
 #ifdef LOGICAL_CAMERA_DEBUG
     cout << "Robot " << this->robotName << " found Model with Name " << model.name() << " at ( " << x << ", " << y
@@ -276,7 +280,7 @@ double LogicalCameraPlugin::quaterniumToYaw(double x, double y, double z, double
 }
 
 bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel,
-                                     gazebo::msgs::Pose &outCorrectedPose)
+                                     gazebo::math::Pose &outCorrectedPose)
 {
     // Checking if model type match desired type
     auto gazeboElementName = configModel.type;
@@ -288,11 +292,11 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 
     auto world = physics::get_world(this->parentSensor->WorldName());
     auto objectModel = world->GetModel(model.name());
-    math::Pose objectWorldPose;
+
     if (model.name().find("door_") != std::string::npos)
     {
         auto doorLink = objectModel->GetChildLink("door::door");
-        objectWorldPose.pos = doorLink->GetWorldPose().CoordPositionAdd(math::Vector3(0.45, 0.0, 1.0));
+        outCorrectedPose.pos = doorLink->GetWorldPose().CoordPositionAdd(math::Vector3(0.45, 0.0, 1.0));
         /*
          * Dirty hack to set the correct angle of the door
          * the angle of the door itself does not change when it is opened therefore
@@ -300,25 +304,12 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
          * doorframe and the door leaf
          */
         auto doorJoint = objectModel->GetJoint("door::hinge");
-        objectWorldPose.rot.z = *doorJoint->GetAngle(0);
+        outCorrectedPose.rot.z = *doorJoint->GetAngle(0);
     }
     else
     {
-        objectWorldPose = objectModel->GetWorldPose();
+    	outCorrectedPose = objectModel->GetWorldPose();
     }
-
-    // create outCorrectedPose based on the potentially corrected objectWorldPose
-    auto vector = new gazebo::msgs::Vector3d();
-    vector->set_x(objectWorldPose.pos.x);
-    vector->set_y(objectWorldPose.pos.y);
-    vector->set_z(objectWorldPose.pos.z);
-    outCorrectedPose.set_allocated_position(vector);
-    auto quaternion = new gazebo::msgs::Quaternion();
-    quaternion->set_w(objectWorldPose.rot.w);
-    quaternion->set_x(objectWorldPose.rot.x);
-    quaternion->set_y(objectWorldPose.rot.y);
-    quaternion->set_z(objectWorldPose.rot.z);
-    outCorrectedPose.set_allocated_orientation(quaternion);
 
     // Check the distance to the correctedPose
     if (!this->isInRange(outCorrectedPose, configModel.range))
@@ -356,20 +347,21 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     if (model.name().find(debugName) != string::npos)
     {
-        std::cout << "LCP: CorrectedPose " << outCorrectedPose.DebugString() << std::endl;
+        std::cout << "LogicalCameraPlugin: CorrectedPose " << outCorrectedPose << std::endl;
     }
 #endif
     return true;
 }
 
-bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose correctedPose, msgs::LogicalCameraImage_Model model)
+bool LogicalCameraPlugin::isVisible(gazebo::math::Pose correctedPose, msgs::LogicalCameraImage_Model model)
 {
     // Starting and ending points of the ray
-//    auto world = physics::get_world(this->parentSensor->WorldName());
-//    auto robotPos = world->GetModel(this->robotName);
-    auto rayEndPoint = (ConvertIgn(correctedPose.position()) - this->parentSensor->Pose().Pos());
-    //auto rayEndPoint = ConvertIgn(model.pose().position());
-    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(), rayEndPoint);
+    auto world = physics::get_world(this->parentSensor->WorldName());
+    auto robotPos = world->GetModel(this->robotName)->GetWorldPose();
+    auto rayEndPoint = correctedPose - robotPos;
+
+    // auto rayEndPoint = ConvertIgn(model.pose().position());
+    this->rayShape->SetPoints(this->parentSensor->Pose().Pos(), rayEndPoint.pos);
 
     this->rayShape->Update();
 
@@ -412,11 +404,11 @@ bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose correctedPose, msgs::Logi
         if (collided_entity.find(occludingType) != std::string::npos)
         {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-        if (model.name().find(debugName) != string::npos)
-        {
-            std::cout << "LogicalCameraPlugin: object is occluded by. Entity: " << collided_entity
-                      << " OccludingType: " << occludingType << std::endl;
-        }
+            if (model.name().find(debugName) != string::npos)
+            {
+                std::cout << "LogicalCameraPlugin: object is occluded by. Entity: " << collided_entity
+                          << " OccludingType: " << occludingType << std::endl;
+            }
 #endif
             return false;
         }
@@ -430,9 +422,9 @@ bool LogicalCameraPlugin::isVisible(gazebo::msgs::Pose correctedPose, msgs::Logi
     return true;
 }
 
-bool LogicalCameraPlugin::isInAngleRange(gazebo::msgs::Pose &pose, std::vector<std::pair<double, double>> detectAngles)
+bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles)
 {
-    double angle = atan2(pose.position().y(), pose.position().x()) * 180.0 / M_PI;
+    double angle = atan2(pose.pos.y, pose.pos.x) * 180.0 / M_PI;
 
     /*
      * change angle of backwards facing sensor get sensor range from 90° to 180°
@@ -468,13 +460,13 @@ bool LogicalCameraPlugin::isInAngleRange(gazebo::msgs::Pose &pose, std::vector<s
     return false;
 }
 
-bool LogicalCameraPlugin::isInRange(gazebo::msgs::Pose &outCorrectedPose, double range)
+bool LogicalCameraPlugin::isInRange(gazebo::math::Pose &outCorrectedPose, double range)
 {
     auto world = physics::get_world(this->parentSensor->WorldName());
     auto sensorPos = world->GetModel(this->robotName)->GetWorldPose().pos + this->parentSensor->Pose().Pos();
-    double x = outCorrectedPose.position().x() - sensorPos.x;
-    double y = outCorrectedPose.position().y() - sensorPos.y;
-    double z = outCorrectedPose.position().z() - sensorPos.z;
+    double x = outCorrectedPose.pos.x - sensorPos.x;
+    double y = outCorrectedPose.pos.y - sensorPos.y;
+    double z = outCorrectedPose.pos.z - sensorPos.z;
     auto dist = sqrt(x * x + y * y + z * z);
     return dist <= range;
 }
