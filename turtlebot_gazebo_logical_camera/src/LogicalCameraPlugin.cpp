@@ -172,6 +172,7 @@ void LogicalCameraPlugin::Fini()
 void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
+	auto start = chrono::system_clock::now();
     auto models = this->parentSensor->Image();
 
     for (int i = 0; i < models.model_size(); i++)
@@ -198,6 +199,9 @@ void LogicalCameraPlugin::OnUpdate()
             publishModel(model, mapEntry->second, correctedPosition);
         }
     }
+
+    auto end = chrono::system_clock::now();
+    std::cout << "LogicalCameraPlugin: Runtime: " << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << " units!" << std::endl;
 }
 
 void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
@@ -275,13 +279,6 @@ double LogicalCameraPlugin::quaternionToYaw(double x, double y, double z, double
 bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, LogicalCameraPlugin::ConfigModel configModel,
                                      gazebo::math::Pose &outCorrectedPose)
 {
-    // Checking if model type match desired type
-    auto gazeboElementName = configModel.type;
-    if (model.name().find(gazeboElementName) == std::string::npos)
-    {
-        return false;
-    }
-
     auto objectModel = this->world->GetModel(model.name());
 
     if (model.name().find("door_") != std::string::npos)
