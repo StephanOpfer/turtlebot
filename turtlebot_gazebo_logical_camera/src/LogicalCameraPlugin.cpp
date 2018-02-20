@@ -72,7 +72,7 @@ void LogicalCameraPlugin::loadModelsFromConfig()
 
     this->modelSectionNames = nullptr;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
-    this->debugName = "door_r1411C_r1401";
+    this->debugName = "door_r1411C_r1411A";
 #endif
 }
 
@@ -154,11 +154,11 @@ void LogicalCameraPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
     // let only one sensor spawn the debug points
     if (this->sensorYaw != 0)
     {
-		std::string path = ros::package::getPath("turtlebot_bringup");
-		std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
-		std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-		this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
-		this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");
+        std::string path = ros::package::getPath("turtlebot_bringup");
+        std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
+        std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+        this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
+        this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");
     }
 #endif
 }
@@ -181,14 +181,15 @@ void LogicalCameraPlugin::Fini()
 void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
-//    auto start = chrono::system_clock::now();
+
     auto models = this->parentSensor->Image();
     //    std::cout << "LogicalCameraPlugin: Image object count: " << models.model_size() << std::endl;
 
+    start = chrono::high_resolution_clock::now();
     for (int i = 0; i < models.model_size(); i++)
     {
         auto model = models.model(i);
-        //std::cout << "LogicalCameraPlugin: Modelname: " << model.name() << std::endl;
+        // std::cout << "LogicalCameraPlugin: Modelname: " << model.name() << std::endl;
         // Is the model for front or back sensor and model is in far/near distance
         if (!isSensorResponsible(model))
         {
@@ -204,14 +205,15 @@ void LogicalCameraPlugin::OnUpdate()
         gazebo::math::Pose correctedPosition;
         if (isDetected(model, mapEntry->second, correctedPosition))
         {
+
             // Translating gazebo Model message to ROS message
             publishModel(model, mapEntry->second, correctedPosition);
+
         }
     }
-
-//    auto end = chrono::system_clock::now();
-//    std::cout << "LogicalCameraPlugin: Runtime: "
-//              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " units!" << std::endl;
+    end = chrono::high_resolution_clock::now();
+    std::cout << "LogicalCameraPlugin: Runtime: "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " units!" << std::endl;
 }
 
 void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,
@@ -343,7 +345,8 @@ bool LogicalCameraPlugin::isDetected(msgs::LogicalCameraImage_Model model, Logic
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     if (model.name().find(debugName) != string::npos)
     {
-    	std::cout << "LogicalCameraPlugin: AABB of " << model.name() << " " << objectModel->GetBoundingBox() << std::endl;
+        std::cout << "LogicalCameraPlugin: AABB of " << model.name() << " " << objectModel->GetBoundingBox()
+                  << std::endl;
         std::cout << "LogicalCameraPlugin: CorrectedPose " << outCorrectedPose << std::endl;
     }
 #endif
@@ -466,13 +469,16 @@ bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<s
 
 bool LogicalCameraPlugin::isInRange(gazebo::math::Vector3 modelPosition, double range)
 {
-    return modelPosition.x * modelPosition.x + modelPosition.y * modelPosition.y + modelPosition.z * modelPosition.z <=
-           range * range;
+    auto robotPosition = this->world->GetModel(this->robotName)->GetWorldPose().pos;
+    auto sqDist = (modelPosition.x - robotPosition.x) * (modelPosition.x - robotPosition.x) +
+                  (modelPosition.y - robotPosition.y) * (modelPosition.y - robotPosition.y) +
+                  (modelPosition.z - robotPosition.z) * (modelPosition.z - robotPosition.z);
+    return sqDist <= range * range;
 }
 
 bool LogicalCameraPlugin::isSensorResponsible(msgs::LogicalCameraImage_Model model)
 {
-	return model.pose().position().x() > 0;
+    return model.pose().position().x() > 0;
 }
 
 void LogicalCameraPlugin::createDebugPoint(std::string sdfString, std::string positionString, std::string name)

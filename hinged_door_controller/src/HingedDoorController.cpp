@@ -57,7 +57,7 @@ void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
 		std::cerr << "HingedDoorController: Received msg for " << cmd->name << " door, that does NOT EXIST!" << std::endl;
 		return;
 	}
-    auto hingeJoint = door->GetJoint("hinged_door::hinge");
+    auto hingeJoint = door->GetJoint("door::hinge");
 
     double setAngle = 0.0; /* <-- 0.0 is the angle for closing a door */
 

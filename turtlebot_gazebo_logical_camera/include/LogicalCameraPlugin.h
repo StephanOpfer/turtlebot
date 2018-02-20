@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #include <ros/ros.h>
 
@@ -116,6 +117,10 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     supplementary::SystemConfig *sc;
     double quadNear;
     double quadFar;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
+    std::chrono::time_point<std::chrono::high_resolution_clock> end;
+
 
     std::string robotName;
     void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
