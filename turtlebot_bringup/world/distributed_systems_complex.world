@@ -484,85 +484,85 @@
 	    </include>
     </model>
     <model name='cokeCan_1'>
-      <pose frame=''>3.77 10.60 0.95 0 0 0</pose>
+      <pose frame=''>3.77 10.60 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_2'>
-      <pose frame=''>0.72 7.53 0.95 0 0 0</pose>
+      <pose frame=''>0.72 7.53 0.49 0 0 0</pose>
 		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_3'>
-      <pose frame=''>0.77 9.93 0.95 0 0 0</pose>
+      <pose frame=''>0.77 9.93 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_4'>
-      <pose frame=''>4.57 9.40 0.95 0 0 0</pose>
+      <pose frame=''>4.57 9.40 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_5'>
-      <pose frame=''>4.57 8.20 0.95 0 0 0</pose>
+      <pose frame=''>4.57 8.20 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_6'>
-      <pose frame=''>9.11 8.01 0.95 0 0 0</pose>
+      <pose frame=''>9.11 8.01 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_7'>
-      <pose frame=''>12.16 10.40 0.95 0 0 0</pose>
+      <pose frame=''>12.16 10.40 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_8'>
-      <pose frame=''>13.16 8.40 0.95 0 0 0</pose>
+      <pose frame=''>13.16 8.40 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_9'>
-      <pose frame=''>15.16 5.62 0.95 0 0 0</pose>
+      <pose frame=''>15.16 5.62 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_10'>
-      <pose frame=''>16.61 9.13 0.95 0 0 0</pose>
+      <pose frame=''>16.61 9.13 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_11'>
-      <pose frame=''>16.26 7.81 0.95 0 0 0</pose>
+      <pose frame=''>16.26 7.81 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_12'>
-      <pose frame=''>27.2 6.85 0.95 0 0 0</pose>
+      <pose frame=''>27.2 6.85 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
     </model>
     <model name='cokeCan_13'>
-      <pose frame=''>36.86 8.7 0.95 0 0 0</pose>
+      <pose frame=''>36.86 8.7 0.49 0 0 0</pose>
       		<include>
 		    <uri>model://cokeCan</uri>
 		</include>
     </model>
     <model name='cokeCan_14'>
-      <pose frame=''>46.3 10.42 0.95 0 0 0</pose>
+      <pose frame=''>46.3 10.42 0.49 0 0 0</pose>
       		<include>
 		   <uri>model://cokeCan</uri>
 	    	</include>
@@ -690,31 +690,31 @@
     <model name='drill_1'>
       <pose frame=''>13.30 9.95 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://cordless_drill</uri>
+		   <uri>model://drill</uri>
 	    	</include>
     </model>
     <model name='drill_2'>
       <pose frame=''>12.05 8.23 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://cordless_drill</uri>
+		   <uri>model://drill</uri>
 	    	</include>
     </model>
     <model name='drill_3'>
       <pose frame=''>13.44 8.7 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://cordless_drill</uri>
+		   <uri>model://drill</uri>
 	    	</include>
     </model>
     <model name='drill_4'>
       <pose frame=''>15.02 10.95 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://cordless_drill</uri>
+		   <uri>model://drill</uri>
 	    	</include>
     </model>
     <model name='drill_5'>
       <pose frame=''>15.26 10.9 0.72 0 0 0</pose>
       		<include>
-		   <uri>model://cordless_drill</uri>
+		   <uri>model://drill</uri>
 	    	</include>
     </model>
     <model name='monkeyWrench_1'>

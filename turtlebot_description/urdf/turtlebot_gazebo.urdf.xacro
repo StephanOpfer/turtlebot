@@ -90,10 +90,10 @@
         <always_on>true</always_on>
         <update_rate>20</update_rate>
         <logical_camera>
-          <horizontal_fov>${M_PI}</horizontal_fov>
-          <aspect_ratio>1</aspect_ratio>
           <near>0.20</near>
           <far>8.0</far>
+          <horizontal_fov>${M_PI}</horizontal_fov>
+          <aspect_ratio>1</aspect_ratio>
         </logical_camera>
         <plugin name="turtlebot_gazebo_logical_camera" filename="libturtlebot_gazebo_logical_camera.so"/>
       </sensor>

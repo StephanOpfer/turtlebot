@@ -10,6 +10,17 @@
           </mesh>
         </geometry>
       </visual>
+      <!--Necessary for correct AABB (bounding box), that make it possible for 
+			  the logical camera sensor to detect that shit! -->
+			<collision name="collision">
+				<pose>0 0 2.1 0 0 0</pose>
+			  <geometry>
+					<cylinder>
+				  	<radius>0.0001</radius>
+				  	<length>0.0001</length>
+					</cylinder>
+			  </geometry>
+      </collision>
     </link>
 
     <link name="door">
@@ -42,6 +53,17 @@
           </mesh>
         </geometry>
       </visual>
+      <!--Necessary for correct AABB (bounding box), that make it possible for 
+			  the logical camera sensor to detect that shit! -->
+			<collision name="handle1_collision">
+				<pose>0.015 0.055 0 -1.57 0 0</pose>
+			  <geometry>
+					<cylinder>
+				  	<radius>0.0001</radius>
+				  	<length>0.0001</length>
+					</cylinder>
+			  </geometry>
+      </collision>
       <visual name="handle2_visual">
         <pose>0.015 0.015 0 1.57 0 0</pose>
         <geometry>
@@ -50,6 +72,17 @@
           </mesh>
         </geometry>
       </visual>
+      <!--Necessary for correct AABB (bounding box), that make it possible for 
+			  the logical camera sensor to detect that shit! -->
+			<collision name="handle2_collision">
+				<pose>0.015 0.015 0 1.57 0 0</pose>
+			  <geometry>
+					<cylinder>
+				  	<radius>0.0001</radius>
+				  	<length>0.0001</length>
+					</cylinder>
+			  </geometry>
+      </collision>
     </link>
 
     <joint name="handle" type="revolute">
@@ -83,18 +116,7 @@
           <lower>-2.79</lower>
           <upper>2.79</upper>
         </limit>
-        <!--
-        <dynamics>
-          <damping>1.0</damping>
-          <friction>1.0 </friction>
-        </dynamics>
-        -->
       </axis>
-      <!--<physics>
-        <ode>
-          <cfm_damping>1</cfm_damping>
-        </ode>
-      </physics>-->
     </joint>
 
     <joint name="world_joint" type="revolute">
@@ -105,16 +127,7 @@
           <lower>0</lower>
           <upper>0</upper>
         </limit>
-        <xyz>0 1 0</xyz>
-        <!--<dynamics>
-          <damping>1.0</damping>
-        </dynamics>-->
       </axis>
-      <!--<physics>
-        <ode>
-          <cfm_damping>1</cfm_damping>
-        </ode>
-      </physics>-->
     </joint>
   </model>
 </sdf>
