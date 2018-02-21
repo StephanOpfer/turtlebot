@@ -181,11 +181,12 @@ void LogicalCameraPlugin::Fini()
 void LogicalCameraPlugin::OnUpdate()
 {
     // Get all the models in range (as gazebo proto message)
-
+	this->world->SetPaused(true);
+#ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
+    start = chrono::high_resolution_clock::now();
+#endif
     auto models = this->parentSensor->Image();
     //    std::cout << "LogicalCameraPlugin: Image object count: " << models.model_size() << std::endl;
-
-    start = chrono::high_resolution_clock::now();
     for (int i = 0; i < models.model_size(); i++)
     {
         auto model = models.model(i);
@@ -211,9 +212,12 @@ void LogicalCameraPlugin::OnUpdate()
 
         }
     }
+#ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     end = chrono::high_resolution_clock::now();
     std::cout << "LogicalCameraPlugin: Runtime: "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " units!" << std::endl;
+#endif
+    this->world->SetPaused(false);
 }
 
 void LogicalCameraPlugin::publishModel(msgs::LogicalCameraImage_Model model,

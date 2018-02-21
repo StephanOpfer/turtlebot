@@ -16,6 +16,7 @@
 //#define LOGICAL_OCCLUSION_DEBUG
 //#define LOGICAL_CAMERA_DEBUG
 //#define LOGICAL_CAMERA_DEBUG_POINTS
+//#define LOGICAL_CAMERA_RUNTIME_DEBUG
 
 namespace supplementary
 {
@@ -118,8 +119,10 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public SensorPlugin
     double quadNear;
     double quadFar;
 
+#ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     std::chrono::time_point<std::chrono::high_resolution_clock> start;
     std::chrono::time_point<std::chrono::high_resolution_clock> end;
+#endif
 
 
     std::string robotName;
