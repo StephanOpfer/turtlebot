@@ -83,7 +83,7 @@
     </gazebo>
   </xacro:macro>
 
- <!-- Logical Camera Sensor -->
+ <!-- Logical Camera Sensor
   <xacro:macro name="turtlebot_logical_camera" params="name">
     <gazebo reference="${name}_link">  
       <sensor type="logical_camera" name="logical_occlusion_camera_plugin_${name}">
@@ -98,7 +98,13 @@
         <plugin name="turtlebot_gazebo_logical_camera" filename="libturtlebot_gazebo_logical_camera.so"/>
       </sensor>
     </gazebo>
-  </xacro:macro>
+  </xacro:macro> -->
+
+  <xacro:macro name="turtlebot_logical_camera" params="name">
+	<gazebo>
+      <plugin name="turtlebot_gazebo_logical_camera" filename="libturtlebot_gazebo_logical_camera.so"/>
+    </gazebo>
+  </xacro:macro> -->
 
   <!-- Makes Gazebo publishing a ground truth position. -->
   <xacro:macro name="turtlebot_ground_truth_pose">
