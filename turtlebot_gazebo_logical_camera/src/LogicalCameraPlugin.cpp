@@ -155,13 +155,11 @@ void LogicalCameraPlugin::Fini()
 
 void LogicalCameraPlugin::OnUpdate(const common::UpdateInfo &info)
 {
-    // Get all the models in range (as gazebo proto message)
     this->world->SetPaused(true);
 #ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     start = chrono::high_resolution_clock::now();
 #endif
     auto models = this->world->GetModels();
-    //    std::cout << "LogicalCameraPlugin: Image object count: " << models.model_size() << std::endl;
     for (int i = 0; i < models.size(); i++)
     {
         auto model = models.at(i);
@@ -201,10 +199,9 @@ void LogicalCameraPlugin::publishModel(gazebo::physics::ModelPtr model, LogicalC
     msg.modelName = model->GetName();
 
     // change coordinate system and rotation for backwards sensor
-    msg.pose.x = -outCorrectedPose.pos.x;
-    msg.pose.y = -outCorrectedPose.pos.y;
-    auto angle = quaternionToYaw(outCorrectedPose.rot.x, outCorrectedPose.rot.y, outCorrectedPose.rot.z, outCorrectedPose.rot.w);
-    msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
+    msg.pose.x = outCorrectedPose.pos.x;
+    msg.pose.y = outCorrectedPose.pos.y;
+    msg.pose.theta = -quaternionToYaw(outCorrectedPose.rot.x, outCorrectedPose.rot.y, outCorrectedPose.rot.z, outCorrectedPose.rot.w);
 
     /*
      * Dirty fix for open door angles.
