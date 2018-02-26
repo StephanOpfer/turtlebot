@@ -30,10 +30,10 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 QT4_WRAP_CPP(headers_MOC include/poi_labeling/POILabeling.h)
 
-add_library(poi_labeling SHARED ${headers_MOC}
+add_library(${PROJECT_NAME} SHARED ${headers_MOC}
   src/POILabeling.cpp)
 
-target_link_libraries(poi_labeling ${GAZEBO_LIBRARIES}
+target_link_libraries(${PROJECT_NAME} ${GAZEBO_LIBRARIES}
     ${QT_LIBRARIES}
     ${PROTOBUF_LIBRARIES})
 

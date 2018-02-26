@@ -14,8 +14,7 @@
   <stack_ninja-hexagons parent="base_link"/>
   <sensor_ninja-kinect  parent="base_link"/>
   <sensor_hokuyo parent="base_link"/>
-  <turtlebot_logical_camera_plugin name="sensor1" parent="base_link" orientation_z="0.0"/>
-  <!--<turtlebot_logical_camera_plugin name="sensor2" parent="base_link" orientation_z="3.141"/>-->
+  <turtlebot_logical_camera_plugin name="logical_camera" parent="base_link" orientation_z="0.0"/>
   <turtlebot_sim_arm name="arm" parent="base_footprint"/>
   <turtlebot_ground_truth_pose/>
 </robot>

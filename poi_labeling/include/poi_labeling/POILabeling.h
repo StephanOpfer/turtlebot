@@ -6,6 +6,10 @@
 # include <gazebo/gui/gui.hh>
 #endif
 
+#include <string>
+#include <map>
+#include <mutex>
+
 namespace gazebo
 {
     class GAZEBO_VISIBLE POILabeling : public GUIPlugin
