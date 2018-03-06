@@ -10,17 +10,6 @@
           </mesh>
         </geometry>
       </visual>
-      <!--Necessary for correct AABB (bounding box), that make it possible for 
-			  the logical camera sensor to detect that shit! -->
-			<collision name="collision">
-				<pose>0 0 2.1 0 0 0</pose>
-			  <geometry>
-					<cylinder>
-				  	<radius>0.0001</radius>
-				  	<length>0.0001</length>
-					</cylinder>
-			  </geometry>
-      </collision>
     </link>
 
     <link name="door">
@@ -53,17 +42,6 @@
           </mesh>
         </geometry>
       </visual>
-      <!--Necessary for correct AABB (bounding box), that make it possible for 
-			  the logical camera sensor to detect that shit! -->
-			<collision name="handle1_collision">
-				<pose>0.015 0.055 0 -1.57 0 0</pose>
-			  <geometry>
-					<cylinder>
-				  	<radius>0.0001</radius>
-				  	<length>0.0001</length>
-					</cylinder>
-			  </geometry>
-      </collision>
       <visual name="handle2_visual">
         <pose>0.015 0.015 0 1.57 0 0</pose>
         <geometry>
@@ -72,17 +50,6 @@
           </mesh>
         </geometry>
       </visual>
-      <!--Necessary for correct AABB (bounding box), that make it possible for 
-			  the logical camera sensor to detect that shit! -->
-			<collision name="handle2_collision">
-				<pose>0.015 0.015 0 1.57 0 0</pose>
-			  <geometry>
-					<cylinder>
-				  	<radius>0.0001</radius>
-				  	<length>0.0001</length>
-					</cylinder>
-			  </geometry>
-      </collision>
     </link>
 
     <joint name="handle" type="revolute">
