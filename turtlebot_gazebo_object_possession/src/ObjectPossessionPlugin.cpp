@@ -51,7 +51,7 @@ void ObjectPossessionPlugin::OnUpdate(const common::UpdateInfo &info)
 
 void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
-	//TODO doe not check for arm range ==> should be done in the arm plugin or in the ALICA behaviour
+	//TODO does not check for arm range ==> should be done in the arm plugin or in the ALICA behaviour
     std::lock_guard<std::mutex> lock(publisherMutex);
 
     std::stringstream ss;

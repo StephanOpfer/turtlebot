@@ -28,7 +28,7 @@ void POILabeling::OnModelUpdate(const msgs::Model& msg)
 {
     // Add new model to the list and it will be processed on Update
     std::lock_guard<std::mutex> lock(this->mutex);
-    if (this->models.find(msg.name()) == this->models.end() && msg.name().find("poi_") != std::string::npos)
+    if (msg.name().find("poi_") != std::string::npos && this->models.find(msg.name()) == this->models.end())
     {
         this->models[msg.name()] = false;
     }
