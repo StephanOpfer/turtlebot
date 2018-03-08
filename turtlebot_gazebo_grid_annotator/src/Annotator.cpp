@@ -74,7 +74,7 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
             if (this->isCloserAndVisible(poi, point, minDist))
             {
             	annotatedGrid.points.push_back(point);
-            	annotatedGrid.annotatedRooms.push_back(poi->GetName());
+            	annotatedGrid.annotatedPOIs.push_back(poi->GetName());
             }
         }
         minDist = numeric_limits<double>::max();
