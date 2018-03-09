@@ -24,6 +24,35 @@ Annotator::~Annotator()
 
 void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
+    // Initializing physics engine for collision checking
+    this->world = _parent;
+
+    auto physicsEngine = this->world->GetPhysicsEngine();
+    auto tmpCollision = physicsEngine->CreateCollision("ray", "link");
+//    tmpCollision->SetName("RayCollision");
+//    tmpCollision->SetRelativePose(math::Pose(0,0,0,0,0,0));
+//    tmpCollision->SetInitialRelativePose(math::Pose(0,0,0,0,0,0));
+    if (!tmpCollision)
+    {
+        std::cerr << "Annotator: No Collision available! " << std::endl;
+    }
+    else
+    {
+        std::cout << "Annotator: Collision available! " << std::endl;
+    }
+
+    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(tmpCollision->GetShape());
+    if (!rayShape)
+    {
+        std::cerr << "Annotator: No RayShape available! " << std::endl;
+    }
+    else
+    {
+        std::cout << "Annotator: RayShape available! " << std::endl;
+    }
+    // this->rayShape = boost::make_shared<physics::RayShape>(physicsEngine);
+    this->rayShape->Init();
+
     // Make sure the ROS node for Gazebo has already been initialized
     if (!ros::isInitialized())
     {
@@ -33,11 +62,9 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
         return;
     }
 
-    this->world = _parent;
-
     auto sc = supplementary::SystemConfig::getInstance();
-    std::string annotatedGridTopic = (*sc)["TTBWorldModel"]->get<std::string>("AnnotatedGrid.annotatedGridTopic", NULL);
-    std::string gridTopic = (*sc)["TTBWorldModel"]->get<std::string>("AnnotatedGrid.gridTopic", NULL);
+    std::string annotatedGridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
+    std::string gridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.gridTopic", NULL);
     ros::NodeHandle n;
     this->annotatedGridPublisher = n.advertise<ttb_msgs::AnnotatedGrid>(annotatedGridTopic, 5, false);
     this->gridSubscriber = n.subscribe(gridTopic, 10, &Annotator::onGrid, (Annotator *)this);
@@ -67,16 +94,25 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
     ttb_msgs::AnnotatedGrid annotatedGrid;
 
     double minDist = numeric_limits<double>::max();
+    gazebo::physics::ModelPtr closestPOI = nullptr;
     for (auto point : grid->points)
     {
         for (auto poi : pois)
         {
             if (this->isCloserAndVisible(poi, point, minDist))
             {
-            	annotatedGrid.points.push_back(point);
-            	annotatedGrid.annotatedPOIs.push_back(poi->GetName());
+                closestPOI = poi;
             }
         }
+
+        // points without any line to a POI are filtered (e.g. points in walls)
+        if (closestPOI)
+        {
+            annotatedGrid.points.push_back(point);
+            annotatedGrid.annotatedPOIs.push_back(closestPOI->GetName());
+        }
+
+        closestPOI = nullptr;
         minDist = numeric_limits<double>::max();
     }
 
@@ -85,6 +121,7 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
 
 bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
 {
+    // check whether the poi is closer than any other checked before
     double tmpDist = sqrt((poi->GetWorldPose().pos.x - point.x) * (poi->GetWorldPose().pos.y - point.y) *
                           (poi->GetWorldPose().pos.z - point.z));
     if (minDist < tmpDist)
@@ -92,12 +129,19 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
         return false;
     }
 
-    // TODO make ray check
-    if (true/* ray check does not match*/)
+    // check whether the poi is visible from the point of view
+    this->rayShape->SetPoints(math::Vector3(point.x, point.y, 0.3), poi->GetWorldPose().pos);
+    this->rayShape->Update();
+    double collisionDist = numeric_limits<double>::max();
+    std::string collisionEntity;
+    this->rayShape->GetIntersection(collisionDist, collisionEntity);
+    std::cout << "Annotator: Distance is " << tmpDist << " rayDist is " << collisionDist << std::endl;
+    if (tmpDist > collisionDist)
     {
-    	return false;
+        return false;
     }
 
+    // closer and visible poi found, so write the distance into the out parameter
     minDist = tmpDist;
     return true;
 }

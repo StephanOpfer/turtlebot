@@ -19,6 +19,7 @@ catkin_package(
 )
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
+link_directories(${ODE_LIBRARY_DIRS})
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}

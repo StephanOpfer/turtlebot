@@ -5,6 +5,8 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
+#include <gazebo/physics/PhysicsEngine.hh>
+#include <gazebo/physics/PhysicsTypes.hh>
 #include <ros/ros.h>
 
 namespace gazebo
@@ -33,6 +35,7 @@ class Annotator : public WorldPlugin
     ros::AsyncSpinner *spinner;
 
     physics::WorldPtr world;
+	physics::RayShapePtr rayShape;
 };
 
 } /* namespace gazebo */

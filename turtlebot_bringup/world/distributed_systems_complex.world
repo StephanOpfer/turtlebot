@@ -2189,5 +2189,7 @@
     <plugin name="turtlebot_gazebo_object_possession" filename="libturtlebot_gazebo_object_possession.so"/>
     <!-- Inserts POIs into the simulation according to its config file. -->
     <plugin name="poi_spawner" filename="libpoi_spawner.so"/>
+    <!-- The plugin that determines the closest POI to a certain coordinate. -->
+    <plugin name="turtlebot_gazebo_grid_annotator" filename="libturtlebot_gazebo_grid_annotator.so"/>    
   </world>
 </sdf>
