@@ -44,7 +44,7 @@ namespace gazebo
 		void onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg);
 
 		ros::Subscriber armCmdSub;
-		ros::Publisher pub;
+		ros::Publisher armCmdPub;
 		ros::AsyncSpinner* spinner;
 		ros::NodeHandle n;
 

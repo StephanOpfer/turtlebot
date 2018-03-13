@@ -41,9 +41,7 @@ void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ArmPlugin::OnUpdate, this, _1));
 
     ros::NodeHandle n;
-    std::stringstream ss;
-    ss << "/" << this->model->GetName() << "/ArmCmd";
-    this->armCmdSub = n.subscribe(ss.str(), 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin *)this);
+    this->armCmdSub = n.subscribe("/ArmCmdResponse", 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin *)this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
@@ -55,8 +53,10 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
     if (this->transportedModel != nullptr)
     {
         // std::cout << "ArmPlugin::OnGrab: " << model->GetName() << std::endl;
+    	auto quaternion = this->transportedModel->GetWorldPose().rot;
         auto ownPos = this->model->GetWorldPose();
-        ownPos.pos.z += 1;
+        ownPos.pos.z += 0.75;
+        ownPos.rot = quaternion;
         this->transportedModel->SetWorldPose(ownPos);
     }
     if (this->previousTransportedModel != nullptr)
@@ -69,7 +69,7 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
 
 void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
-    std::cout << "ArmPlugin::OnGrab: Msg Name " << msg->objectName << std::endl;
+    std::cout << "ArmPlugin::OnGrab: Object Name " << msg->objectName << std::endl;
     if (msg->objectName.empty())
     {
         return;
@@ -102,6 +102,7 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
             targetPos.pos.x = msg->dropPoint.x;
             targetPos.pos.y = msg->dropPoint.y;
             targetPos.pos.z = msg->dropPoint.z;
+            targetPos.rot = this->transportedModel->GetWorldPose().rot;
             this->transportedModel->SetWorldPose(targetPos);
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction

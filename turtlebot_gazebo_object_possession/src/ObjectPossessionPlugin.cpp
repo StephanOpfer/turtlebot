@@ -38,6 +38,7 @@ void ObjectPossessionPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sd
     this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ObjectPossessionPlugin::OnUpdate, this, _1));
 
     this->armCmdSub = n.subscribe("/ArmCmd", 10, &ObjectPossessionPlugin::onGrabDropObjectCmd, (ObjectPossessionPlugin *)this);
+    this->armCmdPub = this->n.advertise<ttb_msgs::GrabDropObject>("/ArmCmdResponse", 10);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
@@ -51,11 +52,8 @@ void ObjectPossessionPlugin::OnUpdate(const common::UpdateInfo &info)
 
 void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
-	//TODO does not check for arm range ==> should be done in the arm plugin or in the ALICA behaviour
     std::lock_guard<std::mutex> lock(publisherMutex);
 
-    std::stringstream ss;
-    ss << "/" << msg->senderName << "/ArmCmd";
     if (msg->action == msg->GRAB)
     {
         bool objectIsAvailable = true;
@@ -87,16 +85,15 @@ void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg
                 }
             }
         }
-        this->pub = this->n.advertise<ttb_msgs::GrabDropObject>(ss.str(), 10);
+
         if (!objectIsAvailable || !robotMayCarry)
         {
             msg->objectName = "";
-            this->pub.publish(msg);
+            this->armCmdPub.publish(msg);
         }
         if (objectIsAvailable && robotMayCarry)
         {
-        	std::cout << "sending message" << std::endl;
-            this->pub.publish(msg);
+            this->armCmdPub.publish(msg);
         }
     }
     else
@@ -118,12 +115,11 @@ void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg
                 robotMayDrop = false;
             }
         }
-        this->pub = this->n.advertise<ttb_msgs::GrabDropObject>(ss.str(), 10);
         if (!robotMayDrop)
         {
             msg->objectName = "";
         }
-        this->pub.publish(msg);
+        this->armCmdPub.publish(msg);
     }
 }
 
