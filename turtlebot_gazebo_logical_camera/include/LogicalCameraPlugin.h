@@ -118,8 +118,6 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
     double quadNear;
     double quadFar;
 
-    void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
-    void moveDebugPoint(std::string name, gazebo::math::Pose& pose);
 
 #ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     std::chrono::time_point<std::chrono::high_resolution_clock> start;
@@ -127,6 +125,8 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
 #endif
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
+    void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
+    void moveDebugPoint(std::string name, gazebo::math::Pose& pose);
     std::string debugName;
 #endif
 };
