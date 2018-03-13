@@ -9,7 +9,9 @@
 
 #include <SystemConfig.h>
 
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
 #include <ros/package.h>
+#endif
 
 namespace gazebo
 {
@@ -37,7 +39,6 @@ void LogicalCameraPlugin::loadParameters()
     this->quadFar = far * far;
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     this->debugName = (*this->sc)["LogicalCamera"]->get<std::string>("LogicalCamera.debugName", NULL);
-    ;
 #endif
 }
 
@@ -434,6 +435,7 @@ bool LogicalCameraPlugin::isInRange(gazebo::math::Vector3 modelPosition, double 
     return sqDist <= range * range;
 }
 
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
 void LogicalCameraPlugin::createDebugPoint(std::string sdfString, std::string positionString, std::string name)
 {
     // first debug point
@@ -455,6 +457,7 @@ void LogicalCameraPlugin::moveDebugPoint(std::string name, gazebo::math::Pose &p
         model->Update();
     }
 }
+#endif
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(LogicalCameraPlugin)
 }

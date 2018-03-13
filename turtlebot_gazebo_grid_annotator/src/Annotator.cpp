@@ -9,12 +9,20 @@
 #include <ttb_msgs/Grid.h>
 #include <vector>
 
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#include <ros/package.h>
+#endif
+
 namespace gazebo
 {
 
 Annotator::Annotator()
 {
     this->spinner = nullptr;
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+    auto sc = supplementary::SystemConfig::getInstance();
+    this->debugName = (*sc)["LogicalCamera"]->get<std::string>("LogicalCamera.debugName", NULL);
+#endif
 }
 
 Annotator::~Annotator()
@@ -29,9 +37,9 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
     auto physicsEngine = this->world->GetPhysicsEngine();
     auto tmpCollision = physicsEngine->CreateCollision("ray", "link");
-//    tmpCollision->SetName("RayCollision");
-//    tmpCollision->SetRelativePose(math::Pose(0,0,0,0,0,0));
-//    tmpCollision->SetInitialRelativePose(math::Pose(0,0,0,0,0,0));
+    //    tmpCollision->SetName("RayCollision");
+    //    tmpCollision->SetRelativePose(math::Pose(0,0,0,0,0,0));
+    //    tmpCollision->SetInitialRelativePose(math::Pose(0,0,0,0,0,0));
     if (!tmpCollision)
     {
         std::cerr << "Annotator: No Collision available! " << std::endl;
@@ -63,7 +71,8 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     }
 
     auto sc = supplementary::SystemConfig::getInstance();
-    std::string annotatedGridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
+    std::string annotatedGridTopic =
+        (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
     std::string gridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.gridTopic", NULL);
     ros::NodeHandle n;
     this->annotatedGridPublisher = n.advertise<ttb_msgs::AnnotatedGrid>(annotatedGridTopic, 5, false);
@@ -72,6 +81,14 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     this->spinner->start();
 
     std::cout << "GridAnnotator PlugIn loaded!" << std::endl;
+
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+    std::string path = ros::package::getPath("turtlebot_bringup");
+    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
+    std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
+    this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");
+#endif
 }
 
 void Annotator::onGrid(ttb_msgs::GridPtr grid)
@@ -122,8 +139,9 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
 bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
 {
     // check whether the poi is closer than any other checked before
-    double tmpDist = sqrt((poi->GetWorldPose().pos.x - point.x) * (poi->GetWorldPose().pos.y - point.y) *
-                          (poi->GetWorldPose().pos.z - point.z));
+    double tmpDist = sqrt(((poi->GetWorldPose().pos.x - point.x) * (poi->GetWorldPose().pos.x - point.x)) +
+                          ((poi->GetWorldPose().pos.y - point.y) * (poi->GetWorldPose().pos.y - point.y)) +
+                          ((poi->GetWorldPose().pos.z - point.z) * (poi->GetWorldPose().pos.z - point.z)));
     if (minDist < tmpDist)
     {
         return false;
@@ -132,11 +150,28 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     // check whether the poi is visible from the point of view
     this->rayShape->SetPoints(math::Vector3(point.x, point.y, 0.3), poi->GetWorldPose().pos);
     this->rayShape->Update();
+
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+    if (poi->GetName().find(this->debugName) != std::string::npos)
+    {
+        math::Vector3 posA;
+        math::Vector3 posB;
+        this->rayShape->GetGlobalPoints(posA, posB);
+
+        std::cout << "LogicalCameraPlugin: ray start point: " << posA << " ray end point: " << posB << std::endl;
+        auto debugPosA = gazebo::math::Pose(posA.x, posA.y, posA.z, 0, 0, 0);
+        auto debugPosB = gazebo::math::Pose(posB.x, posB.y, posB.z, 0, 0, 0);
+        this->moveDebugPoint("debugPoint", debugPosA);
+        this->moveDebugPoint("debugPoint2", debugPosB);
+    }
+#endif
+
     double collisionDist = numeric_limits<double>::max();
     std::string collisionEntity;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
-    std::cout << "Annotator: Distance is " << tmpDist << " rayDist is " << collisionDist << std::endl;
-    if (tmpDist > collisionDist)
+    std::cout << "Annotator: Distance is " << tmpDist << "! rayDist is " << collisionDist << "! With Entity "
+              << collisionEntity << std::endl;
+    if (tmpDist > collisionDist && collisionEntity != "")
     {
         return false;
     }
@@ -145,6 +180,30 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     minDist = tmpDist;
     return true;
 }
+
+#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+void Annotator::createDebugPoint(std::string sdfString, std::string positionString, std::string name)
+{
+    // first debug point
+    sdf::SDF sphereSDF;
+    sphereSDF.SetFromString(sdfString);
+    // Demonstrate using a custom model name.
+    sdf::ElementPtr m = sphereSDF.Root()->GetElement("model");
+    m->GetAttribute("name")->SetFromString(name);
+    m->GetElement("pose")->Set(positionString);
+    this->world->InsertModelSDF(sphereSDF);
+}
+
+void Annotator::moveDebugPoint(std::string name, gazebo::math::Pose &pose)
+{
+    auto model = this->world->GetModel(name);
+    if (model)
+    {
+        model->SetWorldPose(pose);
+        model->Update();
+    }
+}
+#endif
 
 GZ_REGISTER_WORLD_PLUGIN(Annotator)
 } /* namespace gazebo */
