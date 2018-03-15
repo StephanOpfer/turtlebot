@@ -8,6 +8,9 @@
 #include <ttb_msgs/AnnotatedGrid.h>
 #include <ttb_msgs/Grid.h>
 #include <vector>
+//#include <gazebo/physics/ode/ODERayShape.hh>
+//#include <gazebo/physics/ode/ODEPhysics.hh>
+//#include <ode/ode.h>
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
 #include <ros/package.h>
@@ -30,16 +33,17 @@ Annotator::~Annotator()
     delete this->spinner;
 }
 
-void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
+void Annotator::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
     // Initializing physics engine for collision checking
-    this->world = _parent;
+    this->world = _parent->GetWorld();
 
     auto physicsEngine = this->world->GetPhysicsEngine();
-    auto tmpCollision = physicsEngine->CreateCollision("ray", "link");
-    //    tmpCollision->SetName("RayCollision");
-    //    tmpCollision->SetRelativePose(math::Pose(0,0,0,0,0,0));
-    //    tmpCollision->SetInitialRelativePose(math::Pose(0,0,0,0,0,0));
+    tmpCollision = physicsEngine->CreateCollision("ray", "link");
+    tmpCollision->SetName("ray");
+    tmpCollision->SetRelativePose(_parent->GetRelativePose());
+    tmpCollision->SetInitialRelativePose(_parent->GetRelativePose());
+    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
     if (!tmpCollision)
     {
         std::cerr << "Annotator: No Collision available! " << std::endl;
@@ -50,6 +54,9 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     }
 
     this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(tmpCollision->GetShape());
+
+    std::cout << "Annotator: SDF " << _sdf->ToString("FOO") << std::endl;
+    //this->rayShape = boost::make_shared<physics::ODERayShape>(physicsEngine);
     if (!rayShape)
     {
         std::cerr << "Annotator: No RayShape available! " << std::endl;
@@ -58,7 +65,8 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     {
         std::cout << "Annotator: RayShape available! " << std::endl;
     }
-    // this->rayShape = boost::make_shared<physics::RayShape>(physicsEngine);
+
+    this->rayShape->Load(_sdf);
     this->rayShape->Init();
 
     // Make sure the ROS node for Gazebo has already been initialized
@@ -158,7 +166,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
         math::Vector3 posB;
         this->rayShape->GetGlobalPoints(posA, posB);
 
-        std::cout << "LogicalCameraPlugin: ray start point: " << posA << " ray end point: " << posB << std::endl;
+        std::cout << "Annotator: ray start point: " << posA << " ray end point: " << posB << std::endl;
         auto debugPosA = gazebo::math::Pose(posA.x, posA.y, posA.z, 0, 0, 0);
         auto debugPosB = gazebo::math::Pose(posB.x, posB.y, posB.z, 0, 0, 0);
         this->moveDebugPoint("debugPoint", debugPosA);
@@ -168,6 +176,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
 
     double collisionDist = numeric_limits<double>::max();
     std::string collisionEntity;
+    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
     std::cout << "Annotator: Distance is " << tmpDist << "! rayDist is " << collisionDist << "! With Entity "
               << collisionEntity << std::endl;
@@ -205,5 +214,5 @@ void Annotator::moveDebugPoint(std::string name, gazebo::math::Pose &pose)
 }
 #endif
 
-GZ_REGISTER_WORLD_PLUGIN(Annotator)
+GZ_REGISTER_MODEL_PLUGIN(Annotator)
 } /* namespace gazebo */

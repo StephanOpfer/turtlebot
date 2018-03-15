@@ -119,7 +119,7 @@ void LogicalCameraPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(this->laserCollision->GetShape());
 
     GZ_ASSERT(this->rayShape != nullptr, "Unable to get the ray shape from the ray collision.");
-
+    std::cout << "LogicalCameraPlugin: SDF " << _sdf->ToString("FOO") << std::endl;
     this->rayShape->Load(_sdf);
     this->rayShape->Init();
     ROS_INFO("LogicalCameraPlugin loaded!");
