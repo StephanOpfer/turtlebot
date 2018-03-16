@@ -29,7 +29,5 @@
         </geometry>
       </visual>
     </link>
-    <!-- The plugin that determines the closest POI to a certain coordinate. -->
-    <plugin name="turtlebot_gazebo_grid_annotator" filename="libturtlebot_gazebo_grid_annotator.so"/>
   </model>
 </sdf>

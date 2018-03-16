@@ -105,6 +105,7 @@
       <plugin name="turtlebot_gazebo_logical_camera" filename="libturtlebot_gazebo_logical_camera.so"/>
     </gazebo>
   </xacro:macro>
+  
 
   <!-- Makes Gazebo publishing a ground truth position. -->
   <xacro:macro name="turtlebot_ground_truth_pose">

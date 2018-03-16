@@ -33,30 +33,29 @@ Annotator::~Annotator()
     delete this->spinner;
 }
 
-void Annotator::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
+void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     // Initializing physics engine for collision checking
-    this->world = _parent->GetWorld();
+    this->world = _parent;
 
     auto physicsEngine = this->world->GetPhysicsEngine();
-    tmpCollision = physicsEngine->CreateCollision("ray", "link");
-    tmpCollision->SetName("ray");
-    tmpCollision->SetRelativePose(_parent->GetRelativePose());
-    tmpCollision->SetInitialRelativePose(_parent->GetRelativePose());
-    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
-    if (!tmpCollision)
-    {
-        std::cerr << "Annotator: No Collision available! " << std::endl;
-    }
-    else
-    {
-        std::cout << "Annotator: Collision available! " << std::endl;
-    }
+//    tmpCollision = physicsEngine->CreateCollision("ray", "base_footprint");
+//    tmpCollision->SetName("ray");
+//    tmpCollision->SetRelativePose(_parent->GetRelativePose());
+//    tmpCollision->SetInitialRelativePose(_parent->GetRelativePose());
+//    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
+//    if (!tmpCollision)
+//    {
+//        std::cerr << "Annotator: No Collision available! " << std::endl;
+//    }
+//    else
+//    {
+//        std::cout << "Annotator: Collision available! " << std::endl;
+//    }
 
-    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(tmpCollision->GetShape());
-
-    std::cout << "Annotator: SDF " << _sdf->ToString("FOO") << std::endl;
-    //this->rayShape = boost::make_shared<physics::ODERayShape>(physicsEngine);
+    //this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(tmpCollision->GetShape());
+    physicsEngine->InitForThread();
+    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
     if (!rayShape)
     {
         std::cerr << "Annotator: No RayShape available! " << std::endl;
@@ -66,8 +65,8 @@ void Annotator::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
         std::cout << "Annotator: RayShape available! " << std::endl;
     }
 
-    this->rayShape->Load(_sdf);
-    this->rayShape->Init();
+//    this->rayShape->Load(_sdf);
+//    this->rayShape->Init();
 
     // Make sure the ROS node for Gazebo has already been initialized
     if (!ros::isInitialized())
@@ -157,7 +156,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
 
     // check whether the poi is visible from the point of view
     this->rayShape->SetPoints(math::Vector3(point.x, point.y, 0.3), poi->GetWorldPose().pos);
-    this->rayShape->Update();
+    //this->rayShape->Update();
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     if (poi->GetName().find(this->debugName) != std::string::npos)
@@ -176,7 +175,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
 
     double collisionDist = numeric_limits<double>::max();
     std::string collisionEntity;
-    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
+    //std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
     std::cout << "Annotator: Distance is " << tmpDist << "! rayDist is " << collisionDist << "! With Entity "
               << collisionEntity << std::endl;
@@ -214,5 +213,5 @@ void Annotator::moveDebugPoint(std::string name, gazebo::math::Pose &pose)
 }
 #endif
 
-GZ_REGISTER_MODEL_PLUGIN(Annotator)
+GZ_REGISTER_WORLD_PLUGIN(Annotator)
 } /* namespace gazebo */

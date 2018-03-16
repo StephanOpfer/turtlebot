@@ -14,7 +14,7 @@
 namespace gazebo
 {
 
-class Annotator : public ModelPlugin
+class GAZEBO_VISIBLE Annotator : public WorldPlugin
 {
   public:
     Annotator();
@@ -25,8 +25,7 @@ class Annotator : public ModelPlugin
          * @param _sensor Pointer to the sensor that loaded this plugin.
          * @param _sdf SDF element that describes the plugin.
          */
-    virtual void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
-
+    virtual void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
   private:
     void onGrid(ttb_msgs::GridPtr grid);
     bool isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist);
@@ -38,7 +37,7 @@ class Annotator : public ModelPlugin
 
     physics::WorldPtr world;
     physics::RayShapePtr rayShape;
-    physics::CollisionPtr tmpCollision;
+    //physics::CollisionPtr tmpCollision;
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
