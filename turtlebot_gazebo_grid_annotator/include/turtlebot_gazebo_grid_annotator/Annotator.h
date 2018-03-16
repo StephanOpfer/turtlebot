@@ -2,11 +2,15 @@
 
 #include <ttb_msgs/Grid.h>
 
+#include <supplementary/InfoBuffer.h>
+#include <supplementary/InformationElement.h>
+
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/PhysicsEngine.hh>
 #include <gazebo/physics/PhysicsTypes.hh>
 #include <gazebo/physics/physics.hh>
+
 #include <ros/ros.h>
 
 #define LOGICAL_CAMERA_DEBUG_POINTS
@@ -38,6 +42,14 @@ class GAZEBO_VISIBLE Annotator : public WorldPlugin
     physics::WorldPtr world;
     physics::RayShapePtr rayShape;
     //physics::CollisionPtr tmpCollision;
+
+  protected:
+    virtual void OnUpdate(const common::UpdateInfo &info);
+
+    // Link between the contact sensor's updated signal and callback.
+    event::ConnectionPtr updateConnection;
+    supplementary::InfoTime gridMsgValidityDuration;
+    supplementary::InfoBuffer<std::shared_ptr<ttb_msgs::Grid>> *gridMsgBuffer;
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     void createDebugPoint(std::string sdfString, std::string positionString, std::string name);

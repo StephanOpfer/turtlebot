@@ -22,6 +22,8 @@ namespace gazebo
 Annotator::Annotator()
 {
     this->spinner = nullptr;
+    this->gridMsgValidityDuration = 1000000000;
+    this->gridMsgBuffer = new supplementary::InfoBuffer<std::shared_ptr<ttb_msgs::Grid>>(10);
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     auto sc = supplementary::SystemConfig::getInstance();
     this->debugName = (*sc)["LogicalCamera"]->get<std::string>("LogicalCamera.debugName", NULL);
@@ -31,12 +33,17 @@ Annotator::Annotator()
 Annotator::~Annotator()
 {
     delete this->spinner;
+    delete this->gridMsgBuffer;
 }
 
 void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     // Initializing physics engine for collision checking
     this->world = _parent;
+
+    // Connect to the sensor update event.
+    this->updateConnection =
+        event::Events::ConnectWorldUpdateBegin(boost::bind(&Annotator::OnUpdate, this, _1));
 
     auto physicsEngine = this->world->GetPhysicsEngine();
 //    tmpCollision = physicsEngine->CreateCollision("ray", "base_footprint");
@@ -98,7 +105,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 #endif
 }
 
-void Annotator::onGrid(ttb_msgs::GridPtr grid)
+void Annotator::OnUpdate(const common::UpdateInfo &info)
 {
     auto models = this->world->GetModels();
     gazebo::physics::Model_V pois;
@@ -141,6 +148,15 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
     }
 
     this->annotatedGridPublisher.publish(annotatedGrid);
+}
+
+void Annotator::onGrid(ttb_msgs::GridPtr grid)
+{
+    auto gridPtr =
+        shared_ptr<ttb_msgs::Grid>(grid.get(), [grid](ttb_msgs::Grid *) mutable { grid.reset(); });
+    auto gridInfo =
+        make_shared<InformationElement<std::shared_ptr<ttb_msgs::Grid>>>(gridPtr, wm->getTime(), this->gridMsgValidityDuration, 1.0);
+    this->gridMsgBuffer->add(gridInfo);
 }
 
 bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
