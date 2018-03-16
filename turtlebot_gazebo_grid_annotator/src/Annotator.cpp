@@ -8,11 +8,8 @@
 #include <ttb_msgs/AnnotatedGrid.h>
 #include <ttb_msgs/Grid.h>
 #include <vector>
-//#include <gazebo/physics/ode/ODERayShape.hh>
-//#include <gazebo/physics/ode/ODEPhysics.hh>
-//#include <ode/ode.h>
 
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#ifdef ANNOTATOR_DEBUG_POINTS
 #include <ros/package.h>
 #endif
 
@@ -22,9 +19,7 @@ namespace gazebo
 Annotator::Annotator()
 {
     this->spinner = nullptr;
-    this->gridMsgValidityDuration = 1000000000;
-    this->gridMsgBuffer = new supplementary::InfoBuffer<std::shared_ptr<ttb_msgs::Grid>>(10);
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#ifdef ANNOTATOR_DEBUG_POINTS
     auto sc = supplementary::SystemConfig::getInstance();
     this->debugName = (*sc)["LogicalCamera"]->get<std::string>("LogicalCamera.debugName", NULL);
 #endif
@@ -33,7 +28,6 @@ Annotator::Annotator()
 Annotator::~Annotator()
 {
     delete this->spinner;
-    delete this->gridMsgBuffer;
 }
 
 void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
@@ -42,27 +36,12 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     this->world = _parent;
 
     // Connect to the sensor update event.
-    this->updateConnection =
-        event::Events::ConnectWorldUpdateBegin(boost::bind(&Annotator::OnUpdate, this, _1));
+    this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&Annotator::OnUpdate, this, _1));
 
     auto physicsEngine = this->world->GetPhysicsEngine();
-//    tmpCollision = physicsEngine->CreateCollision("ray", "base_footprint");
-//    tmpCollision->SetName("ray");
-//    tmpCollision->SetRelativePose(_parent->GetRelativePose());
-//    tmpCollision->SetInitialRelativePose(_parent->GetRelativePose());
-//    std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
-//    if (!tmpCollision)
-//    {
-//        std::cerr << "Annotator: No Collision available! " << std::endl;
-//    }
-//    else
-//    {
-//        std::cout << "Annotator: Collision available! " << std::endl;
-//    }
-
-    //this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(tmpCollision->GetShape());
     physicsEngine->InitForThread();
-    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
+    this->rayShape =
+        boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
     if (!rayShape)
     {
         std::cerr << "Annotator: No RayShape available! " << std::endl;
@@ -71,9 +50,6 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     {
         std::cout << "Annotator: RayShape available! " << std::endl;
     }
-
-//    this->rayShape->Load(_sdf);
-//    this->rayShape->Init();
 
     // Make sure the ROS node for Gazebo has already been initialized
     if (!ros::isInitialized())
@@ -96,7 +72,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
     std::cout << "GridAnnotator PlugIn loaded!" << std::endl;
 
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#ifdef ANNOTATOR_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
     std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
     std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
@@ -122,8 +98,14 @@ void Annotator::OnUpdate(const common::UpdateInfo &info)
         }
     }
 
-    ttb_msgs::AnnotatedGrid annotatedGrid;
+    if (this->gridMsgBuffer.empty())
+    {
+    	return;
+    }
+    auto grid = this->gridMsgBuffer.front();
+	this->gridMsgBuffer.pop();
 
+    ttb_msgs::AnnotatedGrid annotatedGrid;
     double minDist = numeric_limits<double>::max();
     gazebo::physics::ModelPtr closestPOI = nullptr;
     for (auto point : grid->points)
@@ -152,11 +134,7 @@ void Annotator::OnUpdate(const common::UpdateInfo &info)
 
 void Annotator::onGrid(ttb_msgs::GridPtr grid)
 {
-    auto gridPtr =
-        shared_ptr<ttb_msgs::Grid>(grid.get(), [grid](ttb_msgs::Grid *) mutable { grid.reset(); });
-    auto gridInfo =
-        make_shared<InformationElement<std::shared_ptr<ttb_msgs::Grid>>>(gridPtr, wm->getTime(), this->gridMsgValidityDuration, 1.0);
-    this->gridMsgBuffer->add(gridInfo);
+	this->gridMsgBuffer.push(grid);
 }
 
 bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
@@ -172,9 +150,8 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
 
     // check whether the poi is visible from the point of view
     this->rayShape->SetPoints(math::Vector3(point.x, point.y, 0.3), poi->GetWorldPose().pos);
-    //this->rayShape->Update();
 
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#ifdef ANNOTATOR_DEBUG_POINTS
     if (poi->GetName().find(this->debugName) != std::string::npos)
     {
         math::Vector3 posA;
@@ -191,10 +168,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
 
     double collisionDist = numeric_limits<double>::max();
     std::string collisionEntity;
-    //std::cout << "Bla: " <<tmpCollision->GetLink()->GetParentModel()->GetName() <<std::endl;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
-    std::cout << "Annotator: Distance is " << tmpDist << "! rayDist is " << collisionDist << "! With Entity "
-              << collisionEntity << std::endl;
     if (tmpDist > collisionDist && collisionEntity != "")
     {
         return false;
@@ -205,7 +179,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     return true;
 }
 
-#ifdef LOGICAL_CAMERA_DEBUG_POINTS
+#ifdef ANNOTATOR_DEBUG_POINTS
 void Annotator::createDebugPoint(std::string sdfString, std::string positionString, std::string name)
 {
     // first debug point

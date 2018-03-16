@@ -2,9 +2,6 @@
 
 #include <ttb_msgs/Grid.h>
 
-#include <supplementary/InfoBuffer.h>
-#include <supplementary/InformationElement.h>
-
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/PhysicsEngine.hh>
@@ -13,7 +10,8 @@
 
 #include <ros/ros.h>
 
-#define LOGICAL_CAMERA_DEBUG_POINTS
+#include <queue>
+//#define ANNOTATOR_DEBUG_POINTS
 
 namespace gazebo
 {
@@ -48,8 +46,7 @@ class GAZEBO_VISIBLE Annotator : public WorldPlugin
 
     // Link between the contact sensor's updated signal and callback.
     event::ConnectionPtr updateConnection;
-    supplementary::InfoTime gridMsgValidityDuration;
-    supplementary::InfoBuffer<std::shared_ptr<ttb_msgs::Grid>> *gridMsgBuffer;
+    std::queue<ttb_msgs::GridPtr> gridMsgBuffer;
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
