@@ -65,7 +65,7 @@ void POILabeling::Update()
         int pos = modelName.find("_");
         std::string visualText = modelName.substr(pos + 1, modelName.size() - pos - 1);
         std::string textName = modelName + "_TEXT_";
-        auto modelBox = vis->GetBoundingBox().Ign();
+        auto modelBox = vis->BoundingBox();
 
         // Create text
         auto text = new rendering::MovableText;
