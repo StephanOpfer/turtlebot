@@ -15,9 +15,9 @@ namespace gazebo
 
 POISpawnerPlugin::POISpawnerPlugin()
 {
-    string path = ros::package::getPath("turtlebot_bringup");
-    ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
-    this->poi_model_xml = string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    std::string path = ros::package::getPath("turtlebot_bringup");
+    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
+    this->poi_model_xml = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     spawned = false;
 }
 
@@ -43,15 +43,15 @@ void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     std::cout << "Info: POISpawnerPlugin PlugIn loaded!" << std::endl;
 }
 
-void POISpawnerPlugin::spawnPOI(string name, double x, double y)
+void POISpawnerPlugin::spawnPOI(std::string name, double x, double y)
 {
     sdf::SDF sphereSDF;
     sphereSDF.SetFromString(this->poi_model_xml);
     // Demonstrate using a custom model name.
     sdf::ElementPtr model = sphereSDF.Root()->GetElement("model");
-    string modelName = "poi_" + name;
+    std::string modelName = "poi_" + name;
     model->GetAttribute("name")->SetFromString(modelName);
-    model->GetElement("pose")->Set(to_string(x) + " " + to_string(y) + " 0.02 0 0 0");
+    model->GetElement("pose")->Set(std::to_string(x) + " " + std::to_string(y) + " 0.02 0 0 0");
     world->InsertModelSDF(sphereSDF);
     this->poiTextMap.emplace(modelName, false);
 }
@@ -75,7 +75,7 @@ void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo &info)
                     this->spawnPOI(poiIDString, x, y);
                 }
             }
-            catch (exception &e)
+            catch (std::exception &e)
             {
                 continue;
             }

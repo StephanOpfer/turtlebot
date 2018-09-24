@@ -1,6 +1,7 @@
 #include "poi_labeling/POILabeling.h"
 #include <gazebo/common/common.hh>
 #include <gazebo/rendering/rendering.hh>
+#include <gazebo/gui/GuiEvents.hh>
 
 namespace gazebo
 {
@@ -12,7 +13,7 @@ POILabeling::POILabeling()
     this->resize(0, 0);
 
     // Listen to event indicating a new model has been inserted
-    this->connections.push_back(gui::Events::ConnectModelUpdate(std::bind(&POILabeling::OnModelUpdate, this, std::placeholders::_1)));
+    this->connections.push_back(gazebo::gui::Events::ConnectModelUpdate(std::bind(&POILabeling::OnModelUpdate, this, std::placeholders::_1)));
 
     // Callback called on pre-render
     this->connections.push_back(event::Events::ConnectPreRender(std::bind(&POILabeling::Update, this)));
@@ -65,12 +66,12 @@ void POILabeling::Update()
         int pos = modelName.find("_");
         std::string visualText = modelName.substr(pos + 1, modelName.size() - pos - 1);
         std::string textName = modelName + "_TEXT_";
-        auto modelBox = vis->BoundingBox();
+        auto modelBox = vis->GetBoundingBox();
 
         // Create text
         auto text = new rendering::MovableText;
         text->Load(textName, visualText, "Arial", 0.3, common::Color::Red);
-        text->SetBaseline(modelBox.Center().Z());
+        text->SetBaseline(modelBox.GetCenter().z);
         text->SetTextAlignment(rendering::MovableText::HorizAlign::H_CENTER, rendering::MovableText::VertAlign::V_ABOVE);
         text->SetShowOnTop(true);
 

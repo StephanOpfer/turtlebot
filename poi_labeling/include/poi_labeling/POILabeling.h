@@ -1,9 +1,10 @@
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/gui/GuiPlugin.hh>
+#include <gazebo/msgs/MessageTypes.hh>
 
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 # include <gazebo/transport/transport.hh>
-# include <gazebo/gui/gui.hh>
+//# include <gazebo/gui/gui.hh>
 #endif
 
 #include <string>
@@ -26,7 +27,7 @@ namespace gazebo
 
       		/// \brief Callback for model update event.
       		/// \param[in] _msg Incoming message.
-     		void OnModelUpdate(const msgs::Model& msg);
+     		void OnModelUpdate(const gazebo::msgs::Model& msg);
 
       		/// \brief Map with names of all models in the scene and a flag indicating
       		/// whether they've been processed or not.

@@ -74,7 +74,7 @@ void LogicalCameraPlugin::loadModelsFromConfig()
             std::cout << "LogicalCameraPlugin: angleSection: " << angleSection << " from : " << start << " to: " << end
                       << std::endl;
 #endif
-            m.detectAngles.push_back(pair<double, double>(start, end));
+            m.detectAngles.push_back(std::pair<double, double>(start, end));
         }
 
         m.type = section;
@@ -229,7 +229,7 @@ void LogicalCameraPlugin::publishModel(gazebo::physics::ModelPtr model, LogicalC
     msg.timeStamp = ros::Time::now();
     msg.type = configModel.type;
 
-    chrono::time_point<chrono::high_resolution_clock> now = chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();
 
     if (this->lastPublishedMap.find(msg.modelName) != this->lastPublishedMap.end())
     {
@@ -239,7 +239,7 @@ void LogicalCameraPlugin::publishModel(gazebo::physics::ModelPtr model, LogicalC
     else
     {
         // Publish message if needed/specified hz from config exceeded
-        if (chrono::duration_cast<chrono::milliseconds>(now - this->lastPublishedMap[msg.modelName]).count() >=
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - this->lastPublishedMap[msg.modelName]).count() >=
             (1000.0 / configModel.publishingRate))
         {
             this->modelPub.publish(msg);
