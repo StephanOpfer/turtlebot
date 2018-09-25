@@ -112,7 +112,7 @@ void DistanceSensorPlugin::OnUpdate()
             {
                 auto &mn = model.name();
 
-                physics::BasePtr gmodel = world->GetByName(mn);
+                physics::BasePtr gmodel = world->EntityByName(mn);
                 physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
 
                 if (ggmodel == NULL)
@@ -122,9 +122,9 @@ void DistanceSensorPlugin::OnUpdate()
                 }
 
                 ModelProperties mp;
-                mp.xlength = ggmodel->GetBoundingBox().GetXLength();
-                mp.ylength = ggmodel->GetBoundingBox().GetYLength();
-                mp.zlength = ggmodel->GetBoundingBox().GetZLength();
+                mp.xlength = ggmodel->BoundingBox().XLength();
+                mp.ylength = ggmodel->BoundingBox().YLength();
+                mp.zlength = ggmodel->BoundingBox().ZLength();
 
                 publishModel(model, kv.second, mp);
 #ifdef LOGICAL_CAMERA_DEBUG
