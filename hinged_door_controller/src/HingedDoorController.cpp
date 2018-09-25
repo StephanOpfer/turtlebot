@@ -51,7 +51,7 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
 void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
 {
     // Get the hinge joint of the correct door, according to the given model name
-	auto door = this->model->GetModel(cmd->name);
+	auto door = this->model->ModelByName(cmd->name);
 	if (!door)
 	{
 		std::cerr << "HingedDoorController: Received msg for " << cmd->name << " door, that does NOT EXIST!" << std::endl;
