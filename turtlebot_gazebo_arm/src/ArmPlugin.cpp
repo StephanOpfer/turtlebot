@@ -53,15 +53,15 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
     if (this->transportedModel != nullptr)
     {
         // std::cout << "ArmPlugin::OnGrab: " << model->GetName() << std::endl;
-    	auto quaternion = this->transportedModel->GetWorldPose().rot;
-        auto ownPos = this->model->GetWorldPose();
-        ownPos.pos.z += 0.75;
-        ownPos.rot = quaternion;
+    	auto quaternion = this->transportedModel->WorldPose().Rot();
+        auto ownPos = this->model->WorldPose();
+        ownPos.Pos().Z() += 0.75;
+        ownPos.Rot() = quaternion;
         this->transportedModel->SetWorldPose(ownPos);
     }
     if (this->previousTransportedModel != nullptr)
     {
-    	this->previousTransportedModel->SetWorldPose(this->previousTransportedModel->GetWorldPose());
+    	this->previousTransportedModel->SetWorldPose(this->previousTransportedModel->WorldPose());
     	this->previousTransportedModel->SetStatic(true);
         this->previousTransportedModel->Update();
     }
@@ -76,12 +76,12 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
     }
     if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr)
     {
-        auto modelToCarry = this->world->GetModel(msg->objectName);
+        auto modelToCarry = this->world->ModelByName(msg->objectName);
         if (modelToCarry != nullptr)
         {
-            auto robotPosition = this->model->GetWorldPose().pos;
-            auto transportedModelPose = modelToCarry->GetWorldPose().pos;
-            double distance = sqrt(pow(transportedModelPose.x - robotPosition.x, 2) + pow(transportedModelPose.y - robotPosition.y, 2));
+            auto robotPosition = this->model->WorldPose().Pos();
+            auto transportedModelPose = modelToCarry->WorldPose().Pos();
+            double distance = sqrt(pow(transportedModelPose.X() - robotPosition.X(), 2) + pow(transportedModelPose.Y() - robotPosition.Y(), 2));
             std::cout << "ArmPlugin: Grab: distance to model " << msg->objectName << ": " << distance << std::endl;
             if (distance <= armRange)
             {
@@ -98,19 +98,19 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
     {
         if (msg->objectName == this->transportedModel->GetName())
         {
-            math::Pose targetPos;
-            targetPos.pos.x = msg->dropPoint.x;
-            targetPos.pos.y = msg->dropPoint.y;
-            targetPos.pos.z = msg->dropPoint.z;
-            targetPos.rot = this->transportedModel->GetWorldPose().rot;
+            ignition::math::Pose3d targetPos;
+            targetPos.Pos().X(msg->dropPoint.x);
+            targetPos.Pos().Y(msg->dropPoint.y);
+            targetPos.Pos().Z(msg->dropPoint.z);
+            targetPos.Rot() = this->transportedModel->WorldPose().Rot();
             this->transportedModel->SetWorldPose(targetPos);
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction
             // y and z work fine ...
 //            this->transportedModel->Update();
-            auto robotPosition = this->model->GetWorldPose().pos;
-            auto transportedModelPose = this->transportedModel->GetWorldPose().pos;
-            double distance = sqrt(pow(transportedModelPose.x - robotPosition.x, 2) + pow(transportedModelPose.y - robotPosition.y, 2));
+            auto robotPosition = this->model->WorldPose().Pos();
+            auto transportedModelPose = this->transportedModel->WorldPose().Pos();
+            double distance = sqrt(pow(transportedModelPose.X() - robotPosition.X(), 2) + pow(transportedModelPose.Y() - robotPosition.Y(), 2));
             std::cout << "ArmPlugin: Drop: distance to model " << msg->objectName << ": " << distance << std::endl;
             this->previousTransportedModel = this->transportedModel;
             this->transportedModel = nullptr;
