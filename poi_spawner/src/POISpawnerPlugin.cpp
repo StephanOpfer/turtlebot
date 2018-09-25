@@ -35,7 +35,7 @@ void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     node = boost::make_shared<transport::Node>();
 
     // Initialize the node with the world name
-    node->Init(this->world->GetName());
+    node->Init(this->world->Name());
 
     // Create a publisher on the ~/factory topic
     this->factoryPub = node->Advertise<msgs::Factory>("~/factory");

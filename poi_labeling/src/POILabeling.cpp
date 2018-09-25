@@ -66,12 +66,12 @@ void POILabeling::Update()
         int pos = modelName.find("_");
         std::string visualText = modelName.substr(pos + 1, modelName.size() - pos - 1);
         std::string textName = modelName + "_TEXT_";
-        auto modelBox = vis->GetBoundingBox();
+        auto modelBox = vis->BoundingBox();
 
         // Create text
         auto text = new rendering::MovableText;
         text->Load(textName, visualText, "Arial", 0.3, common::Color::Red);
-        text->SetBaseline(modelBox.GetCenter().z);
+        text->SetBaseline(modelBox.Center().Z());
         text->SetTextAlignment(rendering::MovableText::HorizAlign::H_CENTER, rendering::MovableText::VertAlign::V_ABOVE);
         text->SetShowOnTop(true);
 
