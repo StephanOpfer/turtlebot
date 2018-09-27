@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(turtlebot_gazebo_grid_annotator)
 
+cmake_policy(SET CMP0054 NEW)
+
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS

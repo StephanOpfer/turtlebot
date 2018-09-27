@@ -38,7 +38,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     // Connect to the sensor update event.
     this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&Annotator::OnUpdate, this, _1));
 
-    auto physicsEngine = this->world->GetPhysicsEngine();
+    auto physicsEngine = this->world->Physics();
     physicsEngine->InitForThread();
     this->rayShape =
         boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
@@ -83,7 +83,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
 void Annotator::OnUpdate(const common::UpdateInfo &info)
 {
-    auto models = this->world->GetModels();
+    auto models = this->world->Models();
     gazebo::physics::Model_V pois;
     for (auto model : models)
     {
@@ -106,7 +106,7 @@ void Annotator::OnUpdate(const common::UpdateInfo &info)
 	this->gridMsgBuffer.pop();
 
     ttb_msgs::AnnotatedGrid annotatedGrid;
-    double minDist = numeric_limits<double>::max();
+    double minDist = std::numeric_limits<double>::max();
     gazebo::physics::ModelPtr closestPOI = nullptr;
     for (auto point : grid->points)
     {
@@ -126,7 +126,7 @@ void Annotator::OnUpdate(const common::UpdateInfo &info)
         }
 
         closestPOI = nullptr;
-        minDist = numeric_limits<double>::max();
+        minDist = std::numeric_limits<double>::max();
     }
 
     this->annotatedGridPublisher.publish(annotatedGrid);
@@ -140,16 +140,16 @@ void Annotator::onGrid(ttb_msgs::GridPtr grid)
 bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
 {
     // check whether the poi is closer than any other checked before
-    double tmpDist = sqrt(((poi->GetWorldPose().pos.x - point.x) * (poi->GetWorldPose().pos.x - point.x)) +
-                          ((poi->GetWorldPose().pos.y - point.y) * (poi->GetWorldPose().pos.y - point.y)) +
-                          ((poi->GetWorldPose().pos.z - point.z) * (poi->GetWorldPose().pos.z - point.z)));
+    double tmpDist = sqrt(((poi->WorldPose().Pos().X() - point.x) * (poi->WorldPose().Pos().X() - point.x)) +
+                          ((poi->WorldPose().Pos().Y() - point.y) * (poi->WorldPose().Pos().Y() - point.y)) +
+                          ((poi->WorldPose().Pos().Z() - point.z) * (poi->WorldPose().Pos().Z() - point.z)));
     if (minDist < tmpDist)
     {
         return false;
     }
 
     // check whether the poi is visible from the point of view
-    this->rayShape->SetPoints(math::Vector3(point.x, point.y, 0.3), poi->GetWorldPose().pos);
+    this->rayShape->SetPoints(ignition::math::Vector3d(point.x, point.y, 0.3), poi->WorldPose().Pos());
 
 #ifdef ANNOTATOR_DEBUG_POINTS
     if (poi->GetName().find(this->debugName) != std::string::npos)
@@ -166,7 +166,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     }
 #endif
 
-    double collisionDist = numeric_limits<double>::max();
+    double collisionDist = std::numeric_limits<double>::max();
     std::string collisionEntity;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
     if (tmpDist > collisionDist && collisionEntity != "")
