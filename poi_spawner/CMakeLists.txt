@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(poi_spawner)
 
- add_compile_options(-std=c++11)
+cmake_policy(SET CMP0054 NEW)
+
+add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED
   gazebo_plugins

@@ -67,12 +67,12 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
     * \brief Models configured as "occluding" will be checked for occlusion through ray casting
     * @param model model detected by sensor
     */
-    bool isDetected(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel configModel, gazebo::math::Pose &outCorrectedPose);
+    bool isDetected(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel configModel, ignition::math::Pose3d &outCorrectedPose);
 //    bool isSensorResponsible(gazebo::physics::ModelPtr model);
-    bool isInRange(gazebo::math::Vector3 modelPosition, double range);
-    bool isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles);
-    bool isVisible(gazebo::math::Pose correctedPose, gazebo::physics::ModelPtr model);
-    void publishModel(gazebo::physics::ModelPtr, LogicalCameraPlugin::ConfigModel &configModel, gazebo::math::Pose outCorrectedPose);
+    bool isInRange(ignition::math::Vector3d modelPosition, double range);
+    bool isInAngleRange(ignition::math::Pose3d &pose, std::vector<std::pair<double, double>> detectAngles);
+    bool isVisible(ignition::math::Pose3d correctedPose, gazebo::physics::ModelPtr model);
+    void publishModel(gazebo::physics::ModelPtr, LogicalCameraPlugin::ConfigModel &configModel, ignition::math::Pose3d outCorrectedPose);
     double quaternionToYaw(double x, double y, double z, double w);
 
     void loadModelsFromConfig();

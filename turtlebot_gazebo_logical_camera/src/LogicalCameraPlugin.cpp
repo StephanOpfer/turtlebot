@@ -106,15 +106,15 @@ void LogicalCameraPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     this->world = (this->robotModel->GetWorld());
     GZ_ASSERT(this->world != nullptr, "Unable to get a pointer to the world");
 
-    this->physicsEngine = this->world->GetPhysicsEngine();
+    this->physicsEngine = this->world->Physics();
     GZ_ASSERT(this->physicsEngine != nullptr, "Unable to get a pointer to the physics engine");
 
     this->laserCollision = this->physicsEngine->CreateCollision("ray", "base_footprint");
     GZ_ASSERT(this->laserCollision != nullptr, "Unable to create a ray collision using the physics engine.");
 
     this->laserCollision->SetName("logical_occlusion_collision");
-    this->laserCollision->SetRelativePose(this->robotModel->GetRelativePose());
-    this->laserCollision->SetInitialRelativePose(this->robotModel->GetRelativePose());
+    this->laserCollision->SetRelativePose(this->robotModel->RelativePose());
+    this->laserCollision->SetInitialRelativePose(this->robotModel->RelativePose());
 
     this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(this->laserCollision->GetShape());
 
@@ -164,16 +164,16 @@ void LogicalCameraPlugin::OnUpdate(const common::UpdateInfo &info)
 #ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     start = chrono::high_resolution_clock::now();
 #endif
-    auto models = this->world->GetModels();
+    auto models = this->world->Models();
     for (int i = 0; i < models.size(); i++)
     {
         auto model = models.at(i);
-        double quadDistance = (model->GetWorldPose().pos.x - this->robotModel->GetWorldPose().pos.x) *
-                                  (model->GetWorldPose().pos.x - this->robotModel->GetWorldPose().pos.x) +
-                              (model->GetWorldPose().pos.y - this->robotModel->GetWorldPose().pos.y) *
-                                  (model->GetWorldPose().pos.y - this->robotModel->GetWorldPose().pos.y) +
-                              (model->GetWorldPose().pos.z - this->robotModel->GetWorldPose().pos.z) *
-                                  (model->GetWorldPose().pos.z - this->robotModel->GetWorldPose().pos.z);
+        double quadDistance = (model->WorldPose().Pos().X() - this->robotModel->WorldPose().Pos().X()) *
+                                  (model->WorldPose().Pos().X() - this->robotModel->WorldPose().Pos().X()) +
+                              (model->WorldPose().Pos().Y() - this->robotModel->WorldPose().Pos().Y()) *
+                                  (model->WorldPose().Pos().Y() - this->robotModel->WorldPose().Pos().Y()) +
+                              (model->WorldPose().Pos().Z() - this->robotModel->WorldPose().Pos().Z()) *
+                                  (model->WorldPose().Pos().Z() - this->robotModel->WorldPose().Pos().Z());
         if (quadDistance < this->quadNear || quadDistance > this->quadFar)
         {
             continue;
@@ -185,7 +185,7 @@ void LogicalCameraPlugin::OnUpdate(const common::UpdateInfo &info)
             continue;
         }
 
-        gazebo::math::Pose correctedPosition;
+        ignition::math::Pose3d correctedPosition;
         if (isDetected(model, mapEntry->second, correctedPosition))
         {
 
@@ -202,16 +202,16 @@ void LogicalCameraPlugin::OnUpdate(const common::UpdateInfo &info)
 }
 
 void LogicalCameraPlugin::publishModel(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel &configModel,
-                                       gazebo::math::Pose outCorrectedPose)
+                                       ignition::math::Pose3d outCorrectedPose)
 {
     ttb_msgs::LogicalCamera msg;
     msg.modelName = model->GetName();
 
     // change coordinate system and rotation for backwards sensor
-    msg.pose.x = outCorrectedPose.pos.x;
-    msg.pose.y = outCorrectedPose.pos.y;
-    msg.pose.theta = -quaternionToYaw(outCorrectedPose.rot.x, outCorrectedPose.rot.y, outCorrectedPose.rot.z,
-                                      outCorrectedPose.rot.w);
+    msg.pose.x = outCorrectedPose.Pos().X();
+    msg.pose.y = outCorrectedPose.Pos().Y();
+    msg.pose.theta = -quaternionToYaw(outCorrectedPose.Rot().X(), outCorrectedPose.Rot().Y(), outCorrectedPose.Rot().Z(),
+                                      outCorrectedPose.Rot().W());
 
     /*
      * Dirty fix for open door angles.
@@ -219,7 +219,7 @@ void LogicalCameraPlugin::publishModel(gazebo::physics::ModelPtr model, LogicalC
      */
     if (model->GetName().find("door_") != std::string::npos)
     {
-        msg.pose.theta = outCorrectedPose.rot.z;
+        msg.pose.theta = outCorrectedPose.Rot().Z();
     }
 #ifdef LOGICAL_CAMERA_DEBUG
     cout << "Robot " << this->robotModel->GetName() << " found Model with Name " << model->GetName() << " at ( "
@@ -257,13 +257,13 @@ double LogicalCameraPlugin::quaternionToYaw(double x, double y, double z, double
 }
 
 bool LogicalCameraPlugin::isDetected(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel configModel,
-                                     gazebo::math::Pose &outCorrectedPose)
+                                     ignition::math::Pose3d &outCorrectedPose)
 {
 
     if (model->GetName().find("door_") != std::string::npos)
     {
         auto doorLink = model->GetChildLink("door::door");
-        outCorrectedPose.pos = doorLink->GetWorldPose().CoordPositionAdd(math::Vector3(0.45, 0.0, 1.0));
+        outCorrectedPose.Pos() = doorLink->WorldPose().CoordPositionAdd(ignition::math::Vector3d(0.45, 0.0, 1.0));
         /*
          * Dirty hack to set the correct angle of the door
          * the angle of the door itself does not change when it is opened therefore
@@ -271,15 +271,15 @@ bool LogicalCameraPlugin::isDetected(gazebo::physics::ModelPtr model, LogicalCam
          * doorframe and the door leaf
          */
         auto doorJoint = model->GetJoint("door::hinge");
-        outCorrectedPose.rot.z = *doorJoint->GetAngle(0);
+        outCorrectedPose.Rot().Z() = doorJoint->Position(0);
     }
     else
     {
-        outCorrectedPose = model->GetWorldPose();
+        outCorrectedPose = model->WorldPose();
     }
 
     // Check the distance to the correctedPose
-    if (!this->isInRange(outCorrectedPose.pos, configModel.range))
+    if (!this->isInRange(outCorrectedPose.Pos(), configModel.range))
     {
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
         if (model->GetName().find(debugName) != string::npos)
@@ -321,23 +321,23 @@ bool LogicalCameraPlugin::isDetected(gazebo::physics::ModelPtr model, LogicalCam
     return true;
 }
 
-bool LogicalCameraPlugin::isVisible(gazebo::math::Pose correctedPose, gazebo::physics::ModelPtr model)
+bool LogicalCameraPlugin::isVisible(ignition::math::Pose3d correctedPose, gazebo::physics::ModelPtr model)
 {
-    if (this->isInRange(model->GetWorldPose().pos, 0.3))
+    if (this->isInRange(model->WorldPose().Pos(), 0.3))
     {
         return true;
     }
     // Starting and ending points of the ray
-    auto rayEndPoint = correctedPose - this->robotModel->GetWorldPose();
+    auto rayEndPoint = correctedPose - this->robotModel->WorldPose();
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     if (model->GetName().find(debugName) != string::npos)
     {
         std::cout << "LogicalCameraPlugin: Correcting angle for back sensor!" << std::endl;
     }
 #endif
-    rayEndPoint.RotatePositionAboutOrigin(math::Quaternion::EulerToQuaternion(math::Vector3(0.0, 0.0, M_PI)));
+    rayEndPoint.RotatePositionAboutOrigin(ignition::math::Quaterniond::EulerToQuaternion(ignition::math::Vector3d(0.0, 0.0, M_PI)));
 
-    this->rayShape->SetPoints(gazebo::math::Vector3(0.0, 0.0, 1.15), rayEndPoint.pos);
+    this->rayShape->SetPoints(ignition::math::Vector3d(0.0, 0.0, 1.15), rayEndPoint.Pos());
 
     this->rayShape->Update();
 
@@ -397,9 +397,9 @@ bool LogicalCameraPlugin::isVisible(gazebo::math::Pose correctedPose, gazebo::ph
     return true;
 }
 
-bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<std::pair<double, double>> detectAngles)
+bool LogicalCameraPlugin::isInAngleRange(ignition::math::Pose3d &pose, std::vector<std::pair<double, double>> detectAngles)
 {
-    double angle = atan2(pose.pos.y, pose.pos.x) * 180.0 / M_PI;
+    double angle = atan2(pose.Pos().Y(), pose.Pos().X()) * 180.0 / M_PI;
 
     // all angles have to be checked so no return after first pair is checked
     for (auto pair : detectAngles)
@@ -426,12 +426,12 @@ bool LogicalCameraPlugin::isInAngleRange(gazebo::math::Pose &pose, std::vector<s
     return false;
 }
 
-bool LogicalCameraPlugin::isInRange(gazebo::math::Vector3 modelPosition, double range)
+bool LogicalCameraPlugin::isInRange(ignition::math::Vector3d modelPosition, double range)
 {
-    auto robotPosition = this->robotModel->GetWorldPose().pos;
-    auto sqDist = (modelPosition.x - robotPosition.x) * (modelPosition.x - robotPosition.x) +
-                  (modelPosition.y - robotPosition.y) * (modelPosition.y - robotPosition.y) +
-                  (modelPosition.z - robotPosition.z) * (modelPosition.z - robotPosition.z);
+    auto robotPosition = this->robotModel->WorldPose().Pos();
+    auto sqDist = (modelPosition.X() - robotPosition.X()) * (modelPosition.X() - robotPosition.X()) +
+                  (modelPosition.Y() - robotPosition.Y()) * (modelPosition.Y() - robotPosition.Y()) +
+                  (modelPosition.Z() - robotPosition.Z()) * (modelPosition.Z() - robotPosition.Z());
     return sqDist <= range * range;
 }
 
