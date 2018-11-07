@@ -4,8 +4,8 @@
 
 #include <ros/ros.h>
 
-#include <math.h>
 #include <algorithm>
+#include <math.h>
 
 using std::cerr;
 using std::cout;
@@ -16,7 +16,7 @@ namespace gazebo
 {
 
 ObjectPossession::ObjectPossession()
-    : WorldPlugin()
+        : WorldPlugin()
 {
     this->spinner = nullptr;
     this->sc = supplementary::SystemConfig::getInstance();
@@ -29,17 +29,16 @@ void ObjectPossession::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
     // Listen to the update event. This event is broadcast every
     // simulation iteration.
-    this->updateConnection =
-        event::Events::ConnectWorldUpdateBegin(boost::bind(&ObjectPossession::OnUpdate, this, _1));
+    this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ObjectPossession::OnUpdate, this, _1));
 
     ros::NodeHandle n;
-    //this->doorCmdSub = n.subscribe("/DoorCmd", 10, &HingedDoorController::handleDoorCmd, (HingedDoorController *)this);
+    // this->doorCmdSub = n.subscribe("/DoorCmd", 10, &HingedDoorController::handleDoorCmd, (HingedDoorController *)this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 }
 
 // Called by the world update start event
-void ObjectPossession::OnUpdate(const common::UpdateInfo & /*_info*/)
+void ObjectPossession::OnUpdate(const common::UpdateInfo& /*_info*/)
 {
     // Apply a small linear velocity to the model.
     // this->model->SetLinearVel(math::Vector3(.03, 0, 0));
@@ -47,4 +46,4 @@ void ObjectPossession::OnUpdate(const common::UpdateInfo & /*_info*/)
 
 // Register this plugin with the simulator
 GZ_REGISTER_WORLD_PLUGIN(ObjectPossession)
-}
+} // namespace gazebo

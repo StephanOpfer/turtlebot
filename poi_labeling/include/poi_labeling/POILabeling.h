@@ -2,41 +2,41 @@
 #include <gazebo/gui/GuiPlugin.hh>
 #include <gazebo/msgs/MessageTypes.hh>
 
-#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <gazebo/transport/transport.hh>
+#ifndef Q_MOC_RUN // See: https://bugreports.qt-project.org/browse/QTBUG-22829
+#include <gazebo/transport/transport.hh>
 //# include <gazebo/gui/gui.hh>
 #endif
 
-#include <string>
 #include <map>
 #include <mutex>
+#include <string>
 
 namespace gazebo
 {
-    class GAZEBO_VISIBLE POILabeling : public GUIPlugin
-    {
-      Q_OBJECT
-	
-		public:
-      		POILabeling();
-      		virtual ~POILabeling();
+class GAZEBO_VISIBLE POILabeling : public GUIPlugin
+{
+    Q_OBJECT
 
-		private:
-      		/// \brief Callback for pre-render event.
-      		void Update();
+public:
+    POILabeling();
+    virtual ~POILabeling();
 
-      		/// \brief Callback for model update event.
-      		/// \param[in] _msg Incoming message.
-     		void OnModelUpdate(const gazebo::msgs::Model& msg);
+private:
+    /// \brief Callback for pre-render event.
+    void Update();
 
-      		/// \brief Map with names of all models in the scene and a flag indicating
-      		/// whether they've been processed or not.
-      		std::map<std::string, bool> models;
+    /// \brief Callback for model update event.
+    /// \param[in] _msg Incoming message.
+    void OnModelUpdate(const gazebo::msgs::Model& msg);
 
-      		/// \brief All the event connections.
-      		std::vector<event::ConnectionPtr> connections;
+    /// \brief Map with names of all models in the scene and a flag indicating
+    /// whether they've been processed or not.
+    std::map<std::string, bool> models;
 
-      		/// \brief Mutex to protect variables
-     		std::mutex mutex;
-    };
-}
+    /// \brief All the event connections.
+    std::vector<event::ConnectionPtr> connections;
+
+    /// \brief Mutex to protect variables
+    std::mutex mutex;
+};
+} // namespace gazebo

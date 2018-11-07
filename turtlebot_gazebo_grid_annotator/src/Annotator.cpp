@@ -40,33 +40,26 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
     auto physicsEngine = this->world->Physics();
     physicsEngine->InitForThread();
-    this->rayShape =
-        boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
-    if (!rayShape)
-    {
+    this->rayShape = boost::dynamic_pointer_cast<physics::RayShape>(physicsEngine->CreateShape("ray", physics::CollisionPtr()));
+    if (!rayShape) {
         std::cerr << "Annotator: No RayShape available! " << std::endl;
-    }
-    else
-    {
+    } else {
         std::cout << "Annotator: RayShape available! " << std::endl;
     }
 
     // Make sure the ROS node for Gazebo has already been initialized
-    if (!ros::isInitialized())
-    {
+    if (!ros::isInitialized()) {
         std::cerr << "A ROS node for Gazebo has not been initialized, unable to load plugin. "
-                  << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)"
-                  << std::endl;
+                  << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)" << std::endl;
         return;
     }
 
     auto sc = supplementary::SystemConfig::getInstance();
-    std::string annotatedGridTopic =
-        (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
+    std::string annotatedGridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
     std::string gridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.gridTopic", NULL);
     ros::NodeHandle n;
     this->annotatedGridPublisher = n.advertise<ttb_msgs::AnnotatedGrid>(annotatedGridTopic, 5, false);
-    this->gridSubscriber = n.subscribe(gridTopic, 10, &Annotator::onGrid, (Annotator *)this);
+    this->gridSubscriber = n.subscribe(gridTopic, 10, &Annotator::onGrid, (Annotator*) this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
@@ -81,46 +74,37 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 #endif
 }
 
-void Annotator::OnUpdate(const common::UpdateInfo &info)
+void Annotator::OnUpdate(const common::UpdateInfo& info)
 {
     auto models = this->world->Models();
     gazebo::physics::Model_V pois;
-    for (auto model : models)
-    {
-        if (model->GetName().find_first_of("poi_") != 0)
-        {
+    for (auto model : models) {
+        if (model->GetName().find_first_of("poi_") != 0) {
             // all POIs start with "poi_" so skip this one
             continue;
-        }
-        else
-        {
+        } else {
             pois.push_back(model);
         }
     }
 
-    if (this->gridMsgBuffer.empty())
-    {
-    	return;
+    if (this->gridMsgBuffer.empty()) {
+        return;
     }
     auto grid = this->gridMsgBuffer.front();
-	this->gridMsgBuffer.pop();
+    this->gridMsgBuffer.pop();
 
     ttb_msgs::AnnotatedGrid annotatedGrid;
     double minDist = std::numeric_limits<double>::max();
     gazebo::physics::ModelPtr closestPOI = nullptr;
-    for (auto point : grid->points)
-    {
-        for (auto poi : pois)
-        {
-            if (this->isCloserAndVisible(poi, point, minDist))
-            {
+    for (auto point : grid->points) {
+        for (auto poi : pois) {
+            if (this->isCloserAndVisible(poi, point, minDist)) {
                 closestPOI = poi;
             }
         }
 
         // points without any line to a POI are filtered (e.g. points in walls)
-        if (closestPOI)
-        {
+        if (closestPOI) {
             annotatedGrid.points.push_back(point);
             annotatedGrid.annotatedPOIs.push_back(closestPOI->GetName());
         }
@@ -134,17 +118,16 @@ void Annotator::OnUpdate(const common::UpdateInfo &info)
 
 void Annotator::onGrid(ttb_msgs::GridPtr grid)
 {
-	this->gridMsgBuffer.push(grid);
+    this->gridMsgBuffer.push(grid);
 }
 
-bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist)
+bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double& minDist)
 {
     // check whether the poi is closer than any other checked before
     double tmpDist = sqrt(((poi->WorldPose().Pos().X() - point.x) * (poi->WorldPose().Pos().X() - point.x)) +
                           ((poi->WorldPose().Pos().Y() - point.y) * (poi->WorldPose().Pos().Y() - point.y)) +
                           ((poi->WorldPose().Pos().Z() - point.z) * (poi->WorldPose().Pos().Z() - point.z)));
-    if (minDist < tmpDist)
-    {
+    if (minDist < tmpDist) {
         return false;
     }
 
@@ -152,8 +135,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     this->rayShape->SetPoints(ignition::math::Vector3d(point.x, point.y, 0.3), poi->WorldPose().Pos());
 
 #ifdef ANNOTATOR_DEBUG_POINTS
-    if (poi->GetName().find(this->debugName) != std::string::npos)
-    {
+    if (poi->GetName().find(this->debugName) != std::string::npos) {
         math::Vector3 posA;
         math::Vector3 posB;
         this->rayShape->GetGlobalPoints(posA, posB);
@@ -169,8 +151,7 @@ bool Annotator::isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs:
     double collisionDist = std::numeric_limits<double>::max();
     std::string collisionEntity;
     this->rayShape->GetIntersection(collisionDist, collisionEntity);
-    if (tmpDist > collisionDist && collisionEntity != "")
-    {
+    if (tmpDist > collisionDist && collisionEntity != "") {
         return false;
     }
 
@@ -192,11 +173,10 @@ void Annotator::createDebugPoint(std::string sdfString, std::string positionStri
     this->world->InsertModelSDF(sphereSDF);
 }
 
-void Annotator::moveDebugPoint(std::string name, gazebo::math::Pose &pose)
+void Annotator::moveDebugPoint(std::string name, gazebo::math::Pose& pose)
 {
     auto model = this->world->GetModel(name);
-    if (model)
-    {
+    if (model) {
         model->SetWorldPose(pose);
         model->Update();
     }

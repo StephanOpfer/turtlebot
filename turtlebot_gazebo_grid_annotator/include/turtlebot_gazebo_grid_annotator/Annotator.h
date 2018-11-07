@@ -18,31 +18,32 @@ namespace gazebo
 
 class GAZEBO_VISIBLE Annotator : public WorldPlugin
 {
-  public:
+public:
     Annotator();
     virtual ~Annotator();
 
     /**
-         * Load the sensor plugin.
-         * @param _sensor Pointer to the sensor that loaded this plugin.
-         * @param _sdf SDF element that describes the plugin.
-         */
+     * Load the sensor plugin.
+     * @param _sensor Pointer to the sensor that loaded this plugin.
+     * @param _sdf SDF element that describes the plugin.
+     */
     virtual void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
-  private:
+
+private:
     void onGrid(ttb_msgs::GridPtr grid);
-    bool isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double &minDist);
+    bool isCloserAndVisible(gazebo::physics::ModelPtr poi, geometry_msgs::Point point, double& minDist);
 
     ros::NodeHandle n;
     ros::Subscriber gridSubscriber;
     ros::Publisher annotatedGridPublisher;
-    ros::AsyncSpinner *spinner;
+    ros::AsyncSpinner* spinner;
 
     physics::WorldPtr world;
     physics::RayShapePtr rayShape;
-    //physics::CollisionPtr tmpCollision;
+    // physics::CollisionPtr tmpCollision;
 
-  protected:
-    virtual void OnUpdate(const common::UpdateInfo &info);
+protected:
+    virtual void OnUpdate(const common::UpdateInfo& info);
 
     // Link between the contact sensor's updated signal and callback.
     event::ConnectionPtr updateConnection;
@@ -50,7 +51,7 @@ class GAZEBO_VISIBLE Annotator : public WorldPlugin
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     void createDebugPoint(std::string sdfString, std::string positionString, std::string name);
-    void moveDebugPoint(std::string name, gazebo::math::Pose &pose);
+    void moveDebugPoint(std::string name, gazebo::math::Pose& pose);
     std::string debugName;
 #endif
 };

@@ -42,8 +42,7 @@ DistanceSensorPlugin::~DistanceSensorPlugin()
 void DistanceSensorPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 {
     // Make sure the ROS node for Gazebo has already been initialized
-    if (!ros::isInitialized())
-    {
+    if (!ros::isInitialized()) {
         ROS_FATAL_STREAM("A ROS node for Gazebo has not been initialized, unable to load plugin. "
                          << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
         return;
@@ -53,8 +52,7 @@ void DistanceSensorPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf
     this->parentSensor = std::dynamic_pointer_cast<sensors::LogicalCameraSensor>(_sensor);
     world = parentSensor->World();
     // Make sure the parent sensor is valid.
-    if (!this->parentSensor)
-    {
+    if (!this->parentSensor) {
         gzerr << "DistanceSensorPlugin requires a LogicalCamera Sensor.\n";
         return;
     }
@@ -62,8 +60,7 @@ void DistanceSensorPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf
     // Extract robot name
     this->robotName = this->parentSensor->ParentName();
     size_t pos = robotName.find(':');
-    if (pos == string::npos)
-    {
+    if (pos == string::npos) {
         gzerr << "DistanceSensorPlugin robot/model name(" << robotName << ") is invalid!";
         return;
     }
@@ -99,24 +96,19 @@ void DistanceSensorPlugin::OnUpdate()
 
     // Get all the models in range.
     auto models = this->parentSensor->Image();
-    for (int i = 0; i < models.model_size(); i++)
-    {
-        for (auto &kv : this->modelMap)
-        {
+    for (int i = 0; i < models.model_size(); i++) {
+        for (auto& kv : this->modelMap) {
             auto model = models.model(i);
-            if (!isSensorResponsible(model))
-            {
+            if (!isSensorResponsible(model)) {
                 continue;
             }
-            if (isDetected(model, kv.second))
-            {
-                auto &mn = model.name();
+            if (isDetected(model, kv.second)) {
+                auto& mn = model.name();
 
                 physics::BasePtr gmodel = world->EntityByName(mn);
                 physics::ModelPtr ggmodel = boost::static_pointer_cast<physics::Model>(gmodel);
 
-                if (ggmodel == NULL)
-                {
+                if (ggmodel == NULL) {
                     ROS_FATAL_STREAM("Could not retrieve bounding box of model " << mn << "\n");
                     return; // Can't locate model to determine bounding box
                 }
@@ -135,15 +127,14 @@ void DistanceSensorPlugin::OnUpdate()
     }
 }
 
-bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model, DistanceSensorPlugin::ConfigModel &configModel)
+bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model, DistanceSensorPlugin::ConfigModel& configModel)
 {
     auto modelName = model.name();
     auto gazeboElementName = configModel.type;
     transform(gazeboElementName.begin(), gazeboElementName.end(), gazeboElementName.begin(), ::tolower);
 
     // Model name did not match desired string
-    if (modelName.find(gazeboElementName) == std::string::npos)
-    {
+    if (modelName.find(gazeboElementName) == std::string::npos) {
         return false;
     }
 
@@ -152,8 +143,7 @@ bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model, Dist
     auto z = model.pose().position().z();
     auto dist = sqrt(x * x + y * y + z * z);
     // Model is too far aways
-    if (dist > configModel.range)
-    {
+    if (dist > configModel.range) {
         return false;
     }
 
@@ -162,8 +152,7 @@ bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model, Dist
      */
     double angle = calculateAngle(x, y);
 
-    if (!isInAngleRange(angle, configModel.detectAngles))
-    {
+    if (!isInAngleRange(angle, configModel.detectAngles)) {
         return false;
     }
 #ifdef LOGICAL_CAMERA_DEBUG
@@ -172,8 +161,8 @@ bool DistanceSensorPlugin::isDetected(msgs::LogicalCameraImage_Model model, Dist
     return true;
 }
 
-void DistanceSensorPlugin::publishModel(msgs::LogicalCameraImage_Model model, DistanceSensorPlugin::ConfigModel &configModel,
-                                        DistanceSensorPlugin::ModelProperties &props)
+void DistanceSensorPlugin::publishModel(
+        msgs::LogicalCameraImage_Model model, DistanceSensorPlugin::ConfigModel& configModel, DistanceSensorPlugin::ModelProperties& props)
 {
     auto x = model.pose().position().x();
     auto y = model.pose().position().y();
@@ -184,16 +173,13 @@ void DistanceSensorPlugin::publishModel(msgs::LogicalCameraImage_Model model, Di
 
     auto q = model.pose().orientation();
     // change coordinate system and rotation for backwards sensor
-    if (this->sensorYaw != 0)
-    {
+    if (this->sensorYaw != 0) {
         msg.pose.x = -x;
         msg.pose.y = -y;
         //			msg.pose.theta = quadToTheata(q.x(), q.y(), q.z(), q.w());
         auto angle = quadToTheata(q.x(), q.y(), q.z(), q.w());
         msg.pose.theta = -(angle < 0 ? angle + M_PI : angle - M_PI);
-    }
-    else
-    {
+    } else {
         msg.pose.x = x;
         msg.pose.y = y;
         msg.pose.theta = -quadToTheata(q.x(), q.y(), q.z(), q.w());
@@ -212,20 +198,16 @@ void DistanceSensorPlugin::publishModel(msgs::LogicalCameraImage_Model model, Di
 
     chrono::time_point<chrono::high_resolution_clock> now = chrono::high_resolution_clock::now();
 
-    if (lastPublishedMap.count(msg.modelName) <= 0)
-    {
+    if (lastPublishedMap.count(msg.modelName) <= 0) {
         modelPub.publish(msg);
         lastPublishedMap[msg.modelName] = now;
-    }
-    else
-    {
+    } else {
         // Publish message if needed/specified hz from config exceeded
         auto diff = chrono::duration_cast<chrono::milliseconds>(now - lastPublishedMap[msg.modelName]);
 #ifdef LOGICAL_CAMERA_DEBUG
         cout << "DistanceSensorPlugin: diff: " << diff.count() << endl;
 #endif
-        if (diff.count() >= (1000.0 / configModel.publishingRate))
-        {
+        if (diff.count() >= (1000.0 / configModel.publishingRate)) {
             modelPub.publish(msg);
             lastPublishedMap[msg.modelName] = now;
         }
@@ -234,30 +216,27 @@ void DistanceSensorPlugin::publishModel(msgs::LogicalCameraImage_Model model, Di
 
 void DistanceSensorPlugin::loadModelsFromConfig()
 {
-    const char *lc = "LogicalCamera";
-    const char *da = "DetectAngles";
+    const char* lc = "LogicalCamera";
+    const char* da = "DetectAngles";
 
     auto config = (*this->sc)[lc];
     this->modelSectionNames = config->getSections(lc, NULL);
 
     // Iterate over all model sections in config file
-    for (auto section : *(this->modelSectionNames))
-    {
+    for (auto section : *(this->modelSectionNames)) {
 #ifdef LOGICAL_CAMERA_DEBUG
         cout << "DistanceSensorPlugin: section: " << section << endl;
 #endif
-        if (section.compare("OccludingTypes") == 0)
-        {
+        if (section.compare("OccludingTypes") == 0) {
             continue;
         }
-        const char *sec = section.c_str();
+        const char* sec = section.c_str();
         ConfigModel m;
         m.range = config->get<double>(lc, sec, "range", NULL);
 
         // Add all angles specified in model to detectAngles vector
         auto angleSections = config->getSections(lc, sec, da, NULL);
-        for (auto angleSection : *angleSections)
-        {
+        for (auto angleSection : *angleSections) {
             auto start = config->get<double>(lc, sec, da, angleSection.c_str(), "startAngle", NULL);
             auto end = config->get<double>(lc, sec, da, angleSection.c_str(), "endAngle", NULL);
 #ifdef LOGICAL_CAMERA_DEBUG
@@ -276,23 +255,17 @@ void DistanceSensorPlugin::loadModelsFromConfig()
 bool DistanceSensorPlugin::isInAngleRange(double angle, vector<pair<double, double>> detectAngles)
 {
     // all angles have to be checked so no return after first pair is checked
-    for (auto pair : detectAngles)
-    {
+    for (auto pair : detectAngles) {
 #ifdef LOGICAL_CAMERA_DEBUG
         cout << "DistanceSensorPlugin: checking pair: (" << pair.first << " : " << pair.second << ")" << endl;
 #endif
-        if (pair.first <= pair.second)
-        {
-            if (pair.first <= angle && angle <= pair.second)
-            {
+        if (pair.first <= pair.second) {
+            if (pair.first <= angle && angle <= pair.second) {
                 return true;
             }
-        }
-        else
-        {
+        } else {
             // this is only the case when the angle range crosses over 180°
-            if (pair.first <= angle || angle <= pair.second)
-            {
+            if (pair.first <= angle || angle <= pair.second) {
                 return true;
             }
         }
@@ -323,10 +296,9 @@ double DistanceSensorPlugin::calculateAngle(double x, double y)
      * change angle of backwards facing sensor get sensor range from 90° to 180°
      * and from -90° to -180°
      */
-    if (this->sensorYaw != 0)
-    {
+    if (this->sensorYaw != 0) {
         angle = (angle < 0) ? angle + 180.0 : angle - 180;
     }
     return angle;
 }
-}
+} // namespace gazebo

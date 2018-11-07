@@ -4,15 +4,15 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
+#include <map>
 #include <ros/ros.h>
 #include <string>
-#include <map>
 
 namespace gazebo
 {
 class POISpawnerPlugin : public WorldPlugin
 {
-  public:
+public:
     /**
      * Constructor
      */
@@ -31,11 +31,11 @@ class POISpawnerPlugin : public WorldPlugin
     virtual void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf);
     void spawnPOI(std::string name, double x, double y);
 
-  private:
+private:
     /**
      * Callback that receives the contact sensor's update signal.
      */
-    void OnModelUpdate(const common::UpdateInfo &info);
+    void OnModelUpdate(const common::UpdateInfo& info);
 
     // Pointer to the model
     physics::WorldPtr world;
@@ -47,4 +47,4 @@ class POISpawnerPlugin : public WorldPlugin
     bool spawned;
     event::ConnectionPtr updateConnection;
 };
-}
+} // namespace gazebo

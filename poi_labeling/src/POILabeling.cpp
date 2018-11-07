@@ -1,12 +1,12 @@
 #include "poi_labeling/POILabeling.h"
 #include <gazebo/common/common.hh>
-#include <gazebo/rendering/rendering.hh>
 #include <gazebo/gui/GuiEvents.hh>
+#include <gazebo/rendering/rendering.hh>
 
 namespace gazebo
 {
 POILabeling::POILabeling()
-    : GUIPlugin()
+        : GUIPlugin()
 {
     // Position and resize this widget
     this->move(10, 10);
@@ -29,8 +29,7 @@ void POILabeling::OnModelUpdate(const msgs::Model& msg)
 {
     // Add new model to the list and it will be processed on Update
     std::lock_guard<std::mutex> lock(this->mutex);
-    if (msg.name().find("poi_") != std::string::npos && this->models.find(msg.name()) == this->models.end())
-    {
+    if (msg.name().find("poi_") != std::string::npos && this->models.find(msg.name()) == this->models.end()) {
         this->models[msg.name()] = false;
     }
 }
@@ -39,18 +38,15 @@ void POILabeling::Update()
 {
     // Get scene pointer
     auto scene = rendering::get_scene();
-    if (!scene)
-    {
+    if (!scene) {
         return;
     }
 
     // Go through all models
     std::lock_guard<std::mutex> lock(this->mutex);
-    for (auto &model : this->models)
-    {
+    for (auto& model : this->models) {
         // Skip if model has already been processed
-        if (model.second)
-        {
+        if (model.second) {
             continue;
         }
 
@@ -59,8 +55,7 @@ void POILabeling::Update()
         auto vis = scene->GetVisual(modelName);
 
         // Visual is not in the scene yet
-        if (!vis)
-        {
+        if (!vis) {
             continue;
         }
         int pos = modelName.find("_");
@@ -86,4 +81,4 @@ void POILabeling::Update()
 }
 // Register this plugin with the simulator
 GZ_REGISTER_GUI_PLUGIN(POILabeling)
-}
+} // namespace gazebo

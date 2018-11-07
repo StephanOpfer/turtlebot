@@ -26,8 +26,7 @@ ObjectPossessionPlugin::~ObjectPossessionPlugin()
 void ObjectPossessionPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
     // Make sure the ROS node for Gazebo has already been initialized
-    if (!ros::isInitialized())
-    {
+    if (!ros::isInitialized()) {
         ROS_FATAL_STREAM("A ROS node for Gazebo has not been initialized, unable to load plugin. "
                          << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
         return;
@@ -37,7 +36,7 @@ void ObjectPossessionPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sd
 
     this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ObjectPossessionPlugin::OnUpdate, this, _1));
 
-    this->armCmdSub = n.subscribe("/ArmCmd", 10, &ObjectPossessionPlugin::onGrabDropObjectCmd, (ObjectPossessionPlugin *)this);
+    this->armCmdSub = n.subscribe("/ArmCmd", 10, &ObjectPossessionPlugin::onGrabDropObjectCmd, (ObjectPossessionPlugin*) this);
     this->armCmdPub = this->n.advertise<ttb_msgs::GrabDropObject>("/ArmCmdResponse", 10);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
@@ -45,7 +44,7 @@ void ObjectPossessionPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sd
     ROS_INFO("ObjectPossessionPlugin PlugIn loaded!");
 }
 
-void ObjectPossessionPlugin::OnUpdate(const common::UpdateInfo &info)
+void ObjectPossessionPlugin::OnUpdate(const common::UpdateInfo& info)
 {
     // rosNode->advertise<process_manager::ProcessStats>(this->processStatsTopic, 10);
 }
@@ -54,69 +53,48 @@ void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg
 {
     std::lock_guard<std::mutex> lock(publisherMutex);
 
-    if (msg->action == msg->GRAB)
-    {
+    if (msg->action == msg->GRAB) {
         bool objectIsAvailable = true;
-        for (auto pair : this->objectPossession)
-        {
-            if (pair.second.compare(msg->objectName) == 0)
-            {
+        for (auto pair : this->objectPossession) {
+            if (pair.second.compare(msg->objectName) == 0) {
                 objectIsAvailable = false;
                 break;
             }
         }
         bool robotMayCarry = true;
-        if (objectIsAvailable)
-        {
+        if (objectIsAvailable) {
             auto iter = this->objectPossession.find(msg->senderName);
-            if (iter == this->objectPossession.end())
-            {
+            if (iter == this->objectPossession.end()) {
                 this->objectPossession.emplace(msg->senderName, msg->objectName);
-            }
-            else
-            {
-                if (iter->second.empty())
-                {
+            } else {
+                if (iter->second.empty()) {
                     iter->second = msg->objectName;
-                }
-                else
-                {
+                } else {
                     robotMayCarry = false;
                 }
             }
         }
 
-        if (!objectIsAvailable || !robotMayCarry)
-        {
+        if (!objectIsAvailable || !robotMayCarry) {
             msg->objectName = "";
             this->armCmdPub.publish(msg);
         }
-        if (objectIsAvailable && robotMayCarry)
-        {
+        if (objectIsAvailable && robotMayCarry) {
             this->armCmdPub.publish(msg);
         }
-    }
-    else
-    {
+    } else {
         bool robotMayDrop = true;
         auto iter = this->objectPossession.find(msg->senderName);
-        if (iter == this->objectPossession.end())
-        {
+        if (iter == this->objectPossession.end()) {
             robotMayDrop = false;
-        }
-        else
-        {
-            if (iter->second.compare(msg->objectName) == 0)
-            {
+        } else {
+            if (iter->second.compare(msg->objectName) == 0) {
                 iter->second = "";
-            }
-            else
-            {
+            } else {
                 robotMayDrop = false;
             }
         }
-        if (!robotMayDrop)
-        {
+        if (!robotMayDrop) {
             msg->objectName = "";
         }
         this->armCmdPub.publish(msg);
@@ -125,4 +103,4 @@ void ObjectPossessionPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg
 
 // Register this plugin with the simulator
 GZ_REGISTER_WORLD_PLUGIN(ObjectPossessionPlugin)
-}
+} // namespace gazebo

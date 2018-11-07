@@ -28,8 +28,7 @@ ArmPlugin::~ArmPlugin()
 void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
     // Make sure the ROS node for Gazebo has already been initialized
-    if (!ros::isInitialized())
-    {
+    if (!ros::isInitialized()) {
         ROS_FATAL_STREAM("A ROS node for Gazebo has not been initialized, unable to load plugin. "
                          << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
         return;
@@ -41,28 +40,26 @@ void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ArmPlugin::OnUpdate, this, _1));
 
     ros::NodeHandle n;
-    this->armCmdSub = n.subscribe("/ArmCmdResponse", 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin *)this);
+    this->armCmdSub = n.subscribe("/ArmCmdResponse", 10, &ArmPlugin::onGrabDropObjectCmd, (ArmPlugin*) this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
     ROS_INFO("ArmPlugin PlugIn loaded!");
 }
 
-void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
+void ArmPlugin::OnUpdate(const common::UpdateInfo& info)
 {
-    if (this->transportedModel != nullptr)
-    {
+    if (this->transportedModel != nullptr) {
         // std::cout << "ArmPlugin::OnGrab: " << model->GetName() << std::endl;
-    	auto quaternion = this->transportedModel->WorldPose().Rot();
+        auto quaternion = this->transportedModel->WorldPose().Rot();
         auto ownPos = this->model->WorldPose();
         ownPos.Pos().Z() += 0.75;
         ownPos.Rot() = quaternion;
         this->transportedModel->SetWorldPose(ownPos);
     }
-    if (this->previousTransportedModel != nullptr)
-    {
-    	this->previousTransportedModel->SetWorldPose(this->previousTransportedModel->WorldPose());
-    	this->previousTransportedModel->SetStatic(true);
+    if (this->previousTransportedModel != nullptr) {
+        this->previousTransportedModel->SetWorldPose(this->previousTransportedModel->WorldPose());
+        this->previousTransportedModel->SetStatic(true);
         this->previousTransportedModel->Update();
     }
 }
@@ -70,34 +67,25 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo &info)
 void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 {
     std::cout << "ArmPlugin::OnGrab: Object Name " << msg->objectName << std::endl;
-    if (msg->objectName.empty())
-    {
+    if (msg->objectName.empty()) {
         return;
     }
-    if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr)
-    {
+    if (msg->action == ttb_msgs::GrabDropObject::GRAB && this->transportedModel == nullptr) {
         auto modelToCarry = this->world->ModelByName(msg->objectName);
-        if (modelToCarry != nullptr)
-        {
+        if (modelToCarry != nullptr) {
             auto robotPosition = this->model->WorldPose().Pos();
             auto transportedModelPose = modelToCarry->WorldPose().Pos();
             double distance = sqrt(pow(transportedModelPose.X() - robotPosition.X(), 2) + pow(transportedModelPose.Y() - robotPosition.Y(), 2));
             std::cout << "ArmPlugin: Grab: distance to model " << msg->objectName << ": " << distance << std::endl;
-            if (distance <= armRange)
-            {
+            if (distance <= armRange) {
                 this->transportedModel = modelToCarry;
                 this->transportedModel->SetStatic(false);
             }
-        }
-        else
-        {
+        } else {
             std::cout << "ArmPlugin::OnGrab: Unknown Object with name: " << msg->objectName << std::endl;
         }
-    }
-    else if (msg->action == ttb_msgs::GrabDropObject::DROP && this->transportedModel != nullptr)
-    {
-        if (msg->objectName == this->transportedModel->GetName())
-        {
+    } else if (msg->action == ttb_msgs::GrabDropObject::DROP && this->transportedModel != nullptr) {
+        if (msg->objectName == this->transportedModel->GetName()) {
             ignition::math::Pose3d targetPos;
             targetPos.Pos().X(msg->dropPoint.x);
             targetPos.Pos().Y(msg->dropPoint.y);
@@ -107,21 +95,17 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
             this->transportedModel->SetStatic(true);
             // Calling update is neceessary to place an object in x direction
             // y and z work fine ...
-//            this->transportedModel->Update();
+            //            this->transportedModel->Update();
             auto robotPosition = this->model->WorldPose().Pos();
             auto transportedModelPose = this->transportedModel->WorldPose().Pos();
             double distance = sqrt(pow(transportedModelPose.X() - robotPosition.X(), 2) + pow(transportedModelPose.Y() - robotPosition.Y(), 2));
             std::cout << "ArmPlugin: Drop: distance to model " << msg->objectName << ": " << distance << std::endl;
             this->previousTransportedModel = this->transportedModel;
             this->transportedModel = nullptr;
-        }
-        else
-        {
+        } else {
             std::cout << "ArmPlugin::OnDrop: not carrying an object with name: " << msg->objectName << std::endl;
         }
-    }
-    else
-    {
+    } else {
         std::cout << "ArmPlugin::OnGrab: already carrying an object or no object to drop! " << std::endl;
     }
 
@@ -149,4 +133,4 @@ void ArmPlugin::onGrabDropObjectCmd(ttb_msgs::GrabDropObjectPtr msg)
 
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(ArmPlugin)
-}
+} // namespace gazebo

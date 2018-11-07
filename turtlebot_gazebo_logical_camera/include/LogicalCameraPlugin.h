@@ -6,10 +6,10 @@
 #include <gazebo/physics/PhysicsTypes.hh>
 #include <gazebo/sensors/LogicalCameraSensor.hh>
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <vector>
-#include <chrono>
 
 #include <ros/ros.h>
 
@@ -31,26 +31,26 @@ namespace gazebo
 class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
 {
     /// \brief Constructor
-  public:
+public:
     LogicalCameraPlugin();
 
     /// \brief Destructor
-  public:
+public:
     virtual ~LogicalCameraPlugin();
 
     // Documentation inherited
-  public:
+public:
     virtual void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
 
     // Documentation inherited
-  public:
+public:
     virtual void Fini();
 
     // Callback that receives the contact sensor's update signal
-  protected:
-    virtual void OnUpdate(const common::UpdateInfo &info);
+protected:
+    virtual void OnUpdate(const common::UpdateInfo& info);
 
-  private:
+private:
     struct ConfigModel
     {
         double range;
@@ -64,25 +64,25 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
         std::string type;
     };
     /**
-    * \brief Models configured as "occluding" will be checked for occlusion through ray casting
-    * @param model model detected by sensor
-    */
-    bool isDetected(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel configModel, ignition::math::Pose3d &outCorrectedPose);
-//    bool isSensorResponsible(gazebo::physics::ModelPtr model);
+     * \brief Models configured as "occluding" will be checked for occlusion through ray casting
+     * @param model model detected by sensor
+     */
+    bool isDetected(gazebo::physics::ModelPtr model, LogicalCameraPlugin::ConfigModel configModel, ignition::math::Pose3d& outCorrectedPose);
+    //    bool isSensorResponsible(gazebo::physics::ModelPtr model);
     bool isInRange(ignition::math::Vector3d modelPosition, double range);
-    bool isInAngleRange(ignition::math::Pose3d &pose, std::vector<std::pair<double, double>> detectAngles);
+    bool isInAngleRange(ignition::math::Pose3d& pose, std::vector<std::pair<double, double>> detectAngles);
     bool isVisible(ignition::math::Pose3d correctedPose, gazebo::physics::ModelPtr model);
-    void publishModel(gazebo::physics::ModelPtr, LogicalCameraPlugin::ConfigModel &configModel, ignition::math::Pose3d outCorrectedPose);
+    void publishModel(gazebo::physics::ModelPtr, LogicalCameraPlugin::ConfigModel& configModel, ignition::math::Pose3d outCorrectedPose);
     double quaternionToYaw(double x, double y, double z, double w);
 
     void loadModelsFromConfig();
     void loadOccludingTypes();
     void loadParameters();
     /**
-	 * calculates angle of object from quaternium
-	 */
+     * calculates angle of object from quaternium
+     */
     // Sensor ptr
-//    sensors::LogicalCameraSensorPtr parentSensor;
+    //    sensors::LogicalCameraSensorPtr parentSensor;
 
     // Link between the contact sensor's updated signal and callback.
     event::ConnectionPtr updateConnection;
@@ -114,10 +114,9 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
     std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> lastPublishedMap;
 
     // Sensor orientation
-    supplementary::SystemConfig *sc;
+    supplementary::SystemConfig* sc;
     double quadNear;
     double quadFar;
-
 
 #ifdef LOGICAL_CAMERA_RUNTIME_DEBUG
     std::chrono::time_point<std::chrono::high_resolution_clock> start;
@@ -130,4 +129,4 @@ class GAZEBO_VISIBLE LogicalCameraPlugin : public ModelPlugin
     std::string debugName;
 #endif
 };
-}
+} // namespace gazebo

@@ -4,8 +4,8 @@
 
 #include <ros/ros.h>
 
-#include <math.h>
 #include <algorithm>
+#include <math.h>
 
 using std::cerr;
 using std::cout;
@@ -16,7 +16,7 @@ namespace gazebo
 {
 
 HingedDoorController::HingedDoorController()
-    : WorldPlugin()
+        : WorldPlugin()
 {
     this->spinner = nullptr;
     this->sc = supplementary::SystemConfig::getInstance();
@@ -29,11 +29,10 @@ void HingedDoorController::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
     // Listen to the update event. This event is broadcast every
     // simulation iteration.
-    this->updateConnection =
-        event::Events::ConnectWorldUpdateBegin(boost::bind(&HingedDoorController::OnUpdate, this, _1));
+    this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&HingedDoorController::OnUpdate, this, _1));
 
     ros::NodeHandle n;
-    this->doorCmdSub = n.subscribe("/DoorCmd", 10, &HingedDoorController::handleDoorCmd, (HingedDoorController *)this);
+    this->doorCmdSub = n.subscribe("/DoorCmd", 10, &HingedDoorController::handleDoorCmd, (HingedDoorController*) this);
     this->spinner = new ros::AsyncSpinner(4);
     this->spinner->start();
 
@@ -41,9 +40,7 @@ void HingedDoorController::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 }
 
 // Called by the world update start event
-void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
-{
-}
+void HingedDoorController::OnUpdate(const common::UpdateInfo& /*_info*/) {}
 
 /**
  * Callback for DoorCmd msgs. Directly sets the position of the referenced door, if it exists.
@@ -51,20 +48,18 @@ void HingedDoorController::OnUpdate(const common::UpdateInfo & /*_info*/)
 void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
 {
     // Get the hinge joint of the correct door, according to the given model name
-	auto door = this->model->ModelByName(cmd->name);
-	if (!door)
-	{
-		std::cerr << "HingedDoorController: Received msg for " << cmd->name << " door, that does NOT EXIST!" << std::endl;
-		return;
-	}
+    auto door = this->model->ModelByName(cmd->name);
+    if (!door) {
+        std::cerr << "HingedDoorController: Received msg for " << cmd->name << " door, that does NOT EXIST!" << std::endl;
+        return;
+    }
     auto hingeJoint = door->GetJoint("door::hinge");
 
     double setAngle = 0.0; /* <-- 0.0 is the angle for closing a door */
 
-    if (cmd->state == ttb_msgs::DoorCmd::OPEN)
-    {
+    if (cmd->state == ttb_msgs::DoorCmd::OPEN) {
         // Get limits of that joint
-    	setAngle = (*sc)["TopologicalModel"]->get<double>("DistributedSystems.Doors", cmd->name.c_str(), "openAngle", NULL);
+        setAngle = (*sc)["TopologicalModel"]->get<double>("DistributedSystems.Doors", cmd->name.c_str(), "openAngle", NULL);
     }
 
     hingeJoint->SetPosition(0, setAngle);
@@ -72,4 +67,4 @@ void HingedDoorController::handleDoorCmd(ttb_msgs::DoorCmdPtr cmd)
 
 // Register this plugin with the simulator
 GZ_REGISTER_WORLD_PLUGIN(HingedDoorController)
-}
+} // namespace gazebo

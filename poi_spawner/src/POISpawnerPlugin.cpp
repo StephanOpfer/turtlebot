@@ -21,9 +21,7 @@ POISpawnerPlugin::POISpawnerPlugin()
     spawned = false;
 }
 
-POISpawnerPlugin::~POISpawnerPlugin()
-{
-}
+POISpawnerPlugin::~POISpawnerPlugin() {}
 
 void POISpawnerPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
@@ -56,27 +54,21 @@ void POISpawnerPlugin::spawnPOI(std::string name, double x, double y)
     this->poiTextMap.emplace(modelName, false);
 }
 
-void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo &info)
+void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo& info)
 {
-    if (!spawned)
-    {
+    if (!spawned) {
         // Read rooms with its connected areas and pois from config
-        supplementary::SystemConfig *sc = supplementary::SystemConfig::getInstance();
+        supplementary::SystemConfig* sc = supplementary::SystemConfig::getInstance();
         auto roomNames = (*sc)["TopologicalModel"]->getSections("DistributedSystems.Rooms", NULL);
-        for (auto &roomName : (*roomNames))
-        {
-            try
-            {
+        for (auto& roomName : (*roomNames)) {
+            try {
                 auto poisIDStrings = (*sc)["TopologicalModel"]->getSections("DistributedSystems.Rooms", roomName.c_str(), "POIs", NULL);
-                for (auto poiIDString : (*poisIDStrings))
-                {
+                for (auto poiIDString : (*poisIDStrings)) {
                     double x = (*sc)["TopologicalModel"]->get<double>("DistributedSystems.Rooms", roomName.c_str(), "POIs", poiIDString.c_str(), "X", NULL);
                     double y = (*sc)["TopologicalModel"]->get<double>("DistributedSystems.Rooms", roomName.c_str(), "POIs", poiIDString.c_str(), "Y", NULL);
                     this->spawnPOI(poiIDString, x, y);
                 }
-            }
-            catch (std::exception &e)
-            {
+            } catch (std::exception& e) {
                 continue;
             }
         }
@@ -86,4 +78,4 @@ void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo &info)
 
 // Register this plugin with the simulator
 GZ_REGISTER_WORLD_PLUGIN(POISpawnerPlugin)
-}
+} // namespace gazebo

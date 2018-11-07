@@ -1,4 +1,4 @@
-#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
+#ifndef Q_MOC_RUN // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 #include <QObject>
 
 #include <ros/ros.h>
@@ -14,23 +14,21 @@ class Arrow;
 namespace turtlebot_rviz_plugin
 {
 
-class LeonardoPoseEst: public rviz::PoseTool
+class LeonardoPoseEst : public rviz::PoseTool
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	LeonardoPoseEst();
-	~LeonardoPoseEst();
+    LeonardoPoseEst();
+    ~LeonardoPoseEst();
 
-	virtual void onInitialize();
+    virtual void onInitialize();
 
 protected:
-	virtual void onPoseSet(double x, double y, double theta);
+    virtual void onPoseSet(double x, double y, double theta);
 
 private:
-	ros::NodeHandle nh;
-	ros::Publisher pub;
-
-
+    ros::NodeHandle nh;
+    ros::Publisher pub;
 };
 
-} // namespace
+} // namespace turtlebot_rviz_plugin
