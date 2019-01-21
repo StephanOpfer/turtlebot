@@ -31,7 +31,8 @@ void LeonardoPoseEst::onPoseSet(double x, double y, double theta)
     std::string fixed_frame = context_->getFixedFrame().toStdString();
     geometry_msgs::PoseWithCovarianceStamped pose;
 
-    pose.header.frame_id = std::string("/") + fixed_frame;
+    //pose.header.frame_id = std::string("/") + fixed_frame;
+    pose.header.frame_id = fixed_frame;
     pose.header.stamp = ros::Time::now();
     pose.pose.pose.position.x = x;
     pose.pose.pose.position.y = y;

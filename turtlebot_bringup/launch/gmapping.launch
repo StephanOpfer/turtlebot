@@ -4,7 +4,7 @@
   <arg name="scan_topic" value="scan_hokuyo"/>
   <arg name="base_frame" value="$(arg robot)_tf/base_link" />
   <arg name="odom_frame" value="$(arg robot)_tf/odom"/>
-  <arg name="map_frame" value="/map"/>
+  <arg name="map_frame" value="map"/>
 
   <group ns="leonardo">
     <param name="tf_prefix" value="$(arg robot)_tf" />

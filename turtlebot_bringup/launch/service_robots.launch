@@ -17,7 +17,7 @@
   <!-- Map server -->
   <arg name="map_file" default="$(find turtlebot_bringup)/maps/department_sim.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
-    <param name="frame_id" value="/map" />
+    <param name="frame_id" value="map" />
   </node>
 
   <group ns="leonardo">

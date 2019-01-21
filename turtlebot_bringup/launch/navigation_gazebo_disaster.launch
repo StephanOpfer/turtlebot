@@ -14,7 +14,7 @@
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
       <arg name="laser_topic" value="scan_hokuyo" />
     </include>
-    <param name="move_base/global_costmap/global_frame" value="/map" />    
+    <param name="move_base/global_costmap/global_frame" value="map" />    
   </group>
 
   <group ns="raphael">
@@ -30,7 +30,7 @@
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
       <arg name="laser_topic" value="scan_hokuyo" />
     </include>
-    <param name="move_base/global_costmap/global_frame" value="/map" />    
+    <param name="move_base/global_costmap/global_frame" value="map" />    
   </group>
   
  <!-- 
@@ -47,7 +47,7 @@
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
       <arg name="laser_topic" value="scan_hokuyo" />
     </include>
-    <param name="move_base/global_costmap/global_frame" value="/map" />    
+    <param name="move_base/global_costmap/global_frame" value="map" />    
   </group>
   
   <group ns="michelangelo">
@@ -63,7 +63,7 @@
     <include file="$(find turtlebot_bringup)/launch/includes/simulation/ninja-move_base-simulation.launch.xml">
       <arg name="laser_topic" value="scan_hokuyo" />
     </include>
-    <param name="move_base/global_costmap/global_frame" value="/map" />    
+    <param name="move_base/global_costmap/global_frame" value="map" />    
   </group>
 -->
 </launch>
