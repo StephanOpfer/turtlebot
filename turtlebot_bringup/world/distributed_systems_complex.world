@@ -1305,7 +1305,7 @@
 		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_4'>
+    <model name='blueBook_40'>
       <pose frame=''>40.47 8.97 0.74 1.570796327 0 -1.570796327</pose>
       		<include>
 		   <uri>model://blueBook</uri>
@@ -2062,7 +2062,7 @@
 		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_40'>
+    <model name='blueBook_41'>
       <pose frame=''>18.3608 10.1403 0.935975 0 -0 0</pose>
 	    	<include>
 		   <uri>model://blueBook</uri>
@@ -2086,7 +2086,7 @@
 		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_41'>
+    <model name='blueBook_42'>
       <pose frame=''>18.3751 8.13017 0.935975 0 -0 0</pose>
 	    	<include>
 		   <uri>model://blueBook</uri>
@@ -2116,7 +2116,7 @@
 		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_42'>
+    <model name='blueBook_43'>
       <pose frame=''>18.3632 7.4372 0.589125 0 -0 0</pose>
 	    	<include>
 		   <uri>model://blueBook</uri>
@@ -2164,7 +2164,7 @@
 		   <uri>model://greenBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_43'>
+    <model name='blueBook_44'>
       <pose frame=''>18.3692 9.9887 0.204601 0 -0 0</pose>
 	    	<include>
 		   <uri>model://blueBook</uri>
@@ -2176,7 +2176,7 @@
 		   <uri>model://redBook</uri>
 	    	</include>
     </model>
-    <model name='blueBook_44'>
+    <model name='blueBook_45'>
       <pose frame=''>18.3776 9.81211 0.204601 0 -0 0</pose>
 	    	<include>
 		   <uri>model://blueBook</uri>
