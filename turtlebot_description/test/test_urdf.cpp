@@ -60,23 +60,18 @@ int walker(char* result, int& test_result)
     if (d == NULL) {
         return 1;
     }
-    while ((dir = readdir(d))) {
-        if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0) {
-            continue;
-        }
-        if (dir->d_type != DT_DIR) {
-            std::string dir_name = dir->d_name;
-            if (dir_name.find(std::string(".urdf.xacro")) == dir_name.size() - 11) {
-                char pwd[MAXPATHLEN];
-                getcwd(pwd, MAXPATHLEN);
-                printf("\n\ntesting: %s\n", (std::string(pwd) + "/robots/" + dir_name).c_str());
-                runExternalProcess("python `rospack find xacro`/xacro --inorder",
-                        std::string(pwd) + "/robots/" + dir_name + " > `rospack find turtlebot_description`/test/tmp.urdf");
-                test_result =
-                        test_result || runExternalProcess("`rospack find urdf_parser`/bin/check_urdf", "`rospack find turtlebot_description`/test/tmp.urdf");
-                // break;
-            }
-        }
+    if( dir->d_type != DT_DIR )
+    {
+      std::string dir_name = dir->d_name;
+      if (dir_name.find(std::string(".urdf.xacro")) == dir_name.size()-11)
+      {
+        char pwd[MAXPATHLEN];
+        getcwd( pwd, MAXPATHLEN );
+        printf("\n\ntesting: %s\n",(std::string(pwd)+"/robots/"+dir_name).c_str());
+        runExternalProcess("python `rospack find xacro`/xacro --inorder", std::string(pwd)+"/robots/"+dir_name+" > `rospack find turtlebot_description`/test/tmp.urdf");
+        test_result = test_result || runExternalProcess("`rospack find urdf_parser`/bin/check_urdf", "`rospack find turtlebot_description`/test/tmp.urdf");
+        //break;
+      }
     }
     closedir(d);
     return *result == 0;
