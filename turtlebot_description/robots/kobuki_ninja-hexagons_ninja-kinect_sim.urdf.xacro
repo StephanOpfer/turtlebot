@@ -5,6 +5,7 @@
 	- 3d Sensor	: ninja-kinect
 -->
 <robot name="turtlebot" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="robotNamespace" default="leonardo"/>
 
   <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_library.urdf.xacro"/>
   <xacro:include filename="$(find turtlebot_description)/urdf/sensors/turtlebot_logical_camera_plugin.urdf.xacro"/>
@@ -16,7 +17,7 @@
   <sensor_hokuyo parent="base_link"/>
   <turtlebot_logical_camera_plugin name="logical_camera" parent="base_link" orientation_z="0.0"/>
   <turtlebot_sim_arm name="arm" parent="base_footprint"/>
-  <turtlebot_ground_truth_pose/>
+  <turtlebot_ground_truth_pose robotNamespace="$(arg robotNamespace)"/>
   <!--<gazebo>
  The plugin that determines the closest POI to a certain coordinate.
     <plugin name="turtlebot_gazebo_grid_annotator" filename="libturtlebot_gazebo_grid_annotator.so"/>

@@ -3,7 +3,7 @@
   <arg name="base" default="kobuki"/>
   <arg name="stacks" default="ninja-hexagons"/>
   <arg name="3d_sensor" default="ninja-kinect"/>  
-  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor)_sim.urdf.xacro'" />
+  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor)_sim.urdf.xacro' robotNamespace:=$(arg robot_model_name)" />
   <param name="robot_description" command="$(arg urdf_file)" />
 
   <!-- Spawn the generated turtlebot model. (Spawn process terminates after spawning.)-->

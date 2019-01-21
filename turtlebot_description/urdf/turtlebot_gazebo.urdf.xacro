@@ -108,10 +108,11 @@
   
 
   <!-- Makes Gazebo publishing a ground truth position. -->
-  <xacro:macro name="turtlebot_ground_truth_pose">
+  <xacro:macro name="turtlebot_ground_truth_pose" params="robotNamespace">
     <gazebo>  
       <plugin name="p3d_controller" filename="libgazebo_ros_p3d.so">
        <alwaysOn>true</alwaysOn>
+       <robotNamespace>${robotNamespace}</robotNamespace>
        <updateRate>100.0</updateRate>
        <bodyName>base_link</bodyName>
        <topicName>ground_truth_pose</topicName>
