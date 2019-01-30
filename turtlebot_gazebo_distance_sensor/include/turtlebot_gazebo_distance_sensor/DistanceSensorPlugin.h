@@ -1,6 +1,4 @@
-#ifndef GAZEBO_ROS_DISTANCE_SENSOR_HH
-#define GAZEBO_ROS_DISTANCE_SENSOR_HH
-
+#pragma  once
 #include <string>
 
 // library for processing camera data for gazebo / ros conversions
@@ -79,7 +77,7 @@ private:
     ros::Publisher modelPub;
     // Sensor orientation
     double sensorYaw;
-    supplementary::SystemConfig* sc;
+    essentials::SystemConfig* sc;
     // Sensor ptr
     sensors::LogicalCameraSensorPtr parentSensor;
     // Name of Robot
@@ -130,4 +128,4 @@ private:
     double calculateAngle(double x, double y);
 };
 } // namespace gazebo
-#endif
+

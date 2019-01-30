@@ -12,7 +12,7 @@
 #include <iostream>
 #include <stdio.h>
 
-namespace supplementary
+namespace essentials
 {
 class SystemConfig;
 }
@@ -37,6 +37,6 @@ private:
     ros::Subscriber doorCmdSub;
     ros::AsyncSpinner* spinner;
 
-    supplementary::SystemConfig* sc;
+    essentials::SystemConfig* sc;
 };
 } // namespace gazebo

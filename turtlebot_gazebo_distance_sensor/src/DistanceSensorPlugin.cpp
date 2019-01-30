@@ -25,7 +25,7 @@ GZ_REGISTER_SENSOR_PLUGIN(DistanceSensorPlugin)
 DistanceSensorPlugin::DistanceSensorPlugin()
 {
     this->sensorYaw = 0;
-    this->sc = supplementary::SystemConfig::getInstance();
+    this->sc = essentials::SystemConfig::getInstance();
 
     ROS_INFO("Loading models form SystemConfig...");
     loadModelsFromConfig();

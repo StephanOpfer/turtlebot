@@ -20,7 +20,7 @@ LogicalCameraPlugin::LogicalCameraPlugin()
         : ModelPlugin()
         , seq_number(-1)
 {
-    this->sc = supplementary::SystemConfig::getInstance();
+    this->sc = essentials::SystemConfig::getInstance();
     loadModelsFromConfig();
     loadOccludingTypes();
     loadParameters();
@@ -129,7 +129,7 @@ void LogicalCameraPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 
 #ifdef LOGICAL_CAMERA_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
-    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
+    std::ifstream in(essentials::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
     std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
     this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");

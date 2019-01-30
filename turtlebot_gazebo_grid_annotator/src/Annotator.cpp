@@ -20,7 +20,7 @@ Annotator::Annotator()
 {
     this->spinner = nullptr;
 #ifdef ANNOTATOR_DEBUG_POINTS
-    auto sc = supplementary::SystemConfig::getInstance();
+    auto sc = essentials::SystemConfig::getInstance();
     this->debugName = (*sc)["LogicalCamera"]->get<std::string>("LogicalCamera.debugName", NULL);
 #endif
 }
@@ -54,7 +54,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
         return;
     }
 
-    auto sc = supplementary::SystemConfig::getInstance();
+    auto sc = essentials::SystemConfig::getInstance();
     std::string annotatedGridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.annotatedGridTopic", NULL);
     std::string gridTopic = (*sc)["TTBWorldModel"]->get<std::string>("Processing.AnnotatedGrid.gridTopic", NULL);
     ros::NodeHandle n;
@@ -67,7 +67,7 @@ void Annotator::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
 #ifdef ANNOTATOR_DEBUG_POINTS
     std::string path = ros::package::getPath("turtlebot_bringup");
-    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
+    std::ifstream in(essentials::FileSystem::combinePaths(path, "/models/debugPoint/debugPoint.sdf"));
     std::string sdfString = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint");
     this->createDebugPoint(sdfString, "0 0 0 0 0 0", "debugPoint2");

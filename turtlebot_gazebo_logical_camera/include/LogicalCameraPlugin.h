@@ -18,7 +18,7 @@
 //#define LOGICAL_CAMERA_DEBUG_POINTS
 //#define LOGICAL_CAMERA_RUNTIME_DEBUG
 
-namespace supplementary
+namespace essentials
 {
 class SystemConfig;
 }
@@ -114,7 +114,7 @@ private:
     std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> lastPublishedMap;
 
     // Sensor orientation
-    supplementary::SystemConfig* sc;
+    essentials::SystemConfig* sc;
     double quadNear;
     double quadFar;
 

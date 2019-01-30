@@ -19,7 +19,7 @@ ObjectPossession::ObjectPossession()
         : WorldPlugin()
 {
     this->spinner = nullptr;
-    this->sc = supplementary::SystemConfig::getInstance();
+    this->sc = essentials::SystemConfig::getInstance();
 }
 
 void ObjectPossession::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)

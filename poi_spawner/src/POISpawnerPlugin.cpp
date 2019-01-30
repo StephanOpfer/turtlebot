@@ -16,7 +16,7 @@ namespace gazebo
 POISpawnerPlugin::POISpawnerPlugin()
 {
     std::string path = ros::package::getPath("turtlebot_bringup");
-    std::ifstream in(supplementary::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
+    std::ifstream in(essentials::FileSystem::combinePaths(path, "/models/poi/poi.sdf"));
     this->poi_model_xml = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     spawned = false;
 }
@@ -58,7 +58,7 @@ void POISpawnerPlugin::OnModelUpdate(const common::UpdateInfo& info)
 {
     if (!spawned) {
         // Read rooms with its connected areas and pois from config
-        supplementary::SystemConfig* sc = supplementary::SystemConfig::getInstance();
+        essentials::SystemConfig* sc = essentials::SystemConfig::getInstance();
         auto roomNames = (*sc)["TopologicalModel"]->getSections("DistributedSystems.Rooms", NULL);
         for (auto& roomName : (*roomNames)) {
             try {
