@@ -28,7 +28,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 1 -y 1 -z 3"/>
-      <arg name="robot" value="leonardo"/>
+      <arg name="robot_model_name" value="leonardo"/>
     </include>
   </group>
 
@@ -39,7 +39,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 2 -y 1 -z 0"/>
-      <arg name="robot" value="donatello"/>
+      <arg name="robot_model_name" value="donatello"/>
     </include>
   </group>
 
@@ -50,7 +50,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 3 -y 1 -z 0"/>
-      <arg name="robot" value="raphael"/>
+      <arg name="robot_model_name" value="raphael"/>
     </include>
   </group>
 
@@ -61,7 +61,7 @@
       <arg name="stacks" value="$(arg stacks)"/>
       <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
       <arg name="init_pose" value="-x 4 -y 1 -z 0"/>
-      <arg name="robot" value="michelangelo"/>
+      <arg name="robot_model_name" value="michelangelo"/>
     </include>
   </group>
 -->
